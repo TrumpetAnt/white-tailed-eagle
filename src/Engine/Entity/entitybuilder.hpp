@@ -1,6 +1,7 @@
 #pragma once
 
 #include "entity.hpp"
+#include "../../Systems/GameObjects/Map.hpp"
 
 namespace egl
 {
@@ -17,7 +18,6 @@ namespace egl
 
         EntityBuilder *AddDrawable()
         {
-            entity->AddDrawable();
             return this;
         }
 

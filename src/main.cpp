@@ -5,9 +5,9 @@
 #include <iostream>
 #include <math.h>
 
-#include "InputManager/inputmanager.hpp"
-#include "StateManager/statemanager.hpp"
-#include "UIManager/uimanager.hpp"
+#include "Engine/InputManager/inputmanager.hpp"
+#include "Engine/StateManager/statemanager.hpp"
+#include "Engine/UIManager/uimanager.hpp"
 
 int main()
 {

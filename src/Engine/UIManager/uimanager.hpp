@@ -17,7 +17,7 @@ namespace egl
             renderer = new Renderer(window);
         };
 
-        void ReceiveDrawables(std::vector<Drawable *> *drawables);
+        void ReceiveDrawables(std::vector<EgDrawable *> *drawables);
         void PrepareFrame();
         void FlushFrame();
     };

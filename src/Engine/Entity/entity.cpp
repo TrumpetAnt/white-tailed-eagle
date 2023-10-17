@@ -12,18 +12,14 @@ namespace egl
         return drawable != nullptr;
     }
 
-    Drawable *Entity::GetDrawable()
+    void Entity::AddDrawable(EgDrawable *drawable)
     {
-        return drawable;
-    }
-
-    void Entity::AddDrawable()
-    {
-        drawable = new Drawable(&transform);
+        drawable = drawable;
     }
 
     void Entity::SetPosition(sf::Vector3f pos)
     {
         transform.SetPosition(pos);
     }
+
 }

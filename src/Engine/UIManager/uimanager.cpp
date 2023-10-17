@@ -2,7 +2,7 @@
 
 namespace egl
 {
-    void UIManager::ReceiveDrawables(std::vector<Drawable *> *drawables)
+    void UIManager::ReceiveDrawables(std::vector<EgDrawable *> *drawables)
     {
         renderer->Draw(drawables);
     }

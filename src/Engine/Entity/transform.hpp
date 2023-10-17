@@ -8,6 +8,7 @@ namespace egl
     {
     private:
         sf::Vector3f position = sf::Vector3f(0, 0, 0);
+        float scale = 1.0f;
 
     public:
         sf::Vector3f GetPosition()
@@ -15,9 +16,19 @@ namespace egl
             return position;
         }
 
+        float GetScale()
+        {
+            return scale;
+        }
+
         void SetPosition(sf::Vector3f pos)
         {
             position = pos;
+        }
+
+        void SetScale(float s)
+        {
+            scale = s;
         }
     };
 }

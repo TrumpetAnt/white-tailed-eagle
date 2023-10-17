@@ -15,7 +15,7 @@ namespace egl
         {
         }
 
-        void Draw(std::vector<Drawable *> *drawables);
+        void Draw(std::vector<EgDrawable *> *drawables);
 
         void PrepareFrame();
 

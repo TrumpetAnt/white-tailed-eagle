@@ -2,11 +2,11 @@
 
 namespace egl
 {
-    void Renderer::Draw(std::vector<Drawable *> *drawables)
+    void Renderer::Draw(std::vector<EgDrawable *> *drawables)
     {
         for (auto d : *drawables)
         {
-            window->draw(d->GetVertexArray());
+            window->draw(*d);
         }
 
         drawables->clear();

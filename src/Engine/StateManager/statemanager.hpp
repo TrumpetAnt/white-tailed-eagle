@@ -15,6 +15,6 @@ namespace egl
     public:
         StateManager();
 
-        std::vector<Drawable *> *GetDrawables();
+        std::vector<EgDrawable *> *GetDrawables();
     };
 }

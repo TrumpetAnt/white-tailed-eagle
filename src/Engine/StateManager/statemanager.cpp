@@ -7,15 +7,15 @@ namespace egl
         state = new State();
     }
 
-    std::vector<Drawable *> *StateManager::GetDrawables()
+    std::vector<EgDrawable *> *StateManager::GetDrawables()
     {
-        auto res = new std::vector<Drawable *>();
+        auto res = new std::vector<EgDrawable *>();
         auto entities = state->GetEntities();
         for (auto entity : entities)
         {
             if (entity->IsDrawable())
             {
-                res->push_back(entity->GetDrawable());
+                entity->ConcatDrawable(res);
             }
         }
 
