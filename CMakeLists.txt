@@ -12,7 +12,14 @@ FetchContent_MakeAvailable(SFML)
 
 add_executable(eagle 
     src/main.cpp 
-    src/InputManager/inputmanager.cpp)
+    src/InputManager/inputmanager.cpp
+    src/UIManager/uimanager.cpp
+    src/UIManager/Renderer/renderer.cpp
+    src/Drawable/drawable.cpp
+    src/Entity/entity.cpp
+    src/Entity/entityfactory.cpp
+    src/StateManager/state.cpp
+    src/StateManager/statemanager.cpp)
 target_link_libraries(eagle PRIVATE sfml-graphics X11 ${X11_LIBRARIES})
 target_compile_features(eagle PRIVATE cxx_std_17)
 

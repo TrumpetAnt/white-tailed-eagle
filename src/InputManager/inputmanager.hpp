@@ -11,22 +11,25 @@
 
 using namespace std::chrono_literals;
 
-class InputManager
+namespace egl
 {
-private:
-    static InputManager *pinstance_;
-    static std::mutex mutex_;
-
-protected:
-    InputManager()
+    class InputManager
     {
-    }
-    ~InputManager() {}
+    private:
+        static InputManager *pinstance_;
+        static std::mutex mutex_;
 
-public:
-    InputManager(InputManager &other) = delete;
-    void operator=(const InputManager &) = delete;
-    static InputManager *GetInstance();
+    protected:
+        InputManager()
+        {
+        }
+        ~InputManager() {}
 
-    void StartEventLoop(sf::RenderWindow *window);
-};
+    public:
+        InputManager(InputManager &other) = delete;
+        void operator=(const InputManager &) = delete;
+        static InputManager *GetInstance();
+
+        void StartEventLoop(sf::RenderWindow *window);
+    };
+}

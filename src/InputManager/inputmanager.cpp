@@ -1,45 +1,48 @@
 #include "inputmanager.hpp"
 
-InputManager *InputManager::pinstance_{nullptr};
-std::mutex InputManager::mutex_;
-
-InputManager *InputManager::GetInstance()
+namespace egl
 {
-    std::lock_guard<std::mutex> lock(mutex_);
-    if (pinstance_ == nullptr)
-    {
-        pinstance_ = new InputManager();
-    }
-    return pinstance_;
-}
+    InputManager *InputManager::pinstance_{nullptr};
+    std::mutex InputManager::mutex_;
 
-void InputManager::StartEventLoop(sf::RenderWindow *window)
-{
-    sf::Event event;
-
-    while (true)
+    InputManager *InputManager::GetInstance()
     {
-        while (window->pollEvent(event))
+        std::lock_guard<std::mutex> lock(mutex_);
+        if (pinstance_ == nullptr)
         {
-            switch (event.type)
+            pinstance_ = new InputManager();
+        }
+        return pinstance_;
+    }
+
+    void InputManager::StartEventLoop(sf::RenderWindow *window)
+    {
+        sf::Event event;
+
+        while (true)
+        {
+            while (window->pollEvent(event))
             {
-            case sf::Event::Closed:
-                window->close();
-                std::terminate();
-                return;
-            case sf::Event::KeyPressed:
-                if (event.key.code == sf::Keyboard::Escape)
+                switch (event.type)
                 {
+                case sf::Event::Closed:
                     window->close();
                     std::terminate();
                     return;
+                case sf::Event::KeyPressed:
+                    if (event.key.code == sf::Keyboard::Escape)
+                    {
+                        window->close();
+                        std::terminate();
+                        return;
+                    }
+                    std::cout << "Key pressed" << std::endl;
+                    break;
+                default:
+                    break;
                 }
-                std::cout << "Key pressed" << std::endl;
-                break;
-            default:
-                break;
             }
+            std::this_thread::sleep_for(8ms);
         }
-        std::this_thread::sleep_for(8ms);
     }
 }
