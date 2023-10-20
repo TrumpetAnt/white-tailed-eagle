@@ -21,7 +21,7 @@ int main()
     inputThread.detach();
 
     auto stateManager = new egl::StateManager();
-    auto uiManager = new egl::UIManager(&window);
+    auto uiManager = egl::UIManager::GetInstance(&window);
 
     float targetFps = 60;
     float nanoPerFrame = 1000000000 / targetFps;

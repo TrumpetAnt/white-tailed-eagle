@@ -18,7 +18,7 @@ namespace egl
     void InputManager::StartEventLoop(sf::RenderWindow *window)
     {
         sf::Event event;
-
+        auto uiManager = UIManager::GetInstance(window);
         while (true)
         {
             while (window->pollEvent(event))
@@ -42,6 +42,25 @@ namespace egl
                     break;
                 }
             }
+            auto viewDelta = sf::Vector2f(0.f, 0.f);
+            float scrollSpeed = 15.25f;
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+            {
+                viewDelta.x -= scrollSpeed;
+            }
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+            {
+                viewDelta.y -= scrollSpeed;
+            }
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+            {
+                viewDelta.x += scrollSpeed;
+            }
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+            {
+                viewDelta.y += scrollSpeed;
+            }
+            uiManager->MoveCamera(viewDelta);
             std::this_thread::sleep_for(8ms);
         }
     }

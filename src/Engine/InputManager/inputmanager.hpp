@@ -9,6 +9,8 @@
 #include <chrono>
 #include <thread>
 
+#include "../UIManager/uimanager.hpp"
+
 using namespace std::chrono_literals;
 
 namespace egl
