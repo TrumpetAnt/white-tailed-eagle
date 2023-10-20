@@ -10,6 +10,11 @@ namespace egl
         }
     };
 
+    bool Map::IsDrawable()
+    {
+        return true;
+    }
+
     void Map::ConcatDrawable(std::vector<EgDrawable *> *res)
     {
         for (auto tile : *tiles)

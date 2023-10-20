@@ -23,7 +23,7 @@ namespace egl
 
         EntityBuilder *AtPosition(float x, float y)
         {
-            entity->SetPosition(sf::Vector3f(x, y, 0.f));
+            entity->SetPosition(sf::Vector2f(x, y));
             return this;
         }
 

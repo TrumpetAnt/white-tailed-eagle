@@ -19,6 +19,7 @@ namespace egl
         int getWidth() { return width; }
         int getHeight() { return height; }
 
+        bool IsDrawable() override;
         void ConcatDrawable(std::vector<EgDrawable *> *res) override;
     };
 };

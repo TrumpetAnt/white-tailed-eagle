@@ -8,6 +8,7 @@
 #include "Engine/InputManager/inputmanager.hpp"
 #include "Engine/StateManager/statemanager.hpp"
 #include "Engine/UIManager/uimanager.hpp"
+#include "Systems/GameObjects/Tile.hpp"
 
 int main()
 {
@@ -32,15 +33,15 @@ int main()
         auto t0 = std::chrono::high_resolution_clock::now();
 
         uiManager->PrepareFrame();
-        uiManager->ReceiveDrawables(stateManager->GetDrawables());
+        auto drawables = stateManager->GetDrawables();
+        uiManager->ReceiveDrawables(drawables);
         uiManager->FlushFrame();
 
         auto t1 = std::chrono::high_resolution_clock::now();
         auto fs = t1 - t0;
-        std::cout << "Frame: " << frameCount;
+
         if (fs < durationPerFrame)
         {
-            std::cout << std::endl;
             std::this_thread::sleep_for(durationPerFrame - fs);
         }
         else

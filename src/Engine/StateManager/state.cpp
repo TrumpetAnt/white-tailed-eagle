@@ -4,11 +4,11 @@ namespace egl
 {
     State::State()
     {
-        entities = std::vector<Entity *>();
-        entities.push_back((Entity *)EntityFactory::GetMap(10, 10));
+        entities = new std::vector<Entity *>();
+        entities->push_back(EntityFactory::GetMap(20, 20));
     }
 
-    std::vector<Entity *> State::GetEntities()
+    std::vector<Entity *> *State::GetEntities()
     {
         return entities;
     };

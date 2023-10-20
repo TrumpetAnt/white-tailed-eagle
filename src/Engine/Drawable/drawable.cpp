@@ -2,17 +2,15 @@
 
 namespace egl
 {
-    sf::VertexArray EgDrawable::UpdatePosition()
+    void EgDrawable::UpdatePosition()
     {
-        auto pos = transform->GetPosition();
+        auto pos = this->getPosition();
         auto offset = sf::Vector2f(pos.x, pos.y);
 
-        auto v_count = vertexArray.getVertexCount();
+        auto v_count = vertexArray->getVertexCount();
         for (int i = 0; i < v_count; i++)
         {
-            vertexArray[v_count].position += offset;
+            (*vertexArray)[v_count].position += offset;
         };
-
-        m_vertices = vertexArray;
     }
 }

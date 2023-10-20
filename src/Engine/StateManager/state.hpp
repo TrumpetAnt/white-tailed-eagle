@@ -10,10 +10,10 @@ namespace egl
     class State
     {
     private:
-        std::vector<Entity *> entities;
+        std::vector<Entity *> *entities;
 
     public:
         State();
-        std::vector<Entity *> GetEntities();
+        std::vector<Entity *> *GetEntities();
     };
 }

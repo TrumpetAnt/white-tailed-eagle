@@ -1,5 +1,6 @@
 #pragma once
 
+#include <iostream>
 #include <SFML/Graphics.hpp>
 #include "drawable.hpp"
 
@@ -8,7 +9,6 @@ namespace egl
     class DrawableFactory
     {
     public:
-        static EgDrawable *GetTriangle(Transform *transform);
-        static EgDrawable *GetHexagon(Transform *transform);
+        static EgDrawable *GetHexagon(sf::Vector2f &pos);
     };
 }

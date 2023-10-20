@@ -2,18 +2,15 @@
 
 #include "../Drawable/drawable.hpp"
 #include "../Drawable/drawablefactory.hpp"
-#include "transform.hpp"
 
 namespace egl
 {
-    class Entity
+    class Entity : public sf::Transformable
     {
     protected:
-        Transform transform;
-        EgDrawable *drawable;
+        EgDrawable *drawable = nullptr;
 
     public:
-        Entity();
         virtual void ConcatDrawable(std::vector<EgDrawable *> *res)
         {
             if (IsDrawable())
@@ -21,10 +18,10 @@ namespace egl
                 res->push_back(drawable);
             }
         };
-        Transform *GetTransform() { return &transform; }
 
-        bool IsDrawable();
+        virtual bool IsDrawable();
         virtual void AddDrawable(EgDrawable *drawable);
-        void SetPosition(sf::Vector3f pos);
+        EgDrawable *GetDrawable();
+        void SetPosition(sf::Vector2f pos);
     };
 }

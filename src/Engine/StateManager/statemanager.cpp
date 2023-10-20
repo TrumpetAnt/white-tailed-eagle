@@ -11,7 +11,7 @@ namespace egl
     {
         auto res = new std::vector<EgDrawable *>();
         auto entities = state->GetEntities();
-        for (auto entity : entities)
+        for (auto entity : *entities)
         {
             if (entity->IsDrawable())
             {

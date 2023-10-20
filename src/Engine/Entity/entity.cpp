@@ -2,11 +2,6 @@
 
 namespace egl
 {
-    Entity::Entity()
-    {
-        transform = Transform();
-    }
-
     bool Entity::IsDrawable()
     {
         return drawable != nullptr;
@@ -17,9 +12,14 @@ namespace egl
         drawable = drawable;
     }
 
-    void Entity::SetPosition(sf::Vector3f pos)
+    EgDrawable *Entity::GetDrawable()
     {
-        transform.SetPosition(pos);
+        return drawable;
+    }
+
+    void Entity::SetPosition(sf::Vector2f pos)
+    {
+        this->setPosition(pos);
     }
 
 }

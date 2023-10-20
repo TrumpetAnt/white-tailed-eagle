@@ -4,6 +4,7 @@ namespace egl
 {
     void Tile::AddDrawable()
     {
-        drawable = DrawableFactory::GetHexagon(&transform);
+        auto pos = this->getPosition();
+        drawable = DrawableFactory::GetHexagon(pos);
     }
 }

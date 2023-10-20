@@ -30,13 +30,13 @@ namespace egl
                     std::terminate();
                     return;
                 case sf::Event::KeyPressed:
+                    std::cout << "Key pressed" << std::endl;
                     if (event.key.code == sf::Keyboard::Escape)
                     {
                         window->close();
                         std::terminate();
                         return;
                     }
-                    std::cout << "Key pressed" << std::endl;
                     break;
                 default:
                     break;
