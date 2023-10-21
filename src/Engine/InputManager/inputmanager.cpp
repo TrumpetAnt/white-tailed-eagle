@@ -23,6 +23,7 @@ namespace egl
         {
             while (window->pollEvent(event))
             {
+                auto zoomScrollSpeed = .1f;
                 switch (event.type)
                 {
                 case sf::Event::Closed:
@@ -38,25 +39,29 @@ namespace egl
                         return;
                     }
                     break;
+                case sf::Event::MouseWheelScrolled:
+                    std::cout << "MouseWheelScrollDelta: " << event.mouseWheelScroll.delta << std::endl;
+                    uiManager->ZoomCamera(event.mouseWheelScroll.delta * zoomScrollSpeed);
+                    break;
                 default:
                     break;
                 }
             }
             auto viewDelta = sf::Vector2f(0.f, 0.f);
             float scrollSpeed = 15.25f;
-            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left) || sf::Keyboard::isKeyPressed(sf::Keyboard::A))
             {
                 viewDelta.x -= scrollSpeed;
             }
-            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) || sf::Keyboard::isKeyPressed(sf::Keyboard::W))
             {
                 viewDelta.y -= scrollSpeed;
             }
-            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right) || sf::Keyboard::isKeyPressed(sf::Keyboard::D))
             {
                 viewDelta.x += scrollSpeed;
             }
-            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) || sf::Keyboard::isKeyPressed(sf::Keyboard::S))
             {
                 viewDelta.y += scrollSpeed;
             }

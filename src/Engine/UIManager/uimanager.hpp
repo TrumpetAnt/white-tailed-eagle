@@ -14,11 +14,15 @@ namespace egl
 
         Renderer *renderer;
         sf::RenderWindow *window;
-        sf::View view = sf::View(sf::FloatRect(0.f, 0.f, 1600.f, 900.f));
+        sf::Vector2f refWindowSize = sf::Vector2f(1600.f, 900.f);
+        sf::View view = sf::View(sf::Vector2f(refWindowSize.x / 2, refWindowSize.y / 2), refWindowSize);
         sf::Vector2f cameraDelta = sf::Vector2f(0.f, 0.f);
+        float zoomTotal = 1.f;
+        sf::Vector2f zoomLimits = sf::Vector2f(0.f, 10.f);
 
         static std::mutex camera_mutex;
         void SafeMoveCamera(sf::Vector2f delta);
+        void SafeZoomCamera(float delta);
 
     public:
         UIManager(sf::RenderWindow *w);
@@ -31,5 +35,6 @@ namespace egl
         void FlushFrame();
 
         void MoveCamera(sf::Vector2f delta);
+        void ZoomCamera(float delta);
     };
-}
+};

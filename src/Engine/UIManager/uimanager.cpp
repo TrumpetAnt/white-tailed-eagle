@@ -30,8 +30,10 @@ namespace egl
     void UIManager::PrepareFrame()
     {
         view.move(cameraDelta.x, cameraDelta.y);
+        view.zoom(zoomTotal);
         window->setView(view);
         renderer->PrepareFrame();
+        zoomTotal = 1.f;
     }
 
     void UIManager::FlushFrame()
@@ -46,12 +48,24 @@ namespace egl
         cameraDelta = delta;
     }
 
+    void UIManager::SafeZoomCamera(float delta)
+    {
+        std::lock_guard<std::mutex> lock(camera_mutex);
+        if (zoomTotal + delta < zoomLimits.x || zoomLimits.y < zoomTotal + delta)
+        {
+            return;
+        }
+        zoomTotal += delta;
+    }
+
     void UIManager::MoveCamera(sf::Vector2f delta)
     {
-        SafeMoveCamera(delta);
-        if (delta.x != 0.f || delta.y != 0.f)
-        {
-            std::cout << "Camera moved by (" << delta.x << ", " << delta.y << ")" << std::endl;
-        }
+        auto zoomFactor = view.getSize().x / refWindowSize.x;
+        SafeMoveCamera(delta * zoomFactor);
+    }
+
+    void UIManager::ZoomCamera(float delta)
+    {
+        SafeZoomCamera(delta);
     }
 }
