@@ -8,6 +8,10 @@ namespace egl
         {
             throw std::invalid_argument("Map requires width and height > 0 and width * height < 1000001");
         }
+        for (auto tile : *tiles)
+        {
+            this->AttachChild(tile);
+        }
     };
 
     bool Map::checkBounds(int x, int y)
@@ -38,5 +42,32 @@ namespace egl
         tile->AddBattalion(bat);
         bat->setPosition(tile->getPosition());
         bat->UpdateTransforms();
+    }
+
+    void Map::HighlightTilesAround(int x, int y, int r)
+    {
+        if (!checkBounds(x, y))
+        {
+            return;
+        }
+
+        for (int row = std::max(y - r, 0); row < y + r + 1 && row < height; row++)
+        {
+            for (int col = std::max(x - r, 0); col < x + r + 1 && col < width; col++)
+            {
+                auto t = tiles->at(row * width + col);
+                t->Highlight();
+                highlightedTiles->push_back(t);
+            }
+        }
+    }
+
+    void Map::ResetAllHighlightedTiles()
+    {
+        for (auto tile : *highlightedTiles)
+        {
+            tile->ResetHighlight();
+        }
+        highlightedTiles->clear();
     }
 }

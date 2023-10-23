@@ -5,20 +5,20 @@
 
 namespace egl
 {
+    class Tile;
+    class Map;
     class Battalion : public Entity
     {
     protected:
-        Battalion **bat_ref;
-
-        void ClearBatRef();
+        uint movementPoints = 2;
 
     public:
-        Battalion(Battalion **bat_ref) : Entity(EntityType::E_Battalion), bat_ref(bat_ref){};
+        Battalion() : Entity(EntityType::E_Battalion){};
         void AddDrawable();
         bool IsSelectable() override;
         Entity *AttemptSelect(float x, float y) override;
         void Highlight() override;
         void ResetHighlight() override;
-        void AttachToTile(Battalion **tile_bat_ref);
+        uint GetMovementPoints();
     };
 }

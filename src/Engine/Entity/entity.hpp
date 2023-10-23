@@ -10,9 +10,13 @@ namespace egl
     protected:
         EgDrawable *drawable = nullptr;
         uint entityType;
+        std::vector<Entity *> *children = new std::vector<Entity *>();
 
     public:
-        Entity(uint entityType) : entityType(entityType){};
+        Entity *parent = nullptr;
+
+        Entity(uint entityType);
+        Entity(uint entityType, Entity *parent);
         virtual void UpdateTransforms()
         {
             if (drawable != nullptr)
@@ -33,6 +37,10 @@ namespace egl
         EgDrawable *GetDrawable();
         void SetPosition(sf::Vector2f pos);
         uint GetEntityType();
+
+        void AttachChild(Entity *child);
+        void DetachChild(Entity *child);
+        void DetachFromParent();
 
         virtual bool IsSelectable();
         virtual Entity *AttemptSelect(float x, float y);

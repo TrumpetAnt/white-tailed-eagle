@@ -12,6 +12,7 @@ namespace egl
     {
     private:
         std::vector<Tile *> *tiles;
+        std::vector<Tile *> *highlightedTiles = new std::vector<Tile *>();
         int width;
         int height;
 
@@ -26,5 +27,7 @@ namespace egl
         void ConcatDrawable(std::vector<EgDrawable *> *res) override;
 
         void AddBattalionAt(Battalion *bat, int x, int y);
+        void HighlightTilesAround(int x, int y, int r);
+        void ResetAllHighlightedTiles();
     };
 };

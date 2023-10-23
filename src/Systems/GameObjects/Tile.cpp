@@ -1,7 +1,13 @@
 #include "Tile.hpp"
+#include "Map.hpp"
 
 namespace egl
 {
+    sf::Vector2i Tile::GetDiscretePos()
+    {
+        return pos;
+    }
+
     sf::Texture *TileTypeToTexture(TileType type)
     {
         auto tm = TextureManager::GetInstance();
@@ -16,13 +22,13 @@ namespace egl
 
     void Tile::AddDrawable(TileType type)
     {
-        auto pos = this->getPosition();
+        auto pos = getPosition();
         drawable = DrawableFactory::GetHexagon(pos);
 
         tileType = type;
         // drawable->SetTexture(TileTypeToTexture(type));
 
-        int variance = 20;
+        int variance = 40;
         auto c = sf::Color(84 + (rand() % variance), 201 + (rand() % variance), 60 + (rand() % variance));
         drawable->SetColor(c);
         baseColor = c;
@@ -31,7 +37,9 @@ namespace egl
     void Tile::AddBattalion(Battalion *bat)
     {
         battalion = bat;
-        bat->AttachToTile(&battalion);
+        bat->DetachFromParent();
+        AttachChild(bat);
+        battalion->SetPosition(getPosition());
     }
 
     void Tile::ConcatDrawable(std::vector<EgDrawable *> *res)
@@ -40,10 +48,6 @@ namespace egl
         {
             drawable->setPosition(getPosition());
             res->push_back(drawable);
-            // if (battalion != nullptr && battalion->IsDrawable())
-            // {
-            //     battalion->ConcatDrawable(res);
-            // }
         }
     }
 
@@ -51,7 +55,6 @@ namespace egl
     {
         return true;
     }
-
     float topBound(float y)
     {
         float sqrt3div2 = 0.86602540378f;
@@ -88,6 +91,16 @@ namespace egl
         return sqrt3 + x * sqrt3 + y;
     }
 
+    bool isInHexagon(sf::Vector2f scaledCenter)
+    {
+        return topBound(scaledCenter.y) > 0 &&
+               lowerBound(scaledCenter.y) > 0 &&
+               upperRightBound(scaledCenter.x, scaledCenter.y) > 0 &&
+               lowerRightBound(scaledCenter.x, scaledCenter.y) > 0 &&
+               upperLeftBound(scaledCenter.x, scaledCenter.y) > 0 &&
+               lowerLeftBound(scaledCenter.x, scaledCenter.y) > 0;
+    }
+
     Entity *Tile::AttemptSelect(float x, float y)
     {
         auto distance = getPosition() - sf::Vector2f(x, y);
@@ -113,19 +126,7 @@ namespace egl
         auto scaledCenter = (sf::Vector2f(x, y) - getPosition()) / radius;
         scaledCenter.y = -1 * scaledCenter.y;
 
-        // auto v_1 = topBound(scaledCenter.y);
-        // auto v_2 = lowerBound(scaledCenter.y);
-        // auto v_3 = upperRightBound(scaledCenter.x, scaledCenter.y);
-        // auto v_4 = lowerRightBound(scaledCenter.x, scaledCenter.y);
-        // auto v_5 = upperLeftBound(scaledCenter.x, scaledCenter.y);
-        // auto v_6 = lowerLeftBound(scaledCenter.x, scaledCenter.y);
-
-        return (topBound(scaledCenter.y) > 0 &&
-                lowerBound(scaledCenter.y) > 0 &&
-                upperRightBound(scaledCenter.x, scaledCenter.y) > 0 &&
-                lowerRightBound(scaledCenter.x, scaledCenter.y) > 0 &&
-                upperLeftBound(scaledCenter.x, scaledCenter.y) > 0 &&
-                lowerLeftBound(scaledCenter.x, scaledCenter.y) > 0)
+        return isInHexagon(scaledCenter)
                    ? this
                    : nullptr;
     }
@@ -149,12 +150,16 @@ namespace egl
             {
                 return false;
             }
-            e->setPosition(getPosition());
-            e->UpdateTransforms();
             battalion = static_cast<Battalion *>(e);
-            battalion->AttachToTile(&battalion);
+            AddBattalion(battalion);
             return true;
         }
         return false;
     };
+
+    void Tile::ClearBattalion()
+    {
+        DetachChild(battalion);
+        battalion = nullptr;
+    }
 }

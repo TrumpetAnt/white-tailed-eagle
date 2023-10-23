@@ -12,7 +12,7 @@ namespace egl
     class EntityFactory
     {
     public:
-        static Tile *GetTile(sf::Vector2f pos);
+        static Tile *GetTile(sf::Vector2f pos, sf::Vector2i pos_int);
         static Map *GetMap(int w, int h, std::vector<Tile *> **out_tiles);
 
         static Battalion *GetBattalion();

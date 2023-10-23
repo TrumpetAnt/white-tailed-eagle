@@ -78,13 +78,13 @@ namespace egl
 
         // std::cout << "Click at rel view pos (" << relPos.x << ", " << relPos.y << ")" << std::endl;
 
-        auto zoomFactor = view.getSize().x / refWindowSize.x;
-        // std::cout << "Center: ("
-        //           << view.getCenter().x
-        //           << ", "
-        //           << view.getCenter().y
-        //           << ")"
-        //           << std::endl;
+        // auto zoomFactor = view.getSize().x / refWindowSize.x;
+        // // std::cout << "Center: ("
+        // //           << view.getCenter().x
+        // //           << ", "
+        // //           << view.getCenter().y
+        // //           << ")"
+        // //           << std::endl;
 
         // std::cout << "View size world pos: ("
         //           << view.getSize().x * zoomFactor
@@ -92,7 +92,7 @@ namespace egl
         //           << view.getSize().y * zoomFactor
         //           << ")" << std::endl;
 
-        auto viewWorldPos = sf::Vector2f(view.getCenter().x - view.getSize().x * zoomFactor / 2.f, view.getCenter().y - view.getSize().y * zoomFactor / 2.f);
+        auto viewWorldPos = sf::Vector2f(view.getCenter().x - view.getSize().x / 2.f, view.getCenter().y - view.getSize().y / 2.f);
         // std::cout
         //     << "Top left world pos: ("
         //     << viewWorldPos.x
@@ -100,14 +100,14 @@ namespace egl
         //     << viewWorldPos.y
         //     << ")" << std::endl;
 
-        auto worldPos = sf::Vector2f(viewWorldPos.x + view.getSize().x * zoomFactor * relPos.x, viewWorldPos.y + view.getSize().y * zoomFactor * relPos.y);
+        auto worldPos = sf::Vector2f(viewWorldPos.x + view.getSize().x * relPos.x, viewWorldPos.y + view.getSize().y * relPos.y);
         // std::cout << "World pos rel top left ("
         //           <<
         //           << ", "
         //           <<
         //           << " )" << std::endl;
 
-        // std::cout << "Click at world pos (" << x << ", " << y << ") " << std::endl;
+        // std::cout << "Click at world pos (" << worldPos.x << ", " << worldPos.y << ") " << std::endl;
 
         stateManager->ClickAt(worldPos.x, worldPos.y, button);
     }

@@ -9,15 +9,20 @@
 
 namespace egl
 {
+    class Map;
+
     class Tile : public Entity
     {
     private:
         TileType tileType;
         Battalion *battalion = nullptr;
         sf::Color baseColor = sf::Color::Magenta;
+        sf::Vector2i pos;
 
     public:
-        Tile() : Entity(EntityType::E_Tile){};
+        Tile(sf::Vector2i pos) : Entity(EntityType::E_Tile), pos(pos){};
+        sf::Vector2i GetDiscretePos();
+
         void AddDrawable(TileType type);
         void AddBattalion(Battalion *bat);
         void ConcatDrawable(std::vector<EgDrawable *> *res) override;
@@ -27,5 +32,6 @@ namespace egl
         void ResetHighlight() override;
 
         bool InteractWithEntity(Entity *e) override;
+        void ClearBattalion();
     };
 }

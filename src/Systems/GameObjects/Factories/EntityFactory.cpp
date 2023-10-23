@@ -1,10 +1,10 @@
-#include "entityfactory.hpp"
+#include "EntityFactory.hpp"
 
 namespace egl
 {
-    Tile *EntityFactory::GetTile(sf::Vector2f pos)
+    Tile *EntityFactory::GetTile(sf::Vector2f pos, sf::Vector2i pos_int)
     {
-        auto res = new Tile();
+        auto res = new Tile(pos_int);
         res->AddDrawable(TileType::Grass);
         res->setPosition(pos);
         return res;
@@ -22,7 +22,7 @@ namespace egl
             {
                 auto x_pos = static_cast<float>(col) * spacing * .75f + offset;
                 auto y_pos = static_cast<float>(row) * spacing * sqrt3div2 + offset + ((col % 2) * spacing * sqrt3div2 / 2);
-                tiles->push_back(GetTile(sf::Vector2f(x_pos, y_pos)));
+                tiles->push_back(GetTile(sf::Vector2f(x_pos, y_pos), sf::Vector2i(col, row)));
             }
         }
         *out_tiles = tiles;
@@ -31,7 +31,7 @@ namespace egl
 
     Battalion *EntityFactory::GetBattalion()
     {
-        auto res = new Battalion(nullptr);
+        auto res = new Battalion();
         res->AddDrawable();
         return res;
     }

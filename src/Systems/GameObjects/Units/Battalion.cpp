@@ -1,4 +1,6 @@
 #include "Battalion.hpp"
+#include "../Map.hpp"
+#include "../Tile.hpp"
 
 namespace egl
 {
@@ -24,24 +26,21 @@ namespace egl
     void Battalion::Highlight()
     {
         drawable->SetColor(sf::Color::White);
+        auto tile = static_cast<Tile *>(parent);
+        auto m = static_cast<Map *>(tile->parent);
+        auto pos = tile->GetDiscretePos();
+        m->HighlightTilesAround(pos.x, pos.y, GetMovementPoints());
     }
 
     void Battalion::ResetHighlight()
     {
         drawable->SetColor(sf::Color::Red);
+        auto m = static_cast<Map *>(parent->parent);
+        m->ResetAllHighlightedTiles();
     }
 
-    void Battalion::AttachToTile(Battalion **tile_bat_ref)
+    uint Battalion::GetMovementPoints()
     {
-        ClearBatRef();
-        bat_ref = tile_bat_ref;
-    }
-
-    void Battalion::ClearBatRef()
-    {
-        if (bat_ref != nullptr)
-        {
-            *bat_ref = nullptr;
-        }
+        return movementPoints;
     }
 }
