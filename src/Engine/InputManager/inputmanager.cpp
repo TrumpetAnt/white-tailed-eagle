@@ -41,6 +41,9 @@ namespace egl
                 case sf::Event::MouseWheelScrolled:
                     uiManager->ZoomCamera(event.mouseWheelScroll.delta * zoomScrollSpeed);
                     break;
+                case sf::Event::MouseButtonPressed:
+                    uiManager->ClickAt(event.mouseButton.x, event.mouseButton.y, event.mouseButton.button);
+                    break;
                 default:
                     break;
                 }

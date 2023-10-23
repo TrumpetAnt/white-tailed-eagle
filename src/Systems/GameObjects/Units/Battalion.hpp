@@ -8,5 +8,9 @@ namespace egl
     {
     public:
         void AddDrawable();
+        bool IsSelectable() override;
+        bool AttemptSelect(float x, float y) override;
+        void Highlight() override;
+        void ResetHighlight() override;
     };
 }

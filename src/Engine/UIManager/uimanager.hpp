@@ -2,7 +2,7 @@
 
 #include <mutex>
 #include "Renderer/renderer.hpp"
-#include "../StateManager/state.hpp"
+#include "../StateManager/statemanager.hpp"
 
 namespace egl
 {
@@ -11,6 +11,8 @@ namespace egl
     private:
         static UIManager *pinstance_;
         static std::mutex mutex_;
+
+        StateManager *stateManager = StateManager::GetInstance();
 
         Renderer *renderer;
         sf::RenderWindow *window;
@@ -36,5 +38,7 @@ namespace egl
 
         void MoveCamera(sf::Vector2f delta);
         void ZoomCamera(float delta);
+
+        void ClickAt(int x, int y, sf::Mouse::Button button);
     };
 };

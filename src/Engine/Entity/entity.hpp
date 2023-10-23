@@ -30,5 +30,10 @@ namespace egl
         virtual void AddDrawable(EgDrawable *drawable);
         EgDrawable *GetDrawable();
         void SetPosition(sf::Vector2f pos);
+
+        virtual bool IsSelectable();
+        virtual bool AttemptSelect(float x, float y);
+        virtual void Highlight(){};
+        virtual void ResetHighlight(){};
     };
 }

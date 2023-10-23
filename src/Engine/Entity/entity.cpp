@@ -22,4 +22,13 @@ namespace egl
         this->setPosition(pos);
     }
 
+    bool Entity::IsSelectable()
+    {
+        return false;
+    }
+
+    bool Entity::AttemptSelect(float x, float y)
+    {
+        return false;
+    }
 }

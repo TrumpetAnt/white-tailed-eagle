@@ -20,7 +20,7 @@ int main()
     std::thread inputThread(&egl::InputManager::StartEventLoop, inputManager, &window);
     inputThread.detach();
 
-    auto stateManager = new egl::StateManager();
+    auto stateManager = egl::StateManager::GetInstance();
     auto uiManager = egl::UIManager::GetInstance(&window);
 
     float targetFps = 60;

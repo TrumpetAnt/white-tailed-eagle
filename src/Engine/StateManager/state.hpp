@@ -15,5 +15,6 @@ namespace egl
     public:
         State();
         std::vector<Entity *> *GetEntities();
+        Entity *SelectAt(float x, float y);
     };
 }

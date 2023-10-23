@@ -29,7 +29,7 @@ namespace egl
         auto v_count = vertexArray->getVertexCount();
         for (int i = 0; i < v_count; i++)
         {
-            (*vertexArray)[v_count].position += offset;
+            (*vertexArray)[i].position += offset;
         };
     }
 }
