@@ -31,7 +31,6 @@ namespace egl
                     std::terminate();
                     return;
                 case sf::Event::KeyPressed:
-                    std::cout << "Key pressed" << std::endl;
                     if (event.key.code == sf::Keyboard::Escape)
                     {
                         window->close();
@@ -40,7 +39,6 @@ namespace egl
                     }
                     break;
                 case sf::Event::MouseWheelScrolled:
-                    std::cout << "MouseWheelScrollDelta: " << event.mouseWheelScroll.delta << std::endl;
                     uiManager->ZoomCamera(event.mouseWheelScroll.delta * zoomScrollSpeed);
                     break;
                 default:

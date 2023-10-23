@@ -1,10 +1,11 @@
 #pragma once
 
-#include "../../Systems/GameObjects/Map.hpp"
-#include "../../Systems/GameObjects/Tile.hpp"
-#include "../Drawable/drawablefactory.hpp"
-#include "entity.hpp"
+#include "../Map.hpp"
+#include "../Tile.hpp"
+#include "../../../Engine/Drawable/drawablefactory.hpp"
+#include "../../../Engine/Entity/entity.hpp"
 #include "entitybuilder.hpp"
+#include "../TileType.hpp"
 
 namespace egl
 {

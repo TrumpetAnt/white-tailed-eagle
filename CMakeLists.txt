@@ -13,16 +13,17 @@ FetchContent_MakeAvailable(SFML)
 add_executable(eagle 
     src/main.cpp 
     src/Engine/InputManager/inputmanager.cpp
+    src/Engine/TextureManager/texturemanager.cpp
     src/Engine/UIManager/uimanager.cpp
     src/Engine/UIManager/Renderer/renderer.cpp
     src/Engine/Drawable/drawable.cpp
     src/Engine/Drawable/drawablefactory.cpp
     src/Engine/Entity/entity.cpp
-    src/Engine/Entity/entityfactory.cpp
     src/Engine/StateManager/state.cpp
     src/Engine/StateManager/statemanager.cpp
     src/Systems/GameObjects/Map.cpp
-    src/Systems/GameObjects/Tile.cpp)
+    src/Systems/GameObjects/Tile.cpp
+    src/Systems/GameObjects/Builders/entityfactory.cpp)
 target_link_libraries(eagle PRIVATE sfml-graphics X11 ${X11_LIBRARIES})
 target_compile_features(eagle PRIVATE cxx_std_17)
 

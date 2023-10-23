@@ -26,24 +26,6 @@ namespace egl
         (*hexagon)[8].position = sf::Vector2f(0, 0);
         (*hexagon)[9].position = sf::Vector2f(width, 0);
 
-        // std::cout << "Vertex at (" << (*hexagon)[0].position.x << "," << (*hexagon)[0].position.y << ")" << std::endl;
-        // std::cout << "Vertex at (" << (*hexagon)[1].position.x << "," << (*hexagon)[1].position.y << ")" << std::endl;
-        // std::cout << "Vertex at (" << (*hexagon)[2].position.x << "," << (*hexagon)[2].position.y << ")" << std::endl;
-        // std::cout << "Vertex at (" << (*hexagon)[3].position.x << "," << (*hexagon)[3].position.y << ")" << std::endl;
-        // std::cout << "Vertex at (" << (*hexagon)[4].position.x << "," << (*hexagon)[4].position.y << ")" << std::endl;
-        // std::cout << "Vertex at (" << (*hexagon)[5].position.x << "," << (*hexagon)[5].position.y << ")" << std::endl;
-        // std::cout << "Vertex at (" << (*hexagon)[6].position.x << "," << (*hexagon)[6].position.y << ")" << std::endl;
-
-        (*hexagon)[0].color = sf::Color::Red;
-        (*hexagon)[1].color = sf::Color::Blue;
-        (*hexagon)[2].color = sf::Color::Green;
-        (*hexagon)[3].color = sf::Color::Red;
-        (*hexagon)[4].color = sf::Color::Blue;
-        (*hexagon)[5].color = sf::Color::Green;
-        (*hexagon)[6].color = sf::Color::Red;
-        (*hexagon)[7].color = sf::Color::Blue;
-        (*hexagon)[8].color = sf::Color::Green;
-        (*hexagon)[9].color = sf::Color::Red;
         auto res = new EgDrawable(hexagon);
         res->setPosition(pos);
         return res;

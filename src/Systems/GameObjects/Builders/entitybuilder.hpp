@@ -1,7 +1,7 @@
 #pragma once
 
-#include "entity.hpp"
-#include "../../Systems/GameObjects/Map.hpp"
+#include "../../../Engine/Entity/entity.hpp"
+#include "../Map.hpp"
 
 namespace egl
 {

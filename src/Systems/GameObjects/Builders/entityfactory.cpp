@@ -5,7 +5,7 @@ namespace egl
     Tile *EntityFactory::GetTile(sf::Vector2f pos)
     {
         auto res = new Tile();
-        res->AddDrawable();
+        res->AddDrawable(TileType::Grass);
         res->GetDrawable()->setPosition(pos);
         return res;
     }

@@ -3,7 +3,7 @@
 #include <vector>
 
 #include "../Entity/entity.hpp"
-#include "../Entity/entityfactory.hpp"
+#include "../../Systems/GameObjects/Builders/entityfactory.hpp"
 
 namespace egl
 {
