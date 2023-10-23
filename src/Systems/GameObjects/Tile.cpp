@@ -31,6 +31,7 @@ namespace egl
     void Tile::AddBattalion(Battalion *bat)
     {
         battalion = bat;
+        bat->AttachToTile(&battalion);
     }
 
     void Tile::ConcatDrawable(std::vector<EgDrawable *> *res)
@@ -144,6 +145,10 @@ namespace egl
         switch (e->GetEntityType())
         {
         case EntityType::E_Battalion:
+            if (battalion != nullptr)
+            {
+                return false;
+            }
             e->setPosition(getPosition());
             e->UpdateTransforms();
             battalion = static_cast<Battalion *>(e);

@@ -60,6 +60,15 @@ namespace egl
             }
             if (button == sf::Mouse::Button::Left)
             {
+                auto target = state->SelectAt(x, y);
+                if (target != nullptr && target->GetEntityType() == selected->GetEntityType() && selected != target)
+                {
+                    std::cout << "Select another entity of same type" << std::endl;
+                    selected->ResetHighlight();
+                    selected = target;
+                    selected->Highlight();
+                    return;
+                }
                 std::cout << "Deselect entity" << std::endl;
                 selected->ResetHighlight();
                 selected = nullptr;

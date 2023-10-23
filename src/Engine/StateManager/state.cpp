@@ -9,13 +9,16 @@ namespace egl
         std::vector<Tile *> *out_tiles;
         auto map = EntityFactory::GetMap(25, 11, &out_tiles);
         auto bat = EntityFactory::GetBattalion();
+        auto bat2 = EntityFactory::GetBattalion();
         map->AddBattalionAt(bat, 13, 3);
+        map->AddBattalionAt(bat2, 14, 3);
         entities->push_back(map);
         for (auto tile : *out_tiles)
         {
             entities->push_back(tile);
         }
         entities->push_back(bat);
+        entities->push_back(bat2);
     }
 
     std::vector<Entity *> *State::GetEntities()
