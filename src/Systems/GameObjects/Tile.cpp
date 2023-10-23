@@ -23,7 +23,7 @@ namespace egl
     void Tile::AddDrawable(TileType type)
     {
         auto pos = getPosition();
-        drawable = DrawableFactory::GetHexagon(pos);
+        drawable = DrawableFactory::GetHexagon(pos, Tile::radius);
 
         tileType = type;
         // drawable->SetTexture(TileTypeToTexture(type));
@@ -37,7 +37,11 @@ namespace egl
     void Tile::AddBattalion(Battalion *bat)
     {
         battalion = bat;
-        bat->DetachFromParent();
+        auto parent = bat->GetParentTile();
+        if (parent != nullptr && parent != this)
+        {
+            parent->ClearBattalion();
+        }
         AttachChild(bat);
         battalion->SetPosition(getPosition());
     }
@@ -151,8 +155,13 @@ namespace egl
                 return false;
             }
             battalion = static_cast<Battalion *>(e);
-            AddBattalion(battalion);
-            return true;
+            auto moveRange = battalion->GetMovementPoints();
+            if (SqrDistanceToTile(*(battalion->GetParentTile())) < moveRange * moveRange * Tile::radius * Tile::radius * 4)
+            {
+                AddBattalion(battalion);
+                return true;
+            }
+            break;
         }
         return false;
     };
@@ -161,5 +170,11 @@ namespace egl
     {
         DetachChild(battalion);
         battalion = nullptr;
+    }
+
+    float Tile::SqrDistanceToTile(const Tile &other)
+    {
+        auto diff = getPosition() - other.getPosition();
+        return diff.x * diff.x + diff.y * diff.y;
     }
 }

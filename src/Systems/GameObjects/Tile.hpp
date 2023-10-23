@@ -33,5 +33,9 @@ namespace egl
 
         bool InteractWithEntity(Entity *e) override;
         void ClearBattalion();
+
+        float SqrDistanceToTile(const Tile &other);
+
+        static constexpr float radius = 40;
     };
 }

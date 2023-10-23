@@ -44,6 +44,27 @@ namespace egl
         bat->UpdateTransforms();
     }
 
+    std::vector<Tile *> *Map::GetTileSurroundings(Tile *target, int radius)
+    {
+        auto res = new std::vector<Tile *>();
+        auto pos = target->GetDiscretePos();
+        auto r2 = radius * radius * Tile::radius * Tile::radius * 4;
+
+        for (int row = std::max(pos.y - radius, 0); row < pos.y + radius + 1 && row < height; row++)
+        {
+            for (int col = std::max(pos.x - radius, 0); col < pos.x + radius + 1 && col < width; col++)
+            {
+                auto tile = tiles->at(row * width + col);
+                if (target->SqrDistanceToTile(*tile) < r2)
+                {
+                    res->push_back(tile);
+                }
+            }
+        }
+
+        return res;
+    }
+
     void Map::HighlightTilesAround(int x, int y, int r)
     {
         if (!checkBounds(x, y))
@@ -51,15 +72,13 @@ namespace egl
             return;
         }
 
-        for (int row = std::max(y - r, 0); row < y + r + 1 && row < height; row++)
+        auto surroundings = GetTileSurroundings(tiles->at(x + width * y), r);
+        for (auto tile : *surroundings)
         {
-            for (int col = std::max(x - r, 0); col < x + r + 1 && col < width; col++)
-            {
-                auto t = tiles->at(row * width + col);
-                t->Highlight();
-                highlightedTiles->push_back(t);
-            }
+            tile->Highlight();
+            highlightedTiles->push_back(tile);
         }
+        delete surroundings;
     }
 
     void Map::ResetAllHighlightedTiles()
@@ -69,5 +88,85 @@ namespace egl
             tile->ResetHighlight();
         }
         highlightedTiles->clear();
+    }
+
+    void Map::GetTileNeighbours(std::vector<Tile *> *out_vec, Tile *target)
+    {
+        out_vec->clear();
+        auto pos = target->GetDiscretePos();
+        auto y_offset = pos.x % 2;
+        sf::Vector2i delta[6] = {sf::Vector2i(-1, -1 + y_offset),
+                                 sf::Vector2i(0, -1),
+                                 sf::Vector2i(1, -1 + y_offset),
+                                 sf::Vector2i(-1, 0 + y_offset),
+                                 sf::Vector2i(0, 1),
+                                 sf::Vector2i(1, 0 + y_offset)};
+        for (int i = 0; i < 6; i++)
+        {
+            auto n_pos = delta[i] + pos;
+            if (checkBounds(n_pos.x, n_pos.y))
+            {
+                out_vec->push_back(tiles->at(PosToIndex(n_pos)));
+            }
+        }
+    }
+
+    int Map::PosToIndex(sf::Vector2i pos)
+    {
+        return pos.x + pos.y * width;
+    }
+
+    float Heuristic(sf::Vector2i pos, sf::Vector2i target)
+    {
+        auto diff = target - pos;
+        return static_cast<float>(diff.x * diff.x) + static_cast<float>(diff.y * diff.y);
+    }
+
+    std::vector<Tile *> *Map::FindPath(Tile *source, sf::Vector2i target, int movementPoints)
+    {
+        auto res = new std::vector<Tile *>();
+        ExploreNode goal = {nullptr, 0.f, 0.f, -1};
+
+        auto neighbours = std::vector<Tile *>();
+        auto explored = std::unordered_map<int, ExploreNode>();
+        auto frontier = MinHeap(tiles->size());
+
+        frontier.insertKey(ExploreNode{source, 0.f, 0.f, PosToIndex(source->GetDiscretePos())});
+
+        auto moveCost = 1;
+
+        while (!frontier.isEmpty())
+        {
+            auto explore_node = frontier.extractMin();
+            auto explore_pos_i = PosToIndex(explore_node.tile->GetDiscretePos());
+            explored.insert({explore_pos_i, explore_node});
+
+            if (explore_node.tile->GetDiscretePos() == target)
+            {
+                goal = explore_node;
+                break;
+            }
+
+            GetTileNeighbours(&neighbours, explore_node.tile);
+            for (auto neighbour : neighbours)
+            {
+                auto neighbour_pos = neighbour->GetDiscretePos();
+                auto next_cost = explore_node.cost + moveCost;
+                if (explored.count(PosToIndex(neighbour_pos)) == 0 && movementPoints <= next_cost)
+                {
+                    frontier.insertKey(ExploreNode{neighbour, next_cost + Heuristic(neighbour_pos, target), next_cost, explore_pos_i});
+                }
+            }
+        }
+        ExploreNode current = goal;
+        if (current.tile != nullptr)
+        {
+            while (current.prev_i >= 0 && res->size() < 1000)
+            {
+                res->push_back(current.tile);
+                current = explored.at(current.prev_i);
+            }
+        }
+        return res;
     }
 }

@@ -10,7 +10,7 @@ namespace egl
     class DrawableFactory
     {
     public:
-        static EgDrawable *GetHexagon(sf::Vector2f &pos);
+        static EgDrawable *GetHexagon(sf::Vector2f &pos, float radius);
         static EgDrawable *GetCircle(sf::Vector2f &pos);
     };
 }

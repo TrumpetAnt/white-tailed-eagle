@@ -2,10 +2,9 @@
 
 namespace egl
 {
-    EgDrawable *DrawableFactory::GetHexagon(sf::Vector2f &pos)
+    EgDrawable *DrawableFactory::GetHexagon(sf::Vector2f &pos, float radius)
     {
         auto hexagon = new sf::VertexArray(sf::TriangleFan, 8);
-        auto radius = 40;
         float sqrt3div2 = 0.86602540378f;
 
         // https://stackoverflow.com/questions/71816702/coordinates-of-dot-on-an-hexagon-path

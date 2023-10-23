@@ -22,6 +22,7 @@ add_executable(eagle
     src/Engine/StateManager/state.cpp
     src/Engine/StateManager/statemanager.cpp
     src/Systems/GameObjects/Map.cpp
+    src/Systems/GameObjects/MinHeap.cpp
     src/Systems/GameObjects/Tile.cpp
     src/Systems/GameObjects/Factories/EntityFactory.cpp
     src/Systems/GameObjects/Units/Battalion.cpp)

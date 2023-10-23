@@ -43,4 +43,9 @@ namespace egl
     {
         return movementPoints;
     }
+
+    Tile *Battalion::GetParentTile()
+    {
+        return static_cast<Tile *>(parent);
+    }
 }

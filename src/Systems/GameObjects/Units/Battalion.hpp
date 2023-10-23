@@ -20,5 +20,6 @@ namespace egl
         void Highlight() override;
         void ResetHighlight() override;
         uint GetMovementPoints();
+        Tile *GetParentTile();
     };
 }
