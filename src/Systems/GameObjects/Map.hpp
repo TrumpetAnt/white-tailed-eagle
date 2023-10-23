@@ -35,6 +35,6 @@ namespace egl
         void HighlightTilesAround(int x, int y, int r);
         void ResetAllHighlightedTiles();
 
-        std::vector<Tile *> *FindPath(Tile *source, sf::Vector2i target, int movementPoints = 9999999);
+        std::vector<Tile *> *FindPaths(Tile *source, sf::Vector2i target, int movementPoints = 9999999);
     };
 };

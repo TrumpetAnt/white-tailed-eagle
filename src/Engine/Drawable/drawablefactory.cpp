@@ -46,4 +46,40 @@ namespace egl
         res->setPosition(pos);
         return res;
     }
+
+    sf::VertexArray *DrawableFactory::GetHealthBar(float width, float height)
+    {
+        int resolution = 30;
+        auto boxes = new sf::VertexArray(sf::Triangles, 12);
+
+        (*boxes)[0].position = sf::Vector2f(width / -2, height / -2);
+        (*boxes)[1].position = sf::Vector2f(width / 2, height / -2);
+        (*boxes)[2].position = sf::Vector2f(width / -2, height / 2);
+        (*boxes)[3].position = sf::Vector2f(width / 2, height / -2);
+        (*boxes)[4].position = sf::Vector2f(width / -2, height / 2);
+        (*boxes)[5].position = sf::Vector2f(width / 2, height / 2);
+
+        (*boxes)[6].position = sf::Vector2f(width / -2, height / -2);
+        (*boxes)[7].position = sf::Vector2f(width / 2, height / -2);
+        (*boxes)[8].position = sf::Vector2f(width / -2, height / 2);
+        (*boxes)[9].position = sf::Vector2f(width / 2, height / -2);
+        (*boxes)[10].position = sf::Vector2f(width / -2, height / 2);
+        (*boxes)[11].position = sf::Vector2f(width / 2, height / 2);
+
+        (*boxes)[0].color = sf::Color::Green;
+        (*boxes)[1].color = sf::Color::Green;
+        (*boxes)[2].color = sf::Color::Green;
+        (*boxes)[3].color = sf::Color::Green;
+        (*boxes)[4].color = sf::Color::Green;
+        (*boxes)[5].color = sf::Color::Green;
+
+        (*boxes)[6].color = sf::Color::Transparent;
+        (*boxes)[7].color = sf::Color::Transparent;
+        (*boxes)[8].color = sf::Color::Transparent;
+        (*boxes)[9].color = sf::Color::Transparent;
+        (*boxes)[10].color = sf::Color::Transparent;
+        (*boxes)[11].color = sf::Color::Transparent;
+
+        return boxes;
+    }
 }

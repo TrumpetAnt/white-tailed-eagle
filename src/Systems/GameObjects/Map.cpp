@@ -122,7 +122,7 @@ namespace egl
         return static_cast<float>(diff.x * diff.x) + static_cast<float>(diff.y * diff.y);
     }
 
-    std::vector<Tile *> *Map::FindPath(Tile *source, sf::Vector2i target, int movementPoints)
+    std::vector<Tile *> *Map::FindPaths(Tile *source, sf::Vector2i target, int movementPoints)
     {
         auto res = new std::vector<Tile *>();
         ExploreNode goal = {nullptr, 0.f, 0.f, -1};

@@ -7,9 +7,11 @@ namespace egl
     class EgDrawable : public sf::Drawable, public sf::Transformable
     {
     private:
+        sf::Texture *texture = nullptr;
+
+    protected:
         sf::VertexArray *vertexArray;
         sf::Color color = sf::Color::Magenta;
-        sf::Texture *texture = nullptr;
 
     public:
         EgDrawable(sf::VertexArray *vertexArray) : vertexArray(vertexArray){};

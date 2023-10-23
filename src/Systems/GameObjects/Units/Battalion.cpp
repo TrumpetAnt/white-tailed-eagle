@@ -10,6 +10,23 @@ namespace egl
         drawable = DrawableFactory::GetCircle(pos);
 
         drawable->SetColor(sf::Color::Red);
+
+        healthBar = new HealthBar(initialHp, DrawableFactory::GetHealthBar(60.f, 20.f));
+    }
+
+    void Battalion::UpdateTransforms()
+    {
+        drawable->setPosition(getPosition());
+        healthBar->setPosition(getPosition() + sf::Vector2f(0.f, 30.f));
+    }
+
+    void Battalion::ConcatDrawable(std::vector<EgDrawable *> *res)
+    {
+        res->push_back(drawable);
+        if (hitPoints < initialHp)
+        {
+            res->push_back(healthBar);
+        }
     }
 
     bool Battalion::IsSelectable()
@@ -47,5 +64,29 @@ namespace egl
     Tile *Battalion::GetParentTile()
     {
         return static_cast<Tile *>(parent);
+    }
+
+    bool Battalion::InteractWithEntity(Entity *e)
+    {
+        switch (e->GetEntityType())
+        {
+        case EntityType::E_Battalion:
+            auto diff = getPosition() - e->getPosition();
+            if (diff.x * diff.x + diff.y * diff.y < Tile::radius * Tile::radius * 4 * movementPoints * movementPoints)
+            {
+                float r = static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
+                Damage(r * maxDamage);
+                return true;
+            }
+            break;
+        }
+        return false;
+    }
+
+    void Battalion::Damage(float damage)
+    {
+        std::cout << "Ouch for " << damage << " healthpoints" << std::endl;
+        hitPoints -= damage;
+        healthBar->AlterHp(-1 * damage);
     }
 }
