@@ -39,10 +39,10 @@ namespace egl
         {
             drawable->setPosition(getPosition());
             res->push_back(drawable);
-            if (battalion != nullptr && battalion->IsDrawable())
-            {
-                battalion->ConcatDrawable(res);
-            }
+            // if (battalion != nullptr && battalion->IsDrawable())
+            // {
+            //     battalion->ConcatDrawable(res);
+            // }
         }
     }
 
@@ -87,18 +87,26 @@ namespace egl
         return sqrt3 + x * sqrt3 + y;
     }
 
-    bool Tile::AttemptSelect(float x, float y)
+    Entity *Tile::AttemptSelect(float x, float y)
     {
         auto distance = getPosition() - sf::Vector2f(x, y);
         auto radius = 40.f;
         float sqrt3div2 = 0.86602540378f;
         if (radius * radius < distance.x * distance.x + distance.y * distance.y)
         {
-            return false;
+            return nullptr;
         };
+        if (battalion != nullptr)
+        {
+            auto bat_select = battalion->AttemptSelect(x, y);
+            if (bat_select != nullptr)
+            {
+                return bat_select;
+            }
+        }
         if (distance.x * distance.x + distance.y * distance.y < radius * radius * sqrt3div2 * sqrt3div2)
         {
-            return true;
+            return this;
         };
 
         auto scaledCenter = (sf::Vector2f(x, y) - getPosition()) / radius;
@@ -111,12 +119,14 @@ namespace egl
         // auto v_5 = upperLeftBound(scaledCenter.x, scaledCenter.y);
         // auto v_6 = lowerLeftBound(scaledCenter.x, scaledCenter.y);
 
-        return topBound(scaledCenter.y) > 0 &&
-               lowerBound(scaledCenter.y) > 0 &&
-               upperRightBound(scaledCenter.x, scaledCenter.y) > 0 &&
-               lowerRightBound(scaledCenter.x, scaledCenter.y) > 0 &&
-               upperLeftBound(scaledCenter.x, scaledCenter.y) > 0 &&
-               lowerLeftBound(scaledCenter.x, scaledCenter.y) > 0;
+        return (topBound(scaledCenter.y) > 0 &&
+                lowerBound(scaledCenter.y) > 0 &&
+                upperRightBound(scaledCenter.x, scaledCenter.y) > 0 &&
+                lowerRightBound(scaledCenter.x, scaledCenter.y) > 0 &&
+                upperLeftBound(scaledCenter.x, scaledCenter.y) > 0 &&
+                lowerLeftBound(scaledCenter.x, scaledCenter.y) > 0)
+                   ? this
+                   : nullptr;
     }
 
     void Tile::Highlight()
@@ -127,5 +137,19 @@ namespace egl
     void Tile::ResetHighlight()
     {
         drawable->SetColor(baseColor);
+    };
+
+    bool Tile::InteractWithEntity(Entity *e)
+    {
+        switch (e->GetEntityType())
+        {
+        case EntityType::E_Battalion:
+            e->setPosition(getPosition());
+            e->UpdateTransforms();
+            battalion = static_cast<Battalion *>(e);
+            battalion->AttachToTile(&battalion);
+            return true;
+        }
+        return false;
     };
 }

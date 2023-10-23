@@ -4,6 +4,7 @@
 #include <stdexcept>
 
 #include "Tile.hpp"
+#include "EntityType.hpp"
 
 namespace egl
 {

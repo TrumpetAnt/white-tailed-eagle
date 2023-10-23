@@ -2,7 +2,7 @@
 
 namespace egl
 {
-    Map::Map(int width, int height, std::vector<Tile *> *tiles) : width(width), height(height), tiles(tiles)
+    Map::Map(int width, int height, std::vector<Tile *> *tiles) : width(width), height(height), tiles(tiles), Entity(EntityType::E_Map)
     {
         if (width <= 0 || height <= 0 || 1000000 < width * height || tiles == nullptr || tiles->size() != width * height)
         {

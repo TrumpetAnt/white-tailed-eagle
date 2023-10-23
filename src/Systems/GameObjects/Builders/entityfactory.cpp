@@ -31,7 +31,7 @@ namespace egl
 
     Battalion *EntityFactory::GetBattalion()
     {
-        auto res = new Battalion();
+        auto res = new Battalion(nullptr);
         res->AddDrawable();
         return res;
     }

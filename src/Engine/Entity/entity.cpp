@@ -22,13 +22,18 @@ namespace egl
         this->setPosition(pos);
     }
 
+    uint Entity::GetEntityType()
+    {
+        return entityType;
+    }
+
     bool Entity::IsSelectable()
     {
         return false;
     }
 
-    bool Entity::AttemptSelect(float x, float y)
+    Entity *Entity::AttemptSelect(float x, float y)
     {
-        return false;
+        return nullptr;
     }
 }

@@ -46,11 +46,24 @@ namespace egl
                 selected->Highlight();
             }
         }
-        else if (selected != nullptr && (button == sf::Mouse::Button::Left || button == sf::Mouse::Button::Right))
+        else if (selected != nullptr)
         {
-            std::cout << "Deselect entity" << std::endl;
-            selected->ResetHighlight();
-            selected = nullptr;
+            if (button == sf::Mouse::Button::Right)
+            {
+                auto target = state->SelectAt(x, y);
+                if (target != nullptr && target->InteractWithEntity(selected))
+                {
+                    std::cout << "Deselect entity" << std::endl;
+                    selected->ResetHighlight();
+                    selected = nullptr;
+                }
+            }
+            if (button == sf::Mouse::Button::Left)
+            {
+                std::cout << "Deselect entity" << std::endl;
+                selected->ResetHighlight();
+                selected = nullptr;
+            }
         }
     }
 }

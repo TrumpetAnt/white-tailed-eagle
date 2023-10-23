@@ -9,8 +9,10 @@ namespace egl
     {
     protected:
         EgDrawable *drawable = nullptr;
+        uint entityType;
 
     public:
+        Entity(uint entityType) : entityType(entityType){};
         virtual void UpdateTransforms()
         {
             if (drawable != nullptr)
@@ -30,10 +32,13 @@ namespace egl
         virtual void AddDrawable(EgDrawable *drawable);
         EgDrawable *GetDrawable();
         void SetPosition(sf::Vector2f pos);
+        uint GetEntityType();
 
         virtual bool IsSelectable();
-        virtual bool AttemptSelect(float x, float y);
+        virtual Entity *AttemptSelect(float x, float y);
         virtual void Highlight(){};
         virtual void ResetHighlight(){};
+
+        virtual bool InteractWithEntity(Entity *e) { return false; };
     };
 }

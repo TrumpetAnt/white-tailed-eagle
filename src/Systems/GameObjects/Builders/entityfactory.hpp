@@ -4,7 +4,6 @@
 #include "../Tile.hpp"
 #include "../../../Engine/Drawable/drawablefactory.hpp"
 #include "../../../Engine/Entity/entity.hpp"
-#include "entitybuilder.hpp"
 #include "../TileType.hpp"
 #include "../Units/Battalion.hpp"
 

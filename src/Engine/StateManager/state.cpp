@@ -11,11 +11,11 @@ namespace egl
         auto bat = EntityFactory::GetBattalion();
         map->AddBattalionAt(bat, 13, 3);
         entities->push_back(map);
-        entities->push_back(bat);
         for (auto tile : *out_tiles)
         {
             entities->push_back(tile);
         }
+        entities->push_back(bat);
     }
 
     std::vector<Entity *> *State::GetEntities()
@@ -29,9 +29,10 @@ namespace egl
         {
             if (entity->IsSelectable())
             {
-                if (entity->AttemptSelect(x, y))
+                auto e = entity->AttemptSelect(x, y);
+                if (e != nullptr)
                 {
-                    return entity;
+                    return e;
                 }
             }
         }
