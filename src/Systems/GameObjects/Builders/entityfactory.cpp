@@ -10,7 +10,7 @@ namespace egl
         return res;
     }
 
-    Map *EntityFactory::GetMap(int w, int h)
+    Map *EntityFactory::GetMap(int w, int h, std::vector<Tile *> **out_tiles)
     {
         auto tiles = new std::vector<Tile *>();
         float offset = 100.f;
@@ -25,6 +25,7 @@ namespace egl
                 tiles->push_back(GetTile(sf::Vector2f(x_pos, y_pos)));
             }
         }
+        *out_tiles = tiles;
         return new Map(w, h, tiles);
     }
 

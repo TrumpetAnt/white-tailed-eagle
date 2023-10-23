@@ -13,10 +13,15 @@ namespace egl
     private:
         TileType tileType;
         Battalion *battalion = nullptr;
+        sf::Color baseColor = sf::Color::Magenta;
 
     public:
         void AddDrawable(TileType type);
         void AddBattalion(Battalion *bat);
         void ConcatDrawable(std::vector<EgDrawable *> *res) override;
+        bool IsSelectable() override;
+        bool AttemptSelect(float x, float y) override;
+        void Highlight() override;
+        void ResetHighlight() override;
     };
 }

@@ -14,7 +14,7 @@ namespace egl
     {
     public:
         static Tile *GetTile(sf::Vector2f pos);
-        static Map *GetMap(int w, int h);
+        static Map *GetMap(int w, int h, std::vector<Tile *> **out_tiles);
 
         static Battalion *GetBattalion();
     };

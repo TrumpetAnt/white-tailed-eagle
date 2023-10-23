@@ -6,11 +6,16 @@ namespace egl
     {
         entities = new std::vector<Entity *>();
         // entities->push_back(EntityFactory::GetMap(1, 1));
-        auto map = EntityFactory::GetMap(25, 11);
+        std::vector<Tile *> *out_tiles;
+        auto map = EntityFactory::GetMap(25, 11, &out_tiles);
         auto bat = EntityFactory::GetBattalion();
         map->AddBattalionAt(bat, 13, 3);
         entities->push_back(map);
         entities->push_back(bat);
+        for (auto tile : *out_tiles)
+        {
+            entities->push_back(tile);
+        }
     }
 
     std::vector<Entity *> *State::GetEntities()
