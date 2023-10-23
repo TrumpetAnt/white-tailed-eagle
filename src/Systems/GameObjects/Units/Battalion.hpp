@@ -6,5 +6,7 @@ namespace egl
 {
     class Battalion : public Entity
     {
+    public:
+        void AddDrawable();
     };
 }

@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <SFML/Graphics.hpp>
+#include "math.h"
 #include "drawable.hpp"
 
 namespace egl
@@ -10,5 +11,6 @@ namespace egl
     {
     public:
         static EgDrawable *GetHexagon(sf::Vector2f &pos);
+        static EgDrawable *GetCircle(sf::Vector2f &pos);
     };
 }

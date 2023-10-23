@@ -23,7 +23,8 @@ add_executable(eagle
     src/Engine/StateManager/statemanager.cpp
     src/Systems/GameObjects/Map.cpp
     src/Systems/GameObjects/Tile.cpp
-    src/Systems/GameObjects/Builders/entityfactory.cpp)
+    src/Systems/GameObjects/Builders/entityfactory.cpp
+    src/Systems/GameObjects/Units/Battalion.cpp)
 target_link_libraries(eagle PRIVATE sfml-graphics X11 ${X11_LIBRARIES})
 target_compile_features(eagle PRIVATE cxx_std_17)
 

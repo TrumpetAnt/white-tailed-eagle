@@ -10,6 +10,11 @@ namespace egl
         }
     };
 
+    bool Map::checkBounds(int x, int y)
+    {
+        return 0 <= x && 0 <= y && x <= width && y <= height;
+    }
+
     bool Map::IsDrawable()
     {
         return true;
@@ -21,5 +26,17 @@ namespace egl
         {
             tile->ConcatDrawable(res);
         }
+    }
+
+    void Map::AddBattalionAt(Battalion *bat, int x, int y)
+    {
+        if (!checkBounds(x, y))
+        {
+            return;
+        }
+        auto tile = tiles->at(y * width + x);
+        tile->AddBattalion(bat);
+        bat->setPosition(tile->getPosition());
+        bat->UpdateTransforms();
     }
 }

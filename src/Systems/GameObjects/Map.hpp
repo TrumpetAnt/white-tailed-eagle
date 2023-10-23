@@ -14,6 +14,8 @@ namespace egl
         int width;
         int height;
 
+        bool checkBounds(int x, int y);
+
     public:
         Map(int width, int height, std::vector<Tile *> *tiles);
         int getWidth() { return width; }
@@ -21,5 +23,7 @@ namespace egl
 
         bool IsDrawable() override;
         void ConcatDrawable(std::vector<EgDrawable *> *res) override;
+
+        void AddBattalionAt(Battalion *bat, int x, int y);
     };
 };

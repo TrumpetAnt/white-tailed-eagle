@@ -11,6 +11,13 @@ namespace egl
         EgDrawable *drawable = nullptr;
 
     public:
+        virtual void UpdateTransforms()
+        {
+            if (drawable != nullptr)
+            {
+                drawable->setPosition(getPosition());
+            }
+        }
         virtual void ConcatDrawable(std::vector<EgDrawable *> *res)
         {
             if (IsDrawable())

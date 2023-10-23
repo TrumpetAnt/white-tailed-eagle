@@ -26,4 +26,22 @@ namespace egl
         auto c = sf::Color(84 + (rand() % variance), 201 + (rand() % variance), 60 + (rand() % variance));
         drawable->SetColor(c);
     }
+
+    void Tile::AddBattalion(Battalion *bat)
+    {
+        battalion = bat;
+    }
+
+    void Tile::ConcatDrawable(std::vector<EgDrawable *> *res)
+    {
+        if (IsDrawable())
+        {
+            drawable->setPosition(getPosition());
+            res->push_back(drawable);
+            if (battalion != nullptr && battalion->IsDrawable())
+            {
+                battalion->ConcatDrawable(res);
+            }
+        }
+    }
 }

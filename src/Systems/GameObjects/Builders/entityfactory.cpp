@@ -6,7 +6,7 @@ namespace egl
     {
         auto res = new Tile();
         res->AddDrawable(TileType::Grass);
-        res->GetDrawable()->setPosition(pos);
+        res->setPosition(pos);
         return res;
     }
 
@@ -26,5 +26,12 @@ namespace egl
             }
         }
         return new Map(w, h, tiles);
+    }
+
+    Battalion *EntityFactory::GetBattalion()
+    {
+        auto res = new Battalion();
+        res->AddDrawable();
+        return res;
     }
 }
