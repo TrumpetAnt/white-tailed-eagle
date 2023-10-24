@@ -17,6 +17,7 @@ namespace egl
 
         Entity(uint entityType);
         Entity(uint entityType, Entity *parent);
+        virtual bool MarkedForDestruction() { return false; } // @Todo Utilize for object destruction, probably use with ObjectPool though...
         virtual void UpdateTransforms()
         {
             if (drawable != nullptr)
@@ -31,7 +32,6 @@ namespace egl
                 res->push_back(drawable);
             }
         };
-        virtual void NextTurn(){};
 
         virtual bool IsDrawable();
         virtual void AddDrawable(EgDrawable *drawable);
@@ -49,5 +49,6 @@ namespace egl
         virtual void ResetHighlight(){};
 
         virtual bool InteractWithEntity(Entity *e) { return false; };
+        virtual void NextTurn(){};
     };
 }

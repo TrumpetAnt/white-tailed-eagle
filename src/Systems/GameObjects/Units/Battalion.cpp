@@ -17,6 +17,11 @@ namespace egl
         }
     }
 
+    bool Battalion::MarkedForDestruction()
+    {
+        return IsDead();
+    };
+
     void Battalion::AddDrawable()
     {
         auto pos = this->getPosition();
@@ -35,6 +40,10 @@ namespace egl
 
     void Battalion::ConcatDrawable(std::vector<EgDrawable *> *res)
     {
+        if (MarkedForDestruction())
+        {
+            return;
+        }
         res->push_back(drawable);
         if (hitPoints < initialHp)
         {
@@ -131,5 +140,20 @@ namespace egl
         std::cout << "Ouch for " << damage << " healthpoints" << std::endl;
         hitPoints -= damage;
         healthBar->AlterHp(-1 * damage);
+        if (!IsDead())
+        {
+            return;
+        }
+
+        auto tile = static_cast<Tile *>(parent);
+        if (tile != nullptr)
+        {
+            tile->ClearBattalion();
+        }
+    }
+
+    bool Battalion::IsDead()
+    {
+        return hitPoints <= 0.f;
     }
 }

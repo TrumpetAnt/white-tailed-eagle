@@ -10,9 +10,11 @@ namespace egl
         auto bat = EntityFactory::GetBattalion(0);
         auto bat2 = EntityFactory::GetBattalion(0);
         auto bat3 = EntityFactory::GetBattalion(1);
+        auto bat4 = EntityFactory::GetBattalion(1);
         map->AddBattalionAt(bat, 13, 3);
         map->AddBattalionAt(bat2, 14, 3);
         map->AddBattalionAt(bat3, 14, 4);
+        map->AddBattalionAt(bat4, 14, 5);
         entities->push_back(map);
         for (auto tile : *out_tiles)
         {
@@ -21,6 +23,7 @@ namespace egl
         entities->push_back(bat);
         entities->push_back(bat2);
         entities->push_back(bat3);
+        entities->push_back(bat4);
     }
 
     std::vector<Entity *> *State::GetEntities()

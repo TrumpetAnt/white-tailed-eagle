@@ -27,7 +27,6 @@ namespace egl
         std::vector<EgDrawable *> *GetDrawables();
 
         void ClickAt(float x, float y, sf::Mouse::Button button);
-
         void NextTurn(sf::Mouse::Button button);
     };
 }

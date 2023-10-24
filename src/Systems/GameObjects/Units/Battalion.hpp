@@ -19,11 +19,13 @@ namespace egl
         HealthBar *healthBar;
         int team;
 
+        bool IsDead();
+
     public:
         Battalion(int team) : Entity(EntityType::E_Battalion), team(team){};
         // ~~ Base ~~
         Tile *GetParentTile();
-        void NextTurn() override;
+        bool MarkedForDestruction() override;
         // ~~ Render shit ~~
         void UpdateTransforms() override;
         void ConcatDrawable(std::vector<EgDrawable *> *res) override;
@@ -40,5 +42,6 @@ namespace egl
         // ~~ Interact ~~
         bool InteractWithEntity(Entity *e) override;
         void Damage(float damage);
+        void NextTurn() override;
     };
 }
