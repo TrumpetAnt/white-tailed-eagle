@@ -16,9 +16,10 @@ namespace egl
         float hitPoints = initialHp;
         float maxDamage = 50.f;
         HealthBar *healthBar;
+        int team;
 
     public:
-        Battalion() : Entity(EntityType::E_Battalion){};
+        Battalion(int team) : Entity(EntityType::E_Battalion), team(team){};
         void UpdateTransforms() override;
         void ConcatDrawable(std::vector<EgDrawable *> *res) override;
         void AddDrawable();

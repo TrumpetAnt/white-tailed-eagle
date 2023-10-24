@@ -29,9 +29,9 @@ namespace egl
         return new Map(w, h, tiles);
     }
 
-    Battalion *EntityFactory::GetBattalion()
+    Battalion *EntityFactory::GetBattalion(int team)
     {
-        auto res = new Battalion();
+        auto res = new Battalion(team);
         res->AddDrawable();
         return res;
     }

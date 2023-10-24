@@ -38,8 +38,12 @@ namespace egl
     {
         battalion = bat;
         auto parent = bat->GetParentTile();
-        if (parent != nullptr && parent != this)
+        if (parent != nullptr)
         {
+            if (parent == this)
+            {
+                return;
+            }
             parent->ClearBattalion();
         }
         AttachChild(bat);

@@ -4,12 +4,25 @@
 
 namespace egl
 {
+    sf::Color TeamToColor(int team)
+    {
+        switch (team)
+        {
+        case 0:
+            return sf::Color::Red;
+        case 1:
+            return sf::Color::Blue;
+        default:
+            return sf::Color::Black;
+        }
+    }
+
     void Battalion::AddDrawable()
     {
         auto pos = this->getPosition();
         drawable = DrawableFactory::GetCircle(pos);
 
-        drawable->SetColor(sf::Color::Red);
+        drawable->SetColor(TeamToColor(team));
 
         healthBar = new HealthBar(initialHp, DrawableFactory::GetHealthBar(60.f, 20.f));
     }
@@ -51,7 +64,7 @@ namespace egl
 
     void Battalion::ResetHighlight()
     {
-        drawable->SetColor(sf::Color::Red);
+        drawable->SetColor(TeamToColor(team));
         auto m = static_cast<Map *>(parent->parent);
         m->ResetAllHighlightedTiles();
     }
@@ -74,9 +87,13 @@ namespace egl
             auto diff = getPosition() - e->getPosition();
             if (diff.x * diff.x + diff.y * diff.y < Tile::radius * Tile::radius * 4 * movementPoints * movementPoints)
             {
-                float r = static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
-                Damage(r * maxDamage);
-                return true;
+                auto bat = static_cast<Battalion *>(e);
+                if (bat->team != team)
+                {
+                    float r = static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
+                    Damage(r * maxDamage);
+                    return true;
+                }
             }
             break;
         }
