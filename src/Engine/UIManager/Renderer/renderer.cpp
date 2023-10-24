@@ -8,9 +8,6 @@ namespace egl
         {
             window->draw(*d);
         }
-
-        drawables->clear();
-        delete drawables;
     }
 
     void Renderer::PrepareFrame()

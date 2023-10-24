@@ -35,4 +35,13 @@ namespace egl
         res->AddDrawable();
         return res;
     }
+
+    BattalionProjectile *EntityFactory::GetBattalionProjectile()
+    {
+        auto res = new BattalionProjectile();
+        auto drawable = DrawableFactory::GetTriangle(sf::Vector2f(5.f, 15.f));
+        drawable->SetColor(sf::Color::Magenta);
+        res->AddDrawable(drawable);
+        return res;
+    }
 }

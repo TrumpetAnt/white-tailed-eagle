@@ -31,6 +31,8 @@ add_executable(eagle
     src/Systems/GameObjects/Tile.cpp
     src/Systems/GameObjects/Factories/EntityFactory.cpp
     src/Systems/GameObjects/Units/Battalion.cpp
+    src/Systems/GameObjects/Units/BattalionProjectile.cpp
+    src/Systems/GameObjects/Units/ProjectilePool.cpp
     src/Systems/GameObjects/Units/HealthBar.cpp)
 target_link_libraries(eagle PRIVATE sfml-graphics X11 ${X11_LIBRARIES})
 target_compile_features(eagle PRIVATE cxx_std_17)

@@ -25,7 +25,7 @@ namespace egl
     void Battalion::AddDrawable()
     {
         auto pos = this->getPosition();
-        drawable = DrawableFactory::GetCircle(pos);
+        drawable = DrawableFactory::GetCircle(pos, Battalion::radius);
 
         drawable->SetColor(TeamToColor(team));
 
@@ -112,13 +112,22 @@ namespace egl
         drawable->SetColor(TeamToColor(team));
     };
 
+    sf::Vector2f randomOffset(float radius)
+    {
+        float r_x = static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
+        float r_y = static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
+        return sf::Vector2f(0.5f - r_x, 0.5f - r_y) * radius * 2.f;
+    }
+
     bool Battalion::InteractWithEntity(Entity *e)
     {
         switch (e->GetEntityType())
         {
         case EntityType::E_Battalion:
             auto diff = getPosition() - e->getPosition();
-            if (diff.x * diff.x + diff.y * diff.y < Tile::radius * Tile::radius * 4 * movementPoints * movementPoints)
+            auto dist = diff.x * diff.x + diff.y * diff.y;
+            auto tile_width = Tile::radius * Tile::radius * 4;
+            if (dist < tile_width * movementPoints * movementPoints)
             {
                 auto other_bat = static_cast<Battalion *>(e);
                 if (other_bat->team != team)
@@ -127,6 +136,13 @@ namespace egl
                     Damage(r * maxDamage);
                     other_bat->SpendMovementPoints(other_bat->GetMovementPoints());
                     other_bat->MarkAsSpent();
+                    for (int i = 0; i < 5; i++)
+                    {
+                        auto offset_start = randomOffset(Battalion::radius / 4.f);
+                        auto offset_end = randomOffset(Battalion::radius);
+                        ProjectilePool::GetInstance()->Shoot(other_bat->getPosition() + offset_start, getPosition() + offset_end, 30);
+                    }
+
                     return true;
                 }
             }

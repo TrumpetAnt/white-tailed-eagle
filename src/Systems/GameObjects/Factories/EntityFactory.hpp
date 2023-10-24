@@ -6,6 +6,7 @@
 #include "../../../Engine/Entity/entity.hpp"
 #include "../TileType.hpp"
 #include "../Units/Battalion.hpp"
+#include "../Units/BattalionProjectile.hpp"
 
 namespace egl
 {
@@ -14,7 +15,7 @@ namespace egl
     public:
         static Tile *GetTile(sf::Vector2f pos, sf::Vector2i pos_int);
         static Map *GetMap(int w, int h, std::vector<Tile *> **out_tiles);
-
         static Battalion *GetBattalion(int team);
+        static BattalionProjectile *GetBattalionProjectile();
     };
 }

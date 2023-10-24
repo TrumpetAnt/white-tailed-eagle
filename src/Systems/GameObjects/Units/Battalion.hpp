@@ -3,6 +3,7 @@
 #include "../../../Engine/Entity/entity.hpp"
 #include "../EntityType.hpp"
 #include "HealthBar.hpp"
+#include "ProjectilePool.hpp"
 
 namespace egl
 {
@@ -43,5 +44,7 @@ namespace egl
         bool InteractWithEntity(Entity *e) override;
         void Damage(float damage);
         void NextTurn() override;
+
+        static constexpr float radius = 30;
     };
 }

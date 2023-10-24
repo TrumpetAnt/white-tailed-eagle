@@ -19,7 +19,7 @@ namespace egl
 
     void Entity::AddDrawable(EgDrawable *drawable)
     {
-        drawable = drawable;
+        this->drawable = drawable;
     }
 
     EgDrawable *Entity::GetDrawable()

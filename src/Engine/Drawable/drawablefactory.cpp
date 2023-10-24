@@ -28,13 +28,12 @@ namespace egl
         return res;
     }
 
-    EgDrawable *DrawableFactory::GetCircle(sf::Vector2f &pos)
+    EgDrawable *DrawableFactory::GetCircle(sf::Vector2f &pos, float radius)
     {
         int resolution = 30;
         auto circle = new sf::VertexArray(sf::TriangleFan, resolution + 2);
         (*circle)[0].position = sf::Vector2f(0.f, 0.f);
 
-        float radius = 25.f;
         auto v_count = circle->getVertexCount();
         for (int i = 1; i < v_count; i++)
         {
@@ -47,9 +46,21 @@ namespace egl
         return res;
     }
 
+    EgDrawable *DrawableFactory::GetTriangle(sf::Vector2f size)
+    {
+        auto triangle = new sf::VertexArray(sf::Triangles, 3);
+
+        (*triangle)[0].position = sf::Vector2f(0, size.y / 2);
+        (*triangle)[1].position = sf::Vector2f(size.x / 2, -size.y / 2);
+        (*triangle)[2].position = sf::Vector2f(-size.x / 2, -size.y / 2);
+
+        auto res = new EgDrawable(triangle);
+
+        return res;
+    }
+
     sf::VertexArray *DrawableFactory::GetHealthBar(float width, float height)
     {
-        int resolution = 30;
         auto boxes = new sf::VertexArray(sf::Triangles, 12);
 
         (*boxes)[0].position = sf::Vector2f(width / -2, height / -2);

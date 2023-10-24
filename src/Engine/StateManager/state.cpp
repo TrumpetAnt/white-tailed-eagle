@@ -24,6 +24,8 @@ namespace egl
         entities->push_back(bat2);
         entities->push_back(bat3);
         entities->push_back(bat4);
+
+        ProjectilePool::GetInstance()->TrackEntities(entities);
     }
 
     std::vector<Entity *> *State::GetEntities()
