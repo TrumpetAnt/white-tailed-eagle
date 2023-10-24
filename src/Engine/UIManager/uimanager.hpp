@@ -3,6 +3,7 @@
 #include <mutex>
 #include "Renderer/renderer.hpp"
 #include "../StateManager/statemanager.hpp"
+#include "GuiManager/guimanager.hpp"
 
 namespace egl
 {
@@ -13,6 +14,7 @@ namespace egl
         static std::mutex mutex_;
 
         StateManager *stateManager = StateManager::GetInstance();
+        GuiManager *guiManager = GuiManager::GetInstance();
 
         Renderer *renderer;
         sf::RenderWindow *window;
@@ -33,6 +35,7 @@ namespace egl
         static UIManager *GetInstance(sf::RenderWindow *window);
 
         void ReceiveDrawables(std::vector<EgDrawable *> *drawables);
+        void DrawGui();
         void PrepareFrame();
         void FlushFrame();
 

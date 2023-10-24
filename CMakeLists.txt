@@ -9,12 +9,17 @@ FetchContent_Declare(SFML
     GIT_TAG 2.6.x)
 FetchContent_MakeAvailable(SFML)
 
+file(COPY assets DESTINATION ${CMAKE_BINARY_DIR}/bin)
 
 add_executable(eagle 
     src/main.cpp 
     src/Engine/InputManager/inputmanager.cpp
     src/Engine/TextureManager/texturemanager.cpp
     src/Engine/UIManager/uimanager.cpp
+    src/Engine/UIManager/GuiManager/guimanager.cpp
+    src/Engine/UIManager/GuiManager/guielement.cpp
+    src/Engine/UIManager/GuiManager/guielementfactory.cpp
+    src/Engine/UIManager/GuiManager/fontmanager.cpp
     src/Engine/UIManager/Renderer/renderer.cpp
     src/Engine/Drawable/drawable.cpp
     src/Engine/Drawable/drawablefactory.cpp

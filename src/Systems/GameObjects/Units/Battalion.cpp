@@ -44,7 +44,7 @@ namespace egl
 
     bool Battalion::IsSelectable()
     {
-        return true;
+        return 0 < availablePoints;
     }
 
     Entity *Battalion::AttemptSelect(float x, float y)
@@ -55,23 +55,41 @@ namespace egl
 
     void Battalion::Highlight()
     {
-        drawable->SetColor(sf::Color::White);
+        drawable->SetColor(TeamToColor(team) + sf::Color(75, 75, 75));
         auto tile = static_cast<Tile *>(parent);
         auto m = static_cast<Map *>(tile->parent);
         auto pos = tile->GetDiscretePos();
         m->HighlightTilesAround(pos.x, pos.y, GetMovementPoints());
     }
 
+    void Battalion::MarkAsSpent()
+    {
+        drawable->SetColor(TeamToColor(team) - sf::Color(75, 75, 75, 0));
+    }
+
     void Battalion::ResetHighlight()
     {
-        drawable->SetColor(TeamToColor(team));
+        if (IsSelectable())
+        {
+            drawable->SetColor(TeamToColor(team));
+        }
+        else
+        {
+            MarkAsSpent();
+        }
+
         auto m = static_cast<Map *>(parent->parent);
         m->ResetAllHighlightedTiles();
     }
 
     uint Battalion::GetMovementPoints()
     {
-        return movementPoints;
+        return availablePoints;
+    }
+
+    void Battalion::SpendMovementPoints(uint cost)
+    {
+        availablePoints = cost >= availablePoints ? 0 : availablePoints - cost;
     }
 
     Tile *Battalion::GetParentTile()

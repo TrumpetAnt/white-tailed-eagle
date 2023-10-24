@@ -12,6 +12,7 @@ namespace egl
     {
     protected:
         uint movementPoints = 2;
+        uint availablePoints = movementPoints;
         float initialHp = 100.f;
         float hitPoints = initialHp;
         float maxDamage = 50.f;
@@ -20,15 +21,22 @@ namespace egl
 
     public:
         Battalion(int team) : Entity(EntityType::E_Battalion), team(team){};
+        // ~~ Base ~~
+        Tile *GetParentTile();
+        // ~~ Render shit ~~
         void UpdateTransforms() override;
         void ConcatDrawable(std::vector<EgDrawable *> *res) override;
         void AddDrawable();
+        // ~~ Select ~~
         bool IsSelectable() override;
         Entity *AttemptSelect(float x, float y) override;
         void Highlight() override;
+        void MarkAsSpent();
         void ResetHighlight() override;
+        // ~~ Movement ~~
         uint GetMovementPoints();
-        Tile *GetParentTile();
+        void SpendMovementPoints(uint cost);
+        // ~~ Interact ~~
         bool InteractWithEntity(Entity *e) override;
         void Damage(float damage);
     };

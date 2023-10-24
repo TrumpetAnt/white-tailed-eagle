@@ -4,25 +4,43 @@
 #include <X11/Xlib.h>
 #include <iostream>
 #include <math.h>
+#include <filesystem>
+#include <fstream>
 
 #include "Engine/InputManager/inputmanager.hpp"
 #include "Engine/StateManager/statemanager.hpp"
 #include "Engine/UIManager/uimanager.hpp"
+#include "Engine/UIManager/GuiManager/fontmanager.hpp"
 #include "Systems/GameObjects/Tile.hpp"
 
 int main()
 {
     XInitThreads();
-    auto window = sf::RenderWindow{{1600u, 900u}, "White-Tailed Eagle"};
+    // Setup window
+    sf::ContextSettings settings;
+    settings.antialiasingLevel = 8;
+    auto window = sf::RenderWindow{{1600u, 900u}, "White-Tailed Eagle", sf::Style::Default, settings};
     window.setFramerateLimit(144);
 
+    // Load fonts
+    auto currentPath = std::filesystem::current_path().string();
+    currentPath = currentPath.substr(0, currentPath.length() - 4);
+    auto fontManager = egl::FontManager::GetInstance();
+    if (!fontManager->LoadFont("assets/fonts/", egl::FontManager::Fonts::Oswald))
+    {
+        return -1;
+    }
+
+    // Setup input manager thread
     auto inputManager = egl::InputManager::GetInstance();
     std::thread inputThread(&egl::InputManager::StartEventLoop, inputManager, &window);
     inputThread.detach();
 
+    // Setup state and ui manager
     auto stateManager = egl::StateManager::GetInstance();
     auto uiManager = egl::UIManager::GetInstance(&window);
 
+    // Frame drop detection
     float targetFps = 60;
     float nanoPerFrame = 1000000000 / targetFps;
     auto durationPerFrame = std::chrono::nanoseconds(static_cast<int>(nanoPerFrame));
@@ -35,6 +53,7 @@ int main()
         uiManager->PrepareFrame();
         auto drawables = stateManager->GetDrawables();
         uiManager->ReceiveDrawables(drawables);
+        uiManager->DrawGui();
         uiManager->FlushFrame();
 
         auto t1 = std::chrono::high_resolution_clock::now();

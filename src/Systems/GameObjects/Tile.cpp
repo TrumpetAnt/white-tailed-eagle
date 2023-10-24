@@ -162,6 +162,7 @@ namespace egl
             auto moveRange = battalion->GetMovementPoints();
             if (SqrDistanceToTile(*(battalion->GetParentTile())) < moveRange * moveRange * Tile::radius * Tile::radius * 4)
             {
+                battalion->SpendMovementPoints(moveRange);
                 AddBattalion(battalion);
                 return true;
             }

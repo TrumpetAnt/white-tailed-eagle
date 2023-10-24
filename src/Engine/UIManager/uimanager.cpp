@@ -5,11 +5,17 @@ namespace egl
     std::mutex UIManager::camera_mutex;
     UIManager *UIManager::pinstance_{nullptr};
     std::mutex UIManager::mutex_;
+
     UIManager::UIManager(sf::RenderWindow *w)
     {
         window = w;
         window->setView(view);
         renderer = new Renderer(window);
+
+        auto windowSize = window->getSize();
+        auto bottom_right = sf::Vector2f(static_cast<float>(windowSize.x), static_cast<float>(windowSize.y)) - sf::Vector2f(200.f, 100.f);
+        guiManager->AddGuiElement(GuiElementFactory::GetMediumButton(bottom_right, "Next turn", [](sf::Mouse::Button button) -> void
+                                                                     { StateManager::GetInstance()->NextTurn(button); }));
     };
 
     UIManager *UIManager::GetInstance(sf::RenderWindow *window)
@@ -25,6 +31,11 @@ namespace egl
     void UIManager::ReceiveDrawables(std::vector<EgDrawable *> *drawables)
     {
         renderer->Draw(drawables);
+    }
+
+    void UIManager::DrawGui()
+    {
+        guiManager->RenderGui(*window);
     }
 
     void UIManager::PrepareFrame()
@@ -71,43 +82,16 @@ namespace egl
 
     void UIManager::ClickAt(int x, int y, sf::Mouse::Button button)
     {
-        // std::cout << "Click at view pos (" << x << ", " << y << ") " << button << std::endl;
+        if (guiManager->ClickAt(sf::Vector2i(x, y), button))
+        {
+            return;
+        }
 
         auto clickPos = sf::Vector2f(static_cast<float>(x), static_cast<float>(y));
         auto relPos = sf::Vector2f(clickPos.x / refWindowSize.x, clickPos.y / refWindowSize.y);
 
-        // std::cout << "Click at rel view pos (" << relPos.x << ", " << relPos.y << ")" << std::endl;
-
-        // auto zoomFactor = view.getSize().x / refWindowSize.x;
-        // // std::cout << "Center: ("
-        // //           << view.getCenter().x
-        // //           << ", "
-        // //           << view.getCenter().y
-        // //           << ")"
-        // //           << std::endl;
-
-        // std::cout << "View size world pos: ("
-        //           << view.getSize().x * zoomFactor
-        //           << ", "
-        //           << view.getSize().y * zoomFactor
-        //           << ")" << std::endl;
-
         auto viewWorldPos = sf::Vector2f(view.getCenter().x - view.getSize().x / 2.f, view.getCenter().y - view.getSize().y / 2.f);
-        // std::cout
-        //     << "Top left world pos: ("
-        //     << viewWorldPos.x
-        //     << ", "
-        //     << viewWorldPos.y
-        //     << ")" << std::endl;
-
         auto worldPos = sf::Vector2f(viewWorldPos.x + view.getSize().x * relPos.x, viewWorldPos.y + view.getSize().y * relPos.y);
-        // std::cout << "World pos rel top left ("
-        //           <<
-        //           << ", "
-        //           <<
-        //           << " )" << std::endl;
-
-        // std::cout << "Click at world pos (" << worldPos.x << ", " << worldPos.y << ") " << std::endl;
 
         stateManager->ClickAt(worldPos.x, worldPos.y, button);
     }
