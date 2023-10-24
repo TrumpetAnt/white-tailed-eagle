@@ -4,7 +4,6 @@ namespace egl
 {
     State::State()
     {
-        entities = new std::vector<Entity *>();
         // entities->push_back(EntityFactory::GetMap(1, 1));
         std::vector<Tile *> *out_tiles;
         auto map = EntityFactory::GetMap(25, 11, &out_tiles);
@@ -43,5 +42,13 @@ namespace egl
             }
         }
         return nullptr;
+    }
+
+    void State::NextTurn()
+    {
+        for (auto entity : *entities)
+        {
+            entity->NextTurn();
+        }
     }
 }

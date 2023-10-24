@@ -20,6 +20,7 @@ int main()
     sf::ContextSettings settings;
     settings.antialiasingLevel = 8;
     auto window = sf::RenderWindow{{1600u, 900u}, "White-Tailed Eagle", sf::Style::Default, settings};
+    window.setPosition(sf::Vector2i(10, 10));
     window.setFramerateLimit(144);
 
     // Load fonts

@@ -62,7 +62,10 @@ namespace egl
             if (button == sf::Mouse::Button::Left)
             {
                 auto target = state->SelectAt(x, y);
-                if (target != nullptr && target->GetEntityType() == selected->GetEntityType() && selected != target)
+                if (target != nullptr &&
+                    target->GetEntityType() == selected->GetEntityType() &&
+                    selected != target &&
+                    target->IsSelectable())
                 {
                     std::cout << "Select another entity of same type" << std::endl;
                     selected->ResetHighlight();
@@ -79,9 +82,10 @@ namespace egl
 
     void StateManager::NextTurn(sf::Mouse::Button button)
     {
-        if (button == sf::Mouse::Button::Left)
+        if (button != sf::Mouse::Button::Left)
         {
-            std::cout << "Next turn" << std::endl;
+            return;
         }
+        state->NextTurn();
     }
 }

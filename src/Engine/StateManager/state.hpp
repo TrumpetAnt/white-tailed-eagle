@@ -10,11 +10,13 @@ namespace egl
     class State
     {
     private:
-        std::vector<Entity *> *entities;
+        std::vector<Entity *> *entities = new std::vector<Entity *>();
 
     public:
         State();
         std::vector<Entity *> *GetEntities();
         Entity *SelectAt(float x, float y);
+
+        void NextTurn();
     };
 }

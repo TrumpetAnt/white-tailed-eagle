@@ -44,7 +44,7 @@ namespace egl
 
     bool Battalion::IsSelectable()
     {
-        return 0 < availablePoints;
+        return 0 < availablePoints && team == 0;
     }
 
     Entity *Battalion::AttemptSelect(float x, float y)
@@ -97,6 +97,12 @@ namespace egl
         return static_cast<Tile *>(parent);
     }
 
+    void Battalion::NextTurn()
+    {
+        availablePoints = movementPoints;
+        drawable->SetColor(TeamToColor(team));
+    };
+
     bool Battalion::InteractWithEntity(Entity *e)
     {
         switch (e->GetEntityType())
@@ -105,11 +111,13 @@ namespace egl
             auto diff = getPosition() - e->getPosition();
             if (diff.x * diff.x + diff.y * diff.y < Tile::radius * Tile::radius * 4 * movementPoints * movementPoints)
             {
-                auto bat = static_cast<Battalion *>(e);
-                if (bat->team != team)
+                auto other_bat = static_cast<Battalion *>(e);
+                if (other_bat->team != team)
                 {
                     float r = static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
                     Damage(r * maxDamage);
+                    other_bat->SpendMovementPoints(other_bat->GetMovementPoints());
+                    other_bat->MarkAsSpent();
                     return true;
                 }
             }

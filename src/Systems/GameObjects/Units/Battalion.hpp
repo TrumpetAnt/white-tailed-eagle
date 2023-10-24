@@ -23,6 +23,7 @@ namespace egl
         Battalion(int team) : Entity(EntityType::E_Battalion), team(team){};
         // ~~ Base ~~
         Tile *GetParentTile();
+        void NextTurn() override;
         // ~~ Render shit ~~
         void UpdateTransforms() override;
         void ConcatDrawable(std::vector<EgDrawable *> *res) override;

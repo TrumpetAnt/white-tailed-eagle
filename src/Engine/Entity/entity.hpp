@@ -31,6 +31,7 @@ namespace egl
                 res->push_back(drawable);
             }
         };
+        virtual void NextTurn(){};
 
         virtual bool IsDrawable();
         virtual void AddDrawable(EgDrawable *drawable);
