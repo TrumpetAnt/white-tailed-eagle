@@ -164,23 +164,25 @@ namespace egl
         drawable->SetColor(baseColor);
     };
 
-    bool Tile::InteractWithEntity(Entity *e)
+    bool Tile::InteractWithEntity(Entity *selected)
     {
-        switch (e->GetEntityType())
+        switch (selected->GetEntityType())
         {
         case EntityType::E_Battalion:
             if (battalion != nullptr)
             {
                 return false;
             }
-            battalion = static_cast<Battalion *>(e);
-            auto moveRange = battalion->GetMovementPoints();
-            if (SqrDistanceToTile(*(battalion->GetParentTile())) < moveRange * moveRange * Tile::radius * Tile::radius * 4)
+            battalion = static_cast<Battalion *>(selected);
+            auto map = static_cast<Map *>(parent);
+            auto cost = map->CostToTile(this);
+            if (cost < 0.f)
             {
-                battalion->SpendMovementPoints(moveRange);
-                AddBattalion(battalion);
-                return true;
+                break;
             }
+            battalion->SpendMovementPoints(cost);
+            AddBattalion(battalion);
+            return true;
             break;
         }
         return false;

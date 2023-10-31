@@ -32,6 +32,8 @@ namespace egl
         void UpdateTransforms() override;
         void ConcatDrawable(std::vector<EgDrawable *> *res) override;
         void AddDrawable();
+        void Hover() override;
+        void StopHover() override;
         // ~~ Select ~~
         bool IsSelectable() override;
         Entity *AttemptSelect(float x, float y) override;

@@ -51,6 +51,9 @@ namespace egl
         void ResetHighlighActionTo();
 
         std::vector<action_t> *GetBattalionActions(int x, int y, int movementPoints);
+        bool HasAction(Tile *tile);
+        action_t ActionToTile(Tile *tile);
+        float CostToTile(Tile *tile);
 
         std::vector<Tile *> *FindPaths(Tile *source, sf::Vector2i target, int movementPoints = 9999999);
     };

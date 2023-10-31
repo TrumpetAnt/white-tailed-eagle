@@ -35,7 +35,7 @@ namespace egl
         void ResetHighlight() override;
         void AlternateHighlight();
 
-        bool InteractWithEntity(Entity *e) override;
+        bool InteractWithEntity(Entity *selected) override;
         void ClearBattalion();
 
         float SqrDistanceToTile(const Tile &other);

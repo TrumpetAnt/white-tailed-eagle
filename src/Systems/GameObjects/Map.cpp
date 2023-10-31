@@ -297,4 +297,52 @@ namespace egl
 
         return res;
     }
+
+    bool Map::HasAction(Tile *tile)
+    {
+        if (actions == nullptr)
+        {
+            throw std::invalid_argument("actions undefined");
+        }
+        for (auto action : *actions)
+        {
+            if (tile == action.first)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    action_t Map::ActionToTile(Tile *tile)
+    {
+        if (actions == nullptr)
+        {
+            throw std::invalid_argument("actions undefined");
+        }
+        for (auto action : *actions)
+        {
+            if (tile == action.first)
+            {
+                return action;
+            }
+        }
+        throw std::invalid_argument("tile not among actions");
+    }
+
+    float Map::CostToTile(Tile *tile)
+    {
+        if (actions == nullptr)
+        {
+            throw std::invalid_argument("actions undefined");
+        }
+        for (auto action : *actions)
+        {
+            if (tile == action.first)
+            {
+                return action.second->size() - 1;
+            }
+        }
+        return -1.f;
+    }
 }

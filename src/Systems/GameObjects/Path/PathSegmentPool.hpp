@@ -30,6 +30,7 @@ namespace egl
 
         void TrackEntities(std::vector<Entity *> *vec);
 
+        // @todo: Add small dots and points between path segments
         void MarkMovePath(std::vector<Tile *> *tiles, bool attackLast = false);
         void UnMarkPath();
     };

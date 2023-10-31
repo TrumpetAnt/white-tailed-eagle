@@ -31,6 +31,16 @@ namespace egl
         healthBar = new HealthBar(initialHp, DrawableFactory::GetHealthBar(60.f, 20.f));
     }
 
+    void Battalion::Hover()
+    {
+        parent->Hover();
+    };
+
+    void Battalion::StopHover()
+    {
+        parent->StopHover();
+    };
+
     void Battalion::UpdateTransforms()
     {
         drawable->setPosition(getPosition());
@@ -124,34 +134,43 @@ namespace egl
         return sf::Vector2f(0.5f - r_x, 0.5f - r_y) * radius * 2.f;
     }
 
-    bool Battalion::InteractWithEntity(Entity *e)
+    bool Battalion::InteractWithEntity(Entity *selected)
     {
-        switch (e->GetEntityType())
+        switch (selected->GetEntityType())
         {
         case EntityType::E_Battalion:
-            auto diff = getPosition() - e->getPosition();
-            auto dist = diff.x * diff.x + diff.y * diff.y;
-            auto tile_width = Tile::radius * Tile::radius * 4;
-            if (dist < tile_width * movementPoints * movementPoints)
+            auto other_bat = static_cast<Battalion *>(selected);
+            if (other_bat->team == team)
             {
-                auto other_bat = static_cast<Battalion *>(e);
-                if (other_bat->team != team)
-                {
-                    float r = static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
-                    Damage(r * linearDamageVariant + baseDamage);
-                    other_bat->SpendMovementPoints(other_bat->GetMovementPoints());
-                    other_bat->MarkAsSpent();
-                    for (int i = 0; i < 5; i++)
-                    {
-                        auto offset_start = randomOffset(Battalion::radius / 4.f);
-                        auto offset_end = randomOffset(Battalion::radius);
-                        ProjectilePool::GetInstance()->Shoot(other_bat->getPosition() + offset_start, getPosition() + offset_end, 30);
-                    }
-
-                    return true;
-                }
+                break;
             }
-            break;
+            auto tile = static_cast<Tile *>(parent);
+            auto map = static_cast<Map *>(tile->parent);
+            map->ResetHighlighActionTo();
+            if (!map->HasAction(tile))
+            {
+                break;
+            }
+            auto action = map->ActionToTile(tile);
+            auto tiles = action.second;
+            auto second_to_last = tiles->at(1);
+            if (second_to_last != selected->parent)
+            {
+                second_to_last->AddBattalion(other_bat);
+            }
+
+            float r = static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
+            Damage(r * linearDamageVariant + baseDamage);
+            other_bat->SpendMovementPoints(other_bat->GetMovementPoints());
+            other_bat->MarkAsSpent();
+            for (int i = 0; i < 5; i++)
+            {
+                auto offset_start = randomOffset(Battalion::radius / 4.f);
+                auto offset_end = randomOffset(Battalion::radius);
+                ProjectilePool::GetInstance()->Shoot(other_bat->getPosition() + offset_start, getPosition() + offset_end, 30);
+            }
+
+            return true;
         }
         return false;
     }
