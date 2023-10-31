@@ -80,6 +80,25 @@ namespace egl
         }
     }
 
+    void StateManager::MouseAt(float x, float y)
+    {
+        auto target = state->SelectAt(x, y);
+        if (hover == target)
+        {
+            return;
+        }
+        if (hover != nullptr)
+        {
+            hover->StopHover();
+        }
+        hover = target;
+        if (hover == nullptr)
+        {
+            return;
+        }
+        hover->Hover();
+    }
+
     void StateManager::NextTurn(sf::Mouse::Button button)
     {
         if (button != sf::Mouse::Button::Left)
@@ -87,5 +106,10 @@ namespace egl
             return;
         }
         state->NextTurn();
+    }
+
+    Entity *StateManager::GetSelected()
+    {
+        return selected;
     }
 }

@@ -9,11 +9,13 @@
 #include "EntityType.hpp"
 #include "MinHeap.hpp"
 #include "CapturePoint.hpp"
+#include "Path/PathSegmentPool.hpp"
 
 namespace egl
 {
     typedef std::pair<Tile *, std::vector<Tile *> *> action_t;
 
+    class StateManager;
     class Map : public Entity
     {
     private:
@@ -21,6 +23,7 @@ namespace egl
         std::vector<Tile *> *highlightedTiles = new std::vector<Tile *>();
         int width;
         int height;
+        std::vector<action_t> *actions = nullptr;
 
         bool checkBounds(int x, int y);
         void GetTileNeighbours(std::vector<Tile *> *out_vec, Tile *target);
@@ -38,9 +41,14 @@ namespace egl
 
         void AddBattalionAt(Battalion *bat, int x, int y);
         void AddCapturePointAt(CapturePoint *cp, int x, int y);
+
         void HighlightTilesAround(int x, int y, int r);
         void HighlightTiles(std::vector<Tile *> *tiles);
+        void HighlightActions(std::vector<action_t> *actions);
         void ResetAllHighlightedTiles();
+
+        void HighlightActionTo(Tile *target);
+        void ResetHighlighActionTo();
 
         std::vector<action_t> *GetBattalionActions(int x, int y, int movementPoints);
 

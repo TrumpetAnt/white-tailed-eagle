@@ -80,6 +80,15 @@ namespace egl
         SafeZoomCamera(delta);
     }
 
+    sf::Vector2f UIManager::windowToGlobalCoords(sf::Vector2i windowPos)
+    {
+        auto clickPos = sf::Vector2f(static_cast<float>(windowPos.x), static_cast<float>(windowPos.y));
+        auto relPos = sf::Vector2f(clickPos.x / refWindowSize.x, clickPos.y / refWindowSize.y);
+
+        auto viewWorldPos = sf::Vector2f(view.getCenter().x - view.getSize().x / 2.f, view.getCenter().y - view.getSize().y / 2.f);
+        return sf::Vector2f(viewWorldPos.x + view.getSize().x * relPos.x, viewWorldPos.y + view.getSize().y * relPos.y);
+    }
+
     void UIManager::ClickAt(int x, int y, sf::Mouse::Button button)
     {
         if (guiManager->ClickAt(sf::Vector2i(x, y), button))
@@ -87,12 +96,16 @@ namespace egl
             return;
         }
 
-        auto clickPos = sf::Vector2f(static_cast<float>(x), static_cast<float>(y));
-        auto relPos = sf::Vector2f(clickPos.x / refWindowSize.x, clickPos.y / refWindowSize.y);
-
-        auto viewWorldPos = sf::Vector2f(view.getCenter().x - view.getSize().x / 2.f, view.getCenter().y - view.getSize().y / 2.f);
-        auto worldPos = sf::Vector2f(viewWorldPos.x + view.getSize().x * relPos.x, viewWorldPos.y + view.getSize().y * relPos.y);
+        auto worldPos = windowToGlobalCoords(sf::Vector2i(x, y));
 
         stateManager->ClickAt(worldPos.x, worldPos.y, button);
+    }
+
+    void UIManager::MouseAt(sf::Vector2i pos)
+    {
+        auto inWindowPos = pos; // - window->getPosition();
+
+        auto worldPos = windowToGlobalCoords(inWindowPos);
+        stateManager->MouseAt(worldPos.x, worldPos.y);
     }
 }

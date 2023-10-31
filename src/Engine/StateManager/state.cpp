@@ -35,6 +35,8 @@ namespace egl
 
         ProjectilePool::GetInstance()
             ->TrackEntities(entities);
+        PathSegmentPool::GetInstance()
+            ->TrackEntities(entities);
     }
 
     std::vector<Entity *> *State::GetEntities()

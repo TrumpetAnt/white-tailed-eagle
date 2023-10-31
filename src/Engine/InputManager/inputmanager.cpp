@@ -67,6 +67,7 @@ namespace egl
                 viewDelta.y += scrollSpeed;
             }
             uiManager->MoveCamera(viewDelta);
+            uiManager->MouseAt(sf::Mouse::getPosition(*window));
             std::this_thread::sleep_for(8ms);
         }
     }

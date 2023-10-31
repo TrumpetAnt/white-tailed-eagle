@@ -51,4 +51,9 @@ namespace egl
         res->AddDrawable();
         return res;
     }
+
+    PathSegment *EntityFactory::GetPathSegment()
+    {
+        return new PathSegment();
+    }
 }

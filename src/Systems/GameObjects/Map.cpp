@@ -1,4 +1,5 @@
 #include "Map.hpp"
+#include "../../Engine/StateManager/statemanager.hpp"
 
 namespace egl
 {
@@ -115,6 +116,21 @@ namespace egl
         }
     }
 
+    void Map::HighlightActions(std::vector<action_t> *actions)
+    {
+        if (this->actions != nullptr)
+        {
+            delete this->actions;
+            this->actions = nullptr;
+        }
+        this->actions = actions;
+
+        for (auto action : *actions)
+        {
+            HighlightTile(action.first);
+        }
+    }
+
     void Map::ResetAllHighlightedTiles()
     {
         for (auto tile : *highlightedTiles)
@@ -122,6 +138,29 @@ namespace egl
             tile->ResetHighlight();
         }
         highlightedTiles->clear();
+    }
+
+    void Map::HighlightActionTo(Tile *target)
+    {
+        auto selected = StateManager::GetInstance()->GetSelected();
+        if (selected == nullptr || selected == target || actions == nullptr)
+        {
+            return;
+        }
+        for (auto action : *actions)
+        {
+            if (action.first == target)
+            {
+                auto bat_at_target = target->GetBattalion();
+                PathSegmentPool::GetInstance()->MarkMovePath(action.second, bat_at_target != nullptr && bat_at_target->GetTeam() != 0);
+                return;
+            }
+        }
+    }
+
+    void Map::ResetHighlighActionTo()
+    {
+        PathSegmentPool::GetInstance()->UnMarkPath();
     }
 
     void Map::GetTileNeighbours(std::vector<Tile *> *out_vec, Tile *target)

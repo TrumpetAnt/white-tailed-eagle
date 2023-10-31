@@ -47,6 +47,8 @@ namespace egl
         virtual Entity *AttemptSelect(float x, float y);
         virtual void Highlight(){};
         virtual void ResetHighlight(){};
+        virtual void Hover(){};
+        virtual void StopHover(){};
 
         virtual bool InteractWithEntity(Entity *e) { return false; };
         virtual void NextTurn(){};

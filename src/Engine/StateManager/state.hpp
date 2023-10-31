@@ -5,6 +5,7 @@
 #include "../Entity/entity.hpp"
 #include "../../Systems/GameObjects/Factories/EntityFactory.hpp"
 #include "../../Systems/GameObjects/Units/ProjectilePool.hpp"
+#include "../../Systems/GameObjects/Path/PathSegmentPool.hpp"
 
 namespace egl
 {

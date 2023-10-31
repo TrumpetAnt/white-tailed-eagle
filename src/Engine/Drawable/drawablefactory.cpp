@@ -59,6 +59,22 @@ namespace egl
         return res;
     }
 
+    EgDrawable *DrawableFactory::GetRectangle(sf::Vector2f size)
+    {
+        auto boxes = new sf::VertexArray(sf::Triangles, 6);
+        auto width = size.x;
+        auto height = size.y;
+        (*boxes)[0].position = sf::Vector2f(width / -2, height / -2);
+        (*boxes)[1].position = sf::Vector2f(width / 2, height / -2);
+        (*boxes)[2].position = sf::Vector2f(width / -2, height / 2);
+        (*boxes)[3].position = sf::Vector2f(width / 2, height / -2);
+        (*boxes)[4].position = sf::Vector2f(width / -2, height / 2);
+        (*boxes)[5].position = sf::Vector2f(width / 2, height / 2);
+        auto res = new EgDrawable(boxes);
+
+        return res;
+    }
+
     sf::VertexArray *DrawableFactory::GetHealthBar(float width, float height)
     {
         auto boxes = new sf::VertexArray(sf::Triangles, 12);

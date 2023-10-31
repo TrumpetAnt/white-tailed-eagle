@@ -68,14 +68,7 @@ namespace egl
         auto m = static_cast<Map *>(tile->parent);
         auto pos = tile->GetDiscretePos();
         auto actions = m->GetBattalionActions(pos.x, pos.y, GetMovementPoints());
-        auto tiles = new std::vector<Tile *>();
-        for (auto action : *actions)
-        {
-            tiles->push_back(action.first);
-            delete action.second;
-        }
-        m->HighlightTiles(tiles);
-        delete tiles;
+        m->HighlightActions(actions);
     }
 
     void Battalion::MarkAsSpent()

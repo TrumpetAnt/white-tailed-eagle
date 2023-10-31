@@ -14,6 +14,7 @@ namespace egl
         static std::mutex mutex_;
         State *state;
         Entity *selected = nullptr;
+        Entity *hover = nullptr;
 
     protected:
         StateManager();
@@ -27,6 +28,9 @@ namespace egl
         std::vector<EgDrawable *> *GetDrawables();
 
         void ClickAt(float x, float y, sf::Mouse::Button button);
+        void MouseAt(float x, float y);
         void NextTurn(sf::Mouse::Button button);
+
+        Entity *GetSelected();
     };
 }

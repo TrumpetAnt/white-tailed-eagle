@@ -2,6 +2,7 @@
 
 #include "../../../Engine/Entity/entity.hpp"
 #include "../EntityType.hpp"
+#include "../TransformUtils.hpp"
 
 namespace egl
 {

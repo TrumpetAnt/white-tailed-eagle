@@ -40,6 +40,9 @@ namespace egl
 
         float SqrDistanceToTile(const Tile &other);
 
+        void Hover() override;
+        void StopHover() override;
+
         static constexpr float radius = 40;
     };
 }

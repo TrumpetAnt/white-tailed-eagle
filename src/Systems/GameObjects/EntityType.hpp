@@ -8,6 +8,7 @@ namespace egl
         E_Tile,
         E_Battalion,
         E_BattalionProjectile,
-        E_CapturePoint
+        E_CapturePoint,
+        E_PathSegment
     };
 }

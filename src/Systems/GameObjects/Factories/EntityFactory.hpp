@@ -8,6 +8,7 @@
 #include "../Units/Battalion.hpp"
 #include "../Units/BattalionProjectile.hpp"
 #include "../CapturePoint.hpp"
+#include "../Path/PathSegment.hpp"
 
 namespace egl
 {
@@ -19,5 +20,6 @@ namespace egl
         static Battalion *GetBattalion(int team);
         static BattalionProjectile *GetBattalionProjectile();
         static CapturePoint *GetCapturePoint(int team);
+        static PathSegment *GetPathSegment();
     };
 }

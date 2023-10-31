@@ -27,6 +27,7 @@ namespace egl
         static std::mutex camera_mutex;
         void SafeMoveCamera(sf::Vector2f delta);
         void SafeZoomCamera(float delta);
+        sf::Vector2f windowToGlobalCoords(sf::Vector2i windowPos);
 
     public:
         UIManager(sf::RenderWindow *w);
@@ -43,5 +44,6 @@ namespace egl
         void ZoomCamera(float delta);
 
         void ClickAt(int x, int y, sf::Mouse::Button button);
+        void MouseAt(sf::Vector2i pos);
     };
 };

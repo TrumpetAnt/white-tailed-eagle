@@ -197,4 +197,16 @@ namespace egl
         auto diff = getPosition() - other.getPosition();
         return diff.x * diff.x + diff.y * diff.y;
     }
+
+    void Tile::Hover()
+    {
+        auto map = static_cast<Map *>(parent);
+        map->HighlightActionTo(this);
+    };
+
+    void Tile::StopHover()
+    {
+        auto map = static_cast<Map *>(parent);
+        map->ResetHighlighActionTo();
+    };
 }
