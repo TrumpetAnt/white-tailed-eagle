@@ -7,7 +7,7 @@ namespace egl
 {
     class GuiElement
     {
-    private:
+    protected:
         std::vector<GuiElement *> *children = new std::vector<GuiElement *>();
         GuiElement *parent = nullptr;
         sf::Vector2f position;
@@ -25,9 +25,8 @@ namespace egl
         GuiElement(sf::Vector2f position, sf::Shape *shape, void (*action)(sf::Mouse::Button));
 
         void AddChild(GuiElement *child);
-
+        void SetFillColor(sf::Color color);
         bool ClickAt(sf::Vector2f guiPos, sf::Mouse::Button button);
-
         void RenderGui(sf::RenderWindow &window);
     };
 }

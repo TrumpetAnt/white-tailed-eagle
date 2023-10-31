@@ -16,6 +16,16 @@ namespace egl
         auto bottom_right = sf::Vector2f(static_cast<float>(windowSize.x), static_cast<float>(windowSize.y)) - sf::Vector2f(300.f, 140.f);
         guiManager->AddGuiElement(GuiElementFactory::GetMediumButton(bottom_right, "Next turn", [](sf::Mouse::Button button) -> void
                                                                      { StateManager::GetInstance()->NextTurn(button); }));
+
+        auto top_center_ish = sf::Vector2f(300.f, 30.f);
+        for (float i = 0.f; i < static_cast<float>(StateManager::turnLimit); i++)
+        {
+            auto circle = GuiElementFactory::GetCircle(top_center_ish, 20.f, sf::Color(125, 125, 125));
+            turnCounter->push_back(circle);
+            guiManager->AddGuiElement(circle);
+            top_center_ish.x += 100.f;
+        }
+        currentTurn = turnCounter->begin();
     };
 
     UIManager *UIManager::GetInstance(sf::RenderWindow *window)
@@ -55,6 +65,10 @@ namespace egl
 
     void UIManager::SafeMoveCamera(sf::Vector2f delta)
     {
+        if (gameEnd)
+        {
+            return;
+        }
         std::lock_guard<std::mutex> lock(camera_mutex);
         cameraDelta = delta;
     }
@@ -71,12 +85,20 @@ namespace egl
 
     void UIManager::MoveCamera(sf::Vector2f delta)
     {
+        if (gameEnd)
+        {
+            return;
+        }
         auto zoomFactor = view.getSize().x / refWindowSize.x;
         SafeMoveCamera(delta * zoomFactor);
     }
 
     void UIManager::ZoomCamera(float delta)
     {
+        if (gameEnd)
+        {
+            return;
+        }
         SafeZoomCamera(delta);
     }
 
@@ -103,9 +125,39 @@ namespace egl
 
     void UIManager::MouseAt(sf::Vector2i pos)
     {
+        if (gameEnd)
+        {
+            return;
+        }
         auto inWindowPos = pos; // - window->getPosition();
 
         auto worldPos = windowToGlobalCoords(inWindowPos);
         stateManager->MouseAt(worldPos.x, worldPos.y);
+    }
+
+    void UIManager::IndicateNextTurn()
+    {
+        if (gameEnd || currentTurn == turnCounter->end())
+        {
+            return;
+        }
+        (*currentTurn)->SetFillColor(sf::Color::White);
+        currentTurn++;
+    }
+
+    void UIManager::EndOfGame()
+    {
+        gameEnd = true;
+        auto center = window->getView().getCenter();
+        guiManager->AddGuiElement(GuiElementFactory::GetTextElement(center, "Its all over"));
+        guiManager->AddGuiElement(GuiElementFactory::GetMediumButton(center + sf::Vector2f(0.f, 150.f), "Exit game",
+                                                                     [](sf::Mouse::Button button) -> void
+                                                                     { UIManager::GetInstance(nullptr)->ExitGame(); }));
+    }
+
+    void UIManager::ExitGame()
+    {
+        // @todo: disable all gui elements except exit game button
+        window->close();
     }
 }

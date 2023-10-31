@@ -1,5 +1,7 @@
 #include "statemanager.hpp"
 
+#include "../UIManager/uimanager.hpp"
+
 namespace egl
 {
     StateManager *StateManager::pinstance_{nullptr};
@@ -106,6 +108,13 @@ namespace egl
             return;
         }
         state->NextTurn();
+        auto uiManager = UIManager::GetInstance(nullptr);
+        uiManager->IndicateNextTurn();
+        currentTurn += 1;
+        if (currentTurn == turnLimit)
+        {
+            uiManager->EndOfGame();
+        }
     }
 
     Entity *StateManager::GetSelected()

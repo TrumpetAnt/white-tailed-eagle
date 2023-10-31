@@ -31,6 +31,11 @@ namespace egl
         children->push_back(child);
     }
 
+    void GuiElement::SetFillColor(sf::Color color)
+    {
+        shape->setFillColor(color);
+    }
+
     bool GuiElement::ClickAt(sf::Vector2f guiPos, sf::Mouse::Button button)
     {
         if (shape != nullptr)

@@ -13,5 +13,6 @@ namespace egl
     public:
         static GuiElement *GetMediumButton(sf::Vector2f position, std::string text, void (*action)(sf::Mouse::Button));
         static GuiElement *GetTextElement(sf::Vector2f position, std::string text);
+        static GuiElement *GetCircle(sf::Vector2f position, float radius, sf::Color color);
     };
 }

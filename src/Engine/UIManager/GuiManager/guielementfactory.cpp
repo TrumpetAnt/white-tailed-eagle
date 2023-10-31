@@ -39,4 +39,14 @@ namespace egl
         auto guiElement = new GuiElement(position, textElement);
         return guiElement;
     }
+
+    GuiElement *GuiElementFactory::GetCircle(sf::Vector2f position, float radius, sf::Color color)
+    {
+        auto shape = new sf::CircleShape(radius);
+        shape->setFillColor(color);
+        shape->setOutlineColor(sf::Color::Black);
+        shape->setOutlineThickness(3.f);
+        shape->setPosition(position);
+        return new GuiElement(position, shape);
+    }
 }

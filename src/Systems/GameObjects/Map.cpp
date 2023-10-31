@@ -120,6 +120,10 @@ namespace egl
     {
         if (this->actions != nullptr)
         {
+            for (auto action : *this->actions)
+            {
+                delete action.second;
+            }
             delete this->actions;
             this->actions = nullptr;
         }

@@ -28,6 +28,10 @@ namespace egl
         void SafeMoveCamera(sf::Vector2f delta);
         void SafeZoomCamera(float delta);
         sf::Vector2f windowToGlobalCoords(sf::Vector2i windowPos);
+        std::vector<GuiElement *> *turnCounter = new std::vector<GuiElement *>();
+        std::vector<GuiElement *>::iterator currentTurn;
+
+        bool gameEnd = false;
 
     public:
         UIManager(sf::RenderWindow *w);
@@ -45,5 +49,10 @@ namespace egl
 
         void ClickAt(int x, int y, sf::Mouse::Button button);
         void MouseAt(sf::Vector2i pos);
+
+        void IndicateNextTurn();
+        void EndOfGame();
+
+        void ExitGame();
     };
 };

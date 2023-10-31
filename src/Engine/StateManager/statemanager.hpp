@@ -7,6 +7,7 @@
 
 namespace egl
 {
+    class UIManager;
     class StateManager
     {
     private:
@@ -15,6 +16,7 @@ namespace egl
         State *state;
         Entity *selected = nullptr;
         Entity *hover = nullptr;
+        int currentTurn = 0;
 
     protected:
         StateManager();
@@ -32,5 +34,7 @@ namespace egl
         void NextTurn(sf::Mouse::Button button);
 
         Entity *GetSelected();
+
+        static constexpr int turnLimit = 10;
     };
 }

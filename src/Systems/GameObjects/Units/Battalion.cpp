@@ -99,6 +99,7 @@ namespace egl
 
         auto m = static_cast<Map *>(parent->parent);
         m->ResetAllHighlightedTiles();
+        m->ResetHighlighActionTo();
     }
 
     uint Battalion::GetMovementPoints()
@@ -146,7 +147,6 @@ namespace egl
             }
             auto tile = static_cast<Tile *>(parent);
             auto map = static_cast<Map *>(tile->parent);
-            map->ResetHighlighActionTo();
             if (!map->HasAction(tile))
             {
                 break;
@@ -156,6 +156,10 @@ namespace egl
             auto second_to_last = tiles->at(1);
             if (second_to_last != selected->parent)
             {
+                if (second_to_last->GetBattalion() != nullptr)
+                {
+                    break;
+                }
                 second_to_last->AddBattalion(other_bat);
             }
 
@@ -170,6 +174,7 @@ namespace egl
                 ProjectilePool::GetInstance()->Shoot(other_bat->getPosition() + offset_start, getPosition() + offset_end, 30);
             }
 
+            map->ResetHighlighActionTo();
             return true;
         }
         return false;
