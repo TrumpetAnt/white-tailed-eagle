@@ -25,11 +25,13 @@ namespace egl
 
         void AddDrawable(TileType type);
         void AddBattalion(Battalion *bat);
+        Battalion *GetBattalion();
         void ConcatDrawable(std::vector<EgDrawable *> *res) override;
         bool IsSelectable() override;
         Entity *AttemptSelect(float x, float y) override;
         void Highlight() override;
         void ResetHighlight() override;
+        void AlternateHighlight();
 
         bool InteractWithEntity(Entity *e) override;
         void ClearBattalion();

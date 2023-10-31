@@ -15,8 +15,7 @@ namespace egl
         default:
             return sf::Color::Black;
         }
-    }
-
+    };
     bool Battalion::MarkedForDestruction()
     {
         return IsDead();
@@ -59,7 +58,7 @@ namespace egl
     Entity *Battalion::AttemptSelect(float x, float y)
     {
         auto distance = getPosition() - sf::Vector2f(x, y);
-        return distance.x * distance.x + distance.y * distance.y < 25.f * 25.f ? this : nullptr;
+        return distance.x * distance.x + distance.y * distance.y < Battalion::radius * Battalion::radius ? this : nullptr;
     }
 
     void Battalion::Highlight()
@@ -112,6 +111,11 @@ namespace egl
         drawable->SetColor(TeamToColor(team));
     };
 
+    int Battalion::GetTeam()
+    {
+        return team;
+    }
+
     sf::Vector2f randomOffset(float radius)
     {
         float r_x = static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
@@ -133,7 +137,7 @@ namespace egl
                 if (other_bat->team != team)
                 {
                     float r = static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
-                    Damage(r * maxDamage);
+                    Damage(r * linearDamageVariant + baseDamage);
                     other_bat->SpendMovementPoints(other_bat->GetMovementPoints());
                     other_bat->MarkAsSpent();
                     for (int i = 0; i < 5; i++)

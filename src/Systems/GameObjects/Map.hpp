@@ -7,6 +7,7 @@
 #include "Tile.hpp"
 #include "EntityType.hpp"
 #include "MinHeap.hpp"
+#include "CapturePoint.hpp"
 
 namespace egl
 {
@@ -32,6 +33,7 @@ namespace egl
         void ConcatDrawable(std::vector<EgDrawable *> *res) override;
 
         void AddBattalionAt(Battalion *bat, int x, int y);
+        void AddCapturePointAt(CapturePoint *cp, int x, int y);
         void HighlightTilesAround(int x, int y, int r);
         void ResetAllHighlightedTiles();
 

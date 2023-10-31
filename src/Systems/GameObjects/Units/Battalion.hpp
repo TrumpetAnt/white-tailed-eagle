@@ -12,11 +12,12 @@ namespace egl
     class Battalion : public Entity
     {
     protected:
-        uint movementPoints = 2;
+        uint movementPoints = 3;
         uint availablePoints = movementPoints;
         float initialHp = 100.f;
         float hitPoints = initialHp;
-        float maxDamage = 50.f;
+        float baseDamage = 20.f;
+        float linearDamageVariant = 10.f;
         HealthBar *healthBar;
         int team;
 
@@ -44,7 +45,8 @@ namespace egl
         bool InteractWithEntity(Entity *e) override;
         void Damage(float damage);
         void NextTurn() override;
+        int GetTeam();
 
-        static constexpr float radius = 30;
+        static constexpr float radius = 25;
     };
 }

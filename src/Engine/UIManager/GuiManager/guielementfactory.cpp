@@ -14,7 +14,7 @@ namespace egl
 
     GuiElement *GuiElementFactory::GetMediumButton(sf::Vector2f position, std::string text, void (*action)(sf::Mouse::Button))
     {
-        auto size = sf::Vector2f(100.f, 40.f);
+        auto size = sf::Vector2f(200.f, 80.f);
         auto shape = GuiElementFactory::ButtonShape(position, size);
         auto button = new GuiElement(position, shape, action);
         auto textElement = GuiElementFactory::GetTextElement(position, text); // TODO Align text
@@ -29,7 +29,7 @@ namespace egl
 
         auto fontManager = FontManager::GetInstance();
         auto font = fontManager->GetFont(FontManager::Fonts::Oswald);
-        textElement->setCharacterSize(20);
+        textElement->setCharacterSize(40);
         textElement->setFont(*font);
         textElement->setFillColor(sf::Color::Black);
         textElement->setOutlineColor(sf::Color::White);

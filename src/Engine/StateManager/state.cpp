@@ -25,7 +25,16 @@ namespace egl
         entities->push_back(bat3);
         entities->push_back(bat4);
 
-        ProjectilePool::GetInstance()->TrackEntities(entities);
+        auto cp1 = EntityFactory::GetCapturePoint(0);
+        auto cp2 = EntityFactory::GetCapturePoint(1);
+
+        map->AddCapturePointAt(cp1, 10, 2);
+        map->AddCapturePointAt(cp2, 16, 5);
+        entities->push_back(cp1);
+        entities->push_back(cp2);
+
+        ProjectilePool::GetInstance()
+            ->TrackEntities(entities);
     }
 
     std::vector<Entity *> *State::GetEntities()

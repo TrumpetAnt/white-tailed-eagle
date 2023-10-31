@@ -44,4 +44,11 @@ namespace egl
         res->AddDrawable(drawable);
         return res;
     }
+
+    CapturePoint *EntityFactory::GetCapturePoint(int team)
+    {
+        auto res = new CapturePoint(team);
+        res->AddDrawable();
+        return res;
+    }
 }

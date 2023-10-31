@@ -50,6 +50,11 @@ namespace egl
         battalion->SetPosition(getPosition());
     }
 
+    Battalion *Tile::GetBattalion()
+    {
+        return battalion;
+    }
+
     void Tile::ConcatDrawable(std::vector<EgDrawable *> *res)
     {
         if (IsDrawable())
@@ -143,6 +148,11 @@ namespace egl
     {
         drawable->SetColor(baseColor + sf::Color(40.f, 40.f, 40.f));
     };
+
+    void Tile::AlternateHighlight()
+    {
+        drawable->SetColor(baseColor - sf::Color(0.f, 40.f, 40.f) + sf::Color(100.f, 0.f, 0.f));
+    }
 
     void Tile::ResetHighlight()
     {

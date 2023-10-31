@@ -44,6 +44,18 @@ namespace egl
         bat->UpdateTransforms();
     }
 
+    void Map::AddCapturePointAt(CapturePoint *cp, int x, int y)
+    {
+        if (!checkBounds(x, y))
+        {
+            return;
+        }
+        auto tile = tiles->at(y * width + x);
+        tile->AttachChild(cp);
+        cp->setPosition(tile->getPosition());
+        cp->UpdateTransforms();
+    }
+
     std::vector<Tile *> *Map::GetTileSurroundings(Tile *target, int radius)
     {
         auto res = new std::vector<Tile *>();
@@ -75,7 +87,16 @@ namespace egl
         auto surroundings = GetTileSurroundings(tiles->at(x + width * y), r);
         for (auto tile : *surroundings)
         {
-            tile->Highlight();
+            auto b = tile->GetBattalion();
+            if (b != nullptr && b->GetTeam() != 0)
+            {
+                tile->AlternateHighlight();
+            }
+            else
+            {
+                tile->Highlight();
+            }
+
             highlightedTiles->push_back(tile);
         }
         delete surroundings;

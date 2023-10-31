@@ -13,7 +13,7 @@ namespace egl
         renderer = new Renderer(window);
 
         auto windowSize = window->getSize();
-        auto bottom_right = sf::Vector2f(static_cast<float>(windowSize.x), static_cast<float>(windowSize.y)) - sf::Vector2f(200.f, 100.f);
+        auto bottom_right = sf::Vector2f(static_cast<float>(windowSize.x), static_cast<float>(windowSize.y)) - sf::Vector2f(300.f, 140.f);
         guiManager->AddGuiElement(GuiElementFactory::GetMediumButton(bottom_right, "Next turn", [](sf::Mouse::Button button) -> void
                                                                      { StateManager::GetInstance()->NextTurn(button); }));
     };
