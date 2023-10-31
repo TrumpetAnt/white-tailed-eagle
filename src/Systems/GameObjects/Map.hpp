@@ -3,6 +3,7 @@
 #include <vector>
 #include <stdexcept>
 #include <unordered_map>
+#include <unordered_set>
 
 #include "Tile.hpp"
 #include "EntityType.hpp"
@@ -11,6 +12,8 @@
 
 namespace egl
 {
+    typedef std::pair<Tile *, std::vector<Tile *> *> action_t;
+
     class Map : public Entity
     {
     private:
@@ -23,6 +26,7 @@ namespace egl
         void GetTileNeighbours(std::vector<Tile *> *out_vec, Tile *target);
         int PosToIndex(sf::Vector2i pos);
         std::vector<Tile *> *GetTileSurroundings(Tile *target, int radius);
+        void HighlightTile(Tile *tile);
 
     public:
         Map(int width, int height, std::vector<Tile *> *tiles);
@@ -35,7 +39,10 @@ namespace egl
         void AddBattalionAt(Battalion *bat, int x, int y);
         void AddCapturePointAt(CapturePoint *cp, int x, int y);
         void HighlightTilesAround(int x, int y, int r);
+        void HighlightTiles(std::vector<Tile *> *tiles);
         void ResetAllHighlightedTiles();
+
+        std::vector<action_t> *GetBattalionActions(int x, int y, int movementPoints);
 
         std::vector<Tile *> *FindPaths(Tile *source, sf::Vector2i target, int movementPoints = 9999999);
     };

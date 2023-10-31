@@ -77,6 +77,21 @@ namespace egl
         return res;
     }
 
+    void Map::HighlightTile(Tile *tile)
+    {
+        auto b = tile->GetBattalion();
+        if (b != nullptr && b->GetTeam() != 0)
+        {
+            tile->AlternateHighlight();
+        }
+        else
+        {
+            tile->Highlight();
+        }
+
+        highlightedTiles->push_back(tile);
+    }
+
     void Map::HighlightTilesAround(int x, int y, int r)
     {
         if (!checkBounds(x, y))
@@ -87,19 +102,17 @@ namespace egl
         auto surroundings = GetTileSurroundings(tiles->at(x + width * y), r);
         for (auto tile : *surroundings)
         {
-            auto b = tile->GetBattalion();
-            if (b != nullptr && b->GetTeam() != 0)
-            {
-                tile->AlternateHighlight();
-            }
-            else
-            {
-                tile->Highlight();
-            }
-
-            highlightedTiles->push_back(tile);
+            HighlightTile(tile);
         }
         delete surroundings;
+    }
+
+    void Map::HighlightTiles(std::vector<Tile *> *tiles)
+    {
+        for (auto tile : *tiles)
+        {
+            HighlightTile(tile);
+        }
     }
 
     void Map::ResetAllHighlightedTiles()
@@ -188,6 +201,61 @@ namespace egl
                 current = explored.at(current.prev_i);
             }
         }
+        return res;
+    }
+
+    std::vector<action_t> *Map::GetBattalionActions(int x, int y, int movementPoints)
+    {
+        auto res = new std::vector<action_t>();
+        auto neighbours = std::vector<Tile *>();
+        auto explored = std::unordered_map<int, ExploreNode>();
+        auto frontier = MinHeap(tiles->size());
+
+        auto source = tiles->at(x + y * width);
+        frontier.insertKey(ExploreNode{source, 0.f, static_cast<float>(movementPoints), PosToIndex(source->GetDiscretePos())});
+
+        while (!frontier.isEmpty())
+        {
+            auto explore_node = frontier.extractMin();
+            auto explore_pos_i = PosToIndex(explore_node.tile->GetDiscretePos());
+            explored.insert({explore_pos_i, explore_node});
+
+            auto bat_at_explore = explore_node.tile->GetBattalion();
+            if (explore_node.movement_left <= 0 ||
+                (bat_at_explore != nullptr && bat_at_explore->GetTeam() != 0))
+            {
+                continue;
+            }
+
+            GetTileNeighbours(&neighbours, explore_node.tile);
+            for (auto neighbour : neighbours)
+            {
+                auto neighbour_pos = neighbour->GetDiscretePos();
+                if (explored.count(PosToIndex(neighbour_pos)) == 0)
+                {
+                    frontier.insertKey(ExploreNode{neighbour,
+                                                   explore_node.cost + neighbour->GetMoveCost(),
+                                                   explore_node.movement_left - neighbour->GetMoveCost(),
+                                                   explore_pos_i});
+                }
+            }
+        }
+
+        auto start_i = x + y * width;
+        for (auto v : explored)
+        {
+            auto action = action_t(v.second.tile, new std::vector<Tile *>());
+            action.second->push_back(action.first);
+            auto prev_i = v.second.prev_i;
+            while (prev_i != start_i)
+            {
+                action.second->push_back(tiles->at(prev_i));
+                prev_i = explored.at(prev_i).prev_i;
+            }
+            action.second->push_back(tiles->at(start_i));
+            res->push_back(action);
+        }
+
         return res;
     }
 }

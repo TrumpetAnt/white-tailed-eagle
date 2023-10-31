@@ -55,6 +55,11 @@ namespace egl
         return battalion;
     }
 
+    int Tile::GetMoveCost()
+    {
+        return moveCost;
+    }
+
     void Tile::ConcatDrawable(std::vector<EgDrawable *> *res)
     {
         if (IsDrawable())
