@@ -6,15 +6,7 @@ namespace egl
 {
     sf::Color TeamToColor(int team)
     {
-        switch (team)
-        {
-        case 0:
-            return sf::Color::Red;
-        case 1:
-            return sf::Color::Blue;
-        default:
-            return sf::Color::Black;
-        }
+        return sf::Color::White;
     };
 
     void Battalion::CleanUpActions()
@@ -36,14 +28,28 @@ namespace egl
         return IsDead();
     };
 
+    sf::Texture *TeamToTexture(int team)
+    {
+        auto tm = TextureManager::GetInstance();
+        switch (team)
+        {
+        case 0:
+            return tm->LoadTexture("assets/img/TinyBattleAssetPack/tile_0160.png");
+        case 1:
+            return tm->LoadTexture("assets/img/TinyBattleAssetPack/tile_0142.png");
+        default:
+            throw std::invalid_argument("Unhandled switch case");
+        }
+    }
+
     void Battalion::AddDrawable()
     {
         auto pos = this->getPosition();
-        drawable = DrawableFactory::GetCircle(pos, Battalion::radius);
-
+        drawable = DrawableFactory::GetRectangle(sf::Vector2f(30, 30));
+        drawable->SetTexture(TeamToTexture(team));
         drawable->SetColor(TeamToColor(team));
-
         healthBar = new HealthBar(initialHp, DrawableFactory::GetHealthBar(60.f, 20.f));
+        UpdateTransforms();
     }
 
     void Battalion::Hover()

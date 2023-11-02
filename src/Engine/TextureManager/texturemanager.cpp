@@ -24,7 +24,7 @@ namespace egl
         auto t = new sf::Texture();
         auto r = t->loadFromFile(path);
         std::cout << "Success loading texture? " << (r ? "True" : "False") << std::endl;
-        storedTextures->insert(std::make_pair(path, t));
+        storedTextures->insert({path, t});
         return t;
     }
 }

@@ -20,8 +20,10 @@ namespace egl
         {
             for (int col = 0; col < w; col++)
             {
-                auto x_pos = static_cast<float>(col) * spacing * .75f + offset;
-                auto y_pos = static_cast<float>(row) * spacing * sqrt3div2 + offset + ((col % 2) * spacing * sqrt3div2 / 2);
+                // auto x_pos = static_cast<float>(col) * spacing * .75f + offset;
+                // auto y_pos = static_cast<float>(row) * spacing * sqrt3div2 + offset + ((col % 2) * spacing * sqrt3div2 / 2);
+                auto x_pos = static_cast<float>(col) * spacing * sqrt3div2 + offset + ((row % 2) * spacing * sqrt3div2 / 2);
+                auto y_pos = static_cast<float>(row) * spacing * .75f + offset;
                 tiles->push_back(GetTile(sf::Vector2f(x_pos, y_pos), sf::Vector2i(col, row)));
             }
         }

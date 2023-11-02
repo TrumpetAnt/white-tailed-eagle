@@ -15,13 +15,24 @@ namespace egl
         //  (-0.5, -√3/2)
         //  ( 0.5, -√3/2)
         (*hexagon)[0].position = sf::Vector2f(0, 0);
-        (*hexagon)[1].position = sf::Vector2f(radius, 0);
-        (*hexagon)[2].position = sf::Vector2f(radius * .5f, radius * sqrt3div2);
-        (*hexagon)[3].position = sf::Vector2f(radius * -.5f, radius * sqrt3div2);
-        (*hexagon)[4].position = sf::Vector2f(radius * -1, 0);
-        (*hexagon)[5].position = sf::Vector2f(radius * -.5f, radius * sqrt3div2 * -1);
-        (*hexagon)[6].position = sf::Vector2f(radius * .5f, radius * sqrt3div2 * -1);
-        (*hexagon)[7].position = sf::Vector2f(radius, 0);
+        (*hexagon)[1].position = sf::Vector2f(0, radius);
+        (*hexagon)[2].position = sf::Vector2f(radius * sqrt3div2, radius * .5f);
+        (*hexagon)[3].position = sf::Vector2f(radius * sqrt3div2, radius * -.5f);
+        (*hexagon)[4].position = sf::Vector2f(0, radius * -1);
+        (*hexagon)[5].position = sf::Vector2f(radius * sqrt3div2 * -1, radius * -.5f);
+        (*hexagon)[6].position = sf::Vector2f(radius * sqrt3div2 * -1, radius * .5f);
+        (*hexagon)[7].position = sf::Vector2f(0, radius);
+
+        auto texCenter = sf::Vector2f(60.f, 70.f);
+        auto texRadius = 68.f;
+        (*hexagon)[0].texCoords = texCenter + sf::Vector2f(0, 0);
+        (*hexagon)[1].texCoords = texCenter + sf::Vector2f(0, texRadius);
+        (*hexagon)[2].texCoords = texCenter + sf::Vector2f(texRadius * sqrt3div2, texRadius * .5f);
+        (*hexagon)[3].texCoords = texCenter + sf::Vector2f(texRadius * sqrt3div2, texRadius * -.5f);
+        (*hexagon)[4].texCoords = texCenter + sf::Vector2f(0, texRadius * -1);
+        (*hexagon)[5].texCoords = texCenter + sf::Vector2f(texRadius * sqrt3div2 * -1, texRadius * -.5f);
+        (*hexagon)[6].texCoords = texCenter + sf::Vector2f(texRadius * sqrt3div2 * -1, texRadius * .5f);
+        (*hexagon)[7].texCoords = texCenter + sf::Vector2f(0, texRadius);
 
         auto res = new EgDrawable(hexagon);
         res->setPosition(pos);
@@ -70,6 +81,14 @@ namespace egl
         (*boxes)[3].position = sf::Vector2f(width / 2, height / -2);
         (*boxes)[4].position = sf::Vector2f(width / -2, height / 2);
         (*boxes)[5].position = sf::Vector2f(width / 2, height / 2);
+
+        auto texSize = 16.f;
+        (*boxes)[0].texCoords = sf::Vector2f(0, 0);
+        (*boxes)[1].texCoords = sf::Vector2f(texSize, 0);
+        (*boxes)[2].texCoords = sf::Vector2f(0, texSize);
+        (*boxes)[3].texCoords = sf::Vector2f(texSize, 0);
+        (*boxes)[4].texCoords = sf::Vector2f(0, texSize);
+        (*boxes)[5].texCoords = sf::Vector2f(texSize, texSize);
         auto res = new EgDrawable(boxes);
 
         return res;

@@ -4,5 +4,5 @@ out
 .idea
 .vs
 .vscode
-assets/img/*.png
+assets/img
 assets/fonts

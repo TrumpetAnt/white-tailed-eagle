@@ -9,13 +9,34 @@ namespace egl
         return pos;
     }
 
+    std::string RandomGrassTexture(int i)
+    {
+        switch (i)
+        {
+        case 2:
+            return "assets/img/PNG/Tiles/Terrain/Grass/grass_16.png";
+        case 3:
+            return "assets/img/PNG/Tiles/Terrain/Grass/grass_11.png";
+        case 4:
+            return "assets/img/PNG/Tiles/Terrain/Grass/grass_05.png";
+        case 5:
+            return "assets/img/PNG/Tiles/Terrain/Grass/grass_10.png";
+        case 6:
+            return "assets/img/PNG/Tiles/Terrain/Grass/grass_15.png";
+        default:
+            break;
+        }
+        return "assets/img/PNG/Tiles/Terrain/Grass/grass_05.png";
+    }
+
     sf::Texture *TileTypeToTexture(TileType type)
     {
         auto tm = TextureManager::GetInstance();
+        int tileTex = rand() % 3 + rand() % 3 + 2;
         switch (type)
         {
         case TileType::Grass:
-            return tm->LoadTexture("assets/img/grasssssss.png");
+            return tm->LoadTexture(RandomGrassTexture(tileTex));
         default:
             throw std::invalid_argument("Unhandled switch case");
         }
@@ -27,10 +48,10 @@ namespace egl
         drawable = DrawableFactory::GetHexagon(pos, Tile::radius);
 
         tileType = type;
-        // drawable->SetTexture(TileTypeToTexture(type));
+        drawable->SetTexture(TileTypeToTexture(type));
 
         int variance = 40;
-        auto c = sf::Color(84 + (rand() % variance), 201 + (rand() % variance), 60 + (rand() % variance));
+        auto c = sf::Color::White; //::Color(84 + (rand() % variance), 201 + (rand() % variance), 60 + (rand() % variance));
         drawable->SetColor(c);
         baseColor = c;
     }
