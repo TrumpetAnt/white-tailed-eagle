@@ -13,11 +13,16 @@ namespace egl
     {
     private:
         std::vector<Entity *> *entities = new std::vector<Entity *>();
+        std::vector<Entity *> *playerEntities = new std::vector<Entity *>();
+        std::vector<Entity *> *npcEntities = new std::vector<Entity *>();
 
     public:
         State();
         std::vector<Entity *> *GetEntities();
         Entity *SelectAt(float x, float y);
+
+        std::vector<Entity *> *GetPlayerEntities();
+        std::vector<Entity *> *GetNpcEntities();
 
         void NextTurn();
     };

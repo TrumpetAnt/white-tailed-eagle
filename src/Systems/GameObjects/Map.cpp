@@ -118,17 +118,6 @@ namespace egl
 
     void Map::HighlightActions(std::vector<action_t> *actions)
     {
-        if (this->actions != nullptr)
-        {
-            for (auto action : *this->actions)
-            {
-                delete action.second;
-            }
-            delete this->actions;
-            this->actions = nullptr;
-        }
-        this->actions = actions;
-
         for (auto action : *actions)
         {
             HighlightTile(action.first);
@@ -142,29 +131,6 @@ namespace egl
             tile->ResetHighlight();
         }
         highlightedTiles->clear();
-    }
-
-    void Map::HighlightActionTo(Tile *target)
-    {
-        auto selected = StateManager::GetInstance()->GetSelected();
-        if (selected == nullptr || selected == target || actions == nullptr)
-        {
-            return;
-        }
-        for (auto action : *actions)
-        {
-            if (action.first == target)
-            {
-                auto bat_at_target = target->GetBattalion();
-                PathSegmentPool::GetInstance()->MarkMovePath(action.second, bat_at_target != nullptr && bat_at_target->GetTeam() != 0);
-                return;
-            }
-        }
-    }
-
-    void Map::ResetHighlighActionTo()
-    {
-        PathSegmentPool::GetInstance()->UnMarkPath();
     }
 
     void Map::GetTileNeighbours(std::vector<Tile *> *out_vec, Tile *target)
@@ -247,7 +213,7 @@ namespace egl
         return res;
     }
 
-    std::vector<action_t> *Map::GetBattalionActions(int x, int y, int movementPoints)
+    std::vector<action_t> *Map::GetBattalionActions(int x, int y, int movementPoints, int team)
     {
         auto res = new std::vector<action_t>();
         auto neighbours = std::vector<Tile *>();
@@ -265,7 +231,7 @@ namespace egl
 
             auto bat_at_explore = explore_node.tile->GetBattalion();
             if (explore_node.movement_left <= 0 ||
-                (bat_at_explore != nullptr && bat_at_explore->GetTeam() != 0))
+                (bat_at_explore != nullptr && bat_at_explore->GetTeam() != team))
             {
                 continue;
             }
@@ -302,51 +268,8 @@ namespace egl
         return res;
     }
 
-    bool Map::HasAction(Tile *tile)
+    float Map::CostToTile(std::vector<Tile *> *path)
     {
-        if (actions == nullptr)
-        {
-            throw std::invalid_argument("actions undefined");
-        }
-        for (auto action : *actions)
-        {
-            if (tile == action.first)
-            {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    action_t Map::ActionToTile(Tile *tile)
-    {
-        if (actions == nullptr)
-        {
-            throw std::invalid_argument("actions undefined");
-        }
-        for (auto action : *actions)
-        {
-            if (tile == action.first)
-            {
-                return action;
-            }
-        }
-        throw std::invalid_argument("tile not among actions");
-    }
-
-    float Map::CostToTile(Tile *tile)
-    {
-        if (actions == nullptr)
-        {
-            throw std::invalid_argument("actions undefined");
-        }
-        for (auto action : *actions)
-        {
-            if (tile == action.first)
-            {
-                return action.second->size() - 1;
-            }
-        }
-        return -1.f;
+        return path != nullptr ? path->size() : -1.f;
     }
 }

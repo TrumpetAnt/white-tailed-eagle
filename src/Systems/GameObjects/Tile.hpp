@@ -10,6 +10,7 @@
 namespace egl
 {
     class Map;
+    class StateManager;
 
     class Tile : public Entity
     {

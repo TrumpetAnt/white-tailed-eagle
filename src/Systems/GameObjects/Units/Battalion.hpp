@@ -4,6 +4,7 @@
 #include "../EntityType.hpp"
 #include "HealthBar.hpp"
 #include "ProjectilePool.hpp"
+#include "../Typedefs.hpp"
 
 namespace egl
 {
@@ -20,8 +21,9 @@ namespace egl
         float linearDamageVariant = 10.f;
         HealthBar *healthBar;
         int team;
+        std::vector<action_t> *actions = nullptr;
 
-        bool IsDead();
+        void CleanUpActions();
 
     public:
         Battalion(int team) : Entity(EntityType::E_Battalion), team(team){};
@@ -40,6 +42,9 @@ namespace egl
         void Highlight() override;
         void MarkAsSpent();
         void ResetHighlight() override;
+        std::vector<action_t> *GetPossibleActions();
+        action_t ActionToTile(Tile *tile);
+        void SetActions(std::vector<action_t> *a);
         // ~~ Movement ~~
         uint GetMovementPoints();
         void SpendMovementPoints(uint cost);
@@ -48,6 +53,7 @@ namespace egl
         void Damage(float damage);
         void NextTurn() override;
         int GetTeam();
+        bool IsDead();
 
         static constexpr float radius = 25;
     };

@@ -1,5 +1,6 @@
 #include "Tile.hpp"
 #include "Map.hpp"
+#include "../../Engine/StateManager/statemanager.hpp"
 
 namespace egl
 {
@@ -175,7 +176,7 @@ namespace egl
             }
             battalion = static_cast<Battalion *>(selected);
             auto map = static_cast<Map *>(parent);
-            auto cost = map->CostToTile(this);
+            auto cost = map->CostToTile(battalion->ActionToTile(this).second);
             if (cost < 0.f)
             {
                 break;
@@ -202,13 +203,30 @@ namespace egl
 
     void Tile::Hover()
     {
-        auto map = static_cast<Map *>(parent);
-        map->HighlightActionTo(this);
+        auto selected = StateManager::GetInstance()->GetSelected();
+        if (selected == nullptr || selected->GetEntityType() != EntityType::E_Battalion)
+        {
+            return;
+        }
+        auto selected_bat = static_cast<Battalion *>(selected);
+        auto actions = selected_bat->GetPossibleActions();
+        if (actions == nullptr)
+        {
+            return;
+        }
+        for (auto action : *actions)
+        {
+            if (action.first == this)
+            {
+                auto bat_at_target = GetBattalion();
+                PathSegmentPool::GetInstance()
+                    ->MarkMovePath(action.second, bat_at_target != nullptr && bat_at_target->GetTeam() != selected_bat->GetTeam());
+            }
+        }
     };
 
     void Tile::StopHover()
     {
-        auto map = static_cast<Map *>(parent);
-        map->ResetHighlighActionTo();
+        PathSegmentPool::GetInstance()->UnMarkPath();
     };
 }

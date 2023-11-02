@@ -22,15 +22,16 @@ namespace egl
         }
         entities->push_back(bat);
         entities->push_back(bat2);
+        playerEntities->push_back(bat);
+        playerEntities->push_back(bat2);
+        npcEntities->push_back(bat3);
+        npcEntities->push_back(bat4);
         entities->push_back(bat3);
         entities->push_back(bat4);
 
-        auto cp1 = EntityFactory::GetCapturePoint(0);
         auto cp2 = EntityFactory::GetCapturePoint(1);
 
-        map->AddCapturePointAt(cp1, 10, 2);
         map->AddCapturePointAt(cp2, 16, 5);
-        entities->push_back(cp1);
         entities->push_back(cp2);
 
         ProjectilePool::GetInstance()
@@ -43,6 +44,16 @@ namespace egl
     {
         return entities;
     };
+
+    std::vector<Entity *> *State::GetPlayerEntities()
+    {
+        return playerEntities;
+    }
+
+    std::vector<Entity *> *State::GetNpcEntities()
+    {
+        return npcEntities;
+    }
 
     Entity *State::SelectAt(float x, float y)
     {

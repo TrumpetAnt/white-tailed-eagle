@@ -22,8 +22,45 @@ namespace egl
         state = new State();
     }
 
+    void StateManager::PlanNpcTurn()
+    {
+        currentPlayer += 1;
+        aiMoves = npc.GetInteractions(state);
+        std::cout << aiMoves->size() << " AI moves planned" << std::endl;
+        lastMovePerformed = std::chrono::high_resolution_clock::now();
+    }
+
+    void StateManager::HandleNpcMove()
+    {
+        auto t0 = std::chrono::high_resolution_clock::now();
+
+        if (t0 - lastMovePerformed < std::chrono::milliseconds(1000))
+        {
+            return;
+        }
+        lastMovePerformed = t0;
+        if (aiMoves == nullptr || aiMoves->size() == 0)
+        {
+            InternalNextTurn();
+            if (aiMoves != nullptr)
+            {
+                delete aiMoves;
+            }
+            aiMoves = nullptr;
+            return;
+        }
+        auto move = aiMoves->at(aiMoves->size() - 1);
+        aiMoves->pop_back();
+        move.second->InteractWithEntity(move.first);
+        std::cout << "NpcMove performed" << std::endl;
+    }
+
     std::vector<EgDrawable *> *StateManager::GetDrawables()
     {
+        if (currentPlayer != 0)
+        {
+            HandleNpcMove();
+        }
         auto res = new std::vector<EgDrawable *>();
         auto entities = state->GetEntities();
         for (auto entity : *entities)
@@ -39,6 +76,10 @@ namespace egl
 
     void StateManager::ClickAt(float x, float y, sf::Mouse::Button button)
     {
+        if (currentPlayer != 0)
+        {
+            return;
+        }
         if (selected == nullptr && button == sf::Mouse::Button::Left)
         {
             auto target = state->SelectAt(x, y);
@@ -101,12 +142,9 @@ namespace egl
         hover->Hover();
     }
 
-    void StateManager::NextTurn(sf::Mouse::Button button)
+    void StateManager::InternalNextTurn()
     {
-        if (button != sf::Mouse::Button::Left)
-        {
-            return;
-        }
+        currentPlayer = 0;
         state->NextTurn();
         auto uiManager = UIManager::GetInstance(nullptr);
         uiManager->IndicateNextTurn();
@@ -115,6 +153,15 @@ namespace egl
         {
             uiManager->EndOfGame();
         }
+    }
+
+    void StateManager::NextTurn(sf::Mouse::Button button)
+    {
+        if (button != sf::Mouse::Button::Left)
+        {
+            return;
+        }
+        PlanNpcTurn();
     }
 
     Entity *StateManager::GetSelected()

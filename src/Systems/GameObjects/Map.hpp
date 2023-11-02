@@ -4,6 +4,7 @@
 #include <stdexcept>
 #include <unordered_map>
 #include <unordered_set>
+#include <chrono>
 
 #include "Tile.hpp"
 #include "EntityType.hpp"
@@ -23,13 +24,15 @@ namespace egl
         std::vector<Tile *> *highlightedTiles = new std::vector<Tile *>();
         int width;
         int height;
-        std::vector<action_t> *actions = nullptr;
 
         bool checkBounds(int x, int y);
         void GetTileNeighbours(std::vector<Tile *> *out_vec, Tile *target);
         int PosToIndex(sf::Vector2i pos);
         std::vector<Tile *> *GetTileSurroundings(Tile *target, int radius);
         void HighlightTile(Tile *tile);
+
+        bool HasAction(Tile *tile);
+        action_t ActionToTile(Tile *tile);
 
     public:
         Map(int width, int height, std::vector<Tile *> *tiles);
@@ -47,13 +50,8 @@ namespace egl
         void HighlightActions(std::vector<action_t> *actions);
         void ResetAllHighlightedTiles();
 
-        void HighlightActionTo(Tile *target);
-        void ResetHighlighActionTo();
-
-        std::vector<action_t> *GetBattalionActions(int x, int y, int movementPoints);
-        bool HasAction(Tile *tile);
-        action_t ActionToTile(Tile *tile);
-        float CostToTile(Tile *tile);
+        std::vector<action_t> *GetBattalionActions(int x, int y, int movementPoints, int team);
+        float CostToTile(std::vector<Tile *> *path);
 
         std::vector<Tile *> *FindPaths(Tile *source, sf::Vector2i target, int movementPoints = 9999999);
     };

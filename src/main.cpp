@@ -71,7 +71,7 @@ int main(int argc, char **argv)
         uiManager->ReceiveDrawables(drawables);
 
         uiManager->DrawGui();
-        uiManager->FlushFrame();
+        uiManager->FlushFrame(); // @todo: Alternate draw frames and flush with lock as to not flush between simulation steps
 
         drawables->clear();
         delete drawables;
@@ -88,5 +88,10 @@ int main(int argc, char **argv)
             std::cout << ". Duration " << fs.count() << " exceeded expected duration " << durationPerFrame.count() << std::endl;
         }
         frameCount += 1;
+
+        if (nosfml && frameCount == 10)
+        {
+            stateManager->NextTurn(sf::Mouse::Button::Left);
+        }
     }
 }

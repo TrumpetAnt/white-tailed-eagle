@@ -16,6 +16,21 @@ namespace egl
             return sf::Color::Black;
         }
     };
+
+    void Battalion::CleanUpActions()
+    {
+        if (actions == nullptr)
+        {
+            return;
+        }
+        for (auto action : *actions)
+        {
+            delete action.second;
+        }
+        delete actions;
+        actions = nullptr;
+    }
+
     bool Battalion::MarkedForDestruction()
     {
         return IsDead();
@@ -77,7 +92,7 @@ namespace egl
         auto tile = static_cast<Tile *>(parent);
         auto m = static_cast<Map *>(tile->parent);
         auto pos = tile->GetDiscretePos();
-        auto actions = m->GetBattalionActions(pos.x, pos.y, GetMovementPoints());
+        actions = m->GetBattalionActions(pos.x, pos.y, GetMovementPoints(), team);
         m->HighlightActions(actions);
     }
 
@@ -99,7 +114,35 @@ namespace egl
 
         auto m = static_cast<Map *>(parent->parent);
         m->ResetAllHighlightedTiles();
-        m->ResetHighlighActionTo();
+        PathSegmentPool::GetInstance()->UnMarkPath();
+    }
+
+    std::vector<action_t> *Battalion::GetPossibleActions()
+    {
+        return actions;
+    }
+
+    action_t Battalion::ActionToTile(Tile *tile)
+    {
+        if (actions == nullptr || actions->size() == 0)
+        {
+            return action_t(nullptr, nullptr);
+        }
+
+        for (auto action : *actions)
+        {
+            if (action.first == tile)
+            {
+                return action;
+            }
+        }
+        return action_t(nullptr, nullptr);
+    }
+
+    void Battalion::SetActions(std::vector<action_t> *a)
+    {
+        CleanUpActions();
+        actions = a;
     }
 
     uint Battalion::GetMovementPoints()
@@ -121,6 +164,7 @@ namespace egl
     {
         availablePoints = movementPoints;
         drawable->SetColor(TeamToColor(team));
+        CleanUpActions();
     };
 
     int Battalion::GetTeam()
@@ -140,41 +184,41 @@ namespace egl
         switch (selected->GetEntityType())
         {
         case EntityType::E_Battalion:
-            auto other_bat = static_cast<Battalion *>(selected);
-            if (other_bat->team == team)
+            auto selected_bat = static_cast<Battalion *>(selected);
+            if (selected_bat->team == team)
             {
                 break;
             }
             auto tile = static_cast<Tile *>(parent);
             auto map = static_cast<Map *>(tile->parent);
-            if (!map->HasAction(tile))
+            auto action = selected_bat->ActionToTile(tile);
+            if (action.first == nullptr)
             {
                 break;
             }
-            auto action = map->ActionToTile(tile);
             auto tiles = action.second;
             auto second_to_last = tiles->at(1);
-            if (second_to_last != selected->parent)
+            if (tiles->size() > 2 && second_to_last != selected->parent)
             {
                 if (second_to_last->GetBattalion() != nullptr)
                 {
                     break;
                 }
-                second_to_last->AddBattalion(other_bat);
+                second_to_last->AddBattalion(selected_bat);
             }
 
             float r = static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
             Damage(r * linearDamageVariant + baseDamage);
-            other_bat->SpendMovementPoints(other_bat->GetMovementPoints());
-            other_bat->MarkAsSpent();
+            selected_bat->SpendMovementPoints(selected_bat->GetMovementPoints());
+            selected_bat->MarkAsSpent();
             for (int i = 0; i < 5; i++)
             {
                 auto offset_start = randomOffset(Battalion::radius / 4.f);
                 auto offset_end = randomOffset(Battalion::radius);
-                ProjectilePool::GetInstance()->Shoot(other_bat->getPosition() + offset_start, getPosition() + offset_end, 30);
+                ProjectilePool::GetInstance()->Shoot(selected_bat->getPosition() + offset_start, getPosition() + offset_end, 30);
             }
 
-            map->ResetHighlighActionTo();
+            PathSegmentPool::GetInstance()->UnMarkPath();
             return true;
         }
         return false;
