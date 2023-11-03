@@ -20,6 +20,9 @@ namespace egl
         sf::Color baseColor = sf::Color::Magenta;
         sf::Vector2i pos;
         int moveCost = 1;
+        EgDrawable *outline = nullptr;
+        sf::Color outlineBaseColor = sf::Color(0, 0, 0, 25);
+        bool displayOutline = true;
 
     public:
         Tile(sf::Vector2i pos) : Entity(EntityType::E_Tile), pos(pos){};

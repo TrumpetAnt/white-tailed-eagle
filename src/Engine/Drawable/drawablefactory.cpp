@@ -39,6 +39,31 @@ namespace egl
         return res;
     }
 
+    EgDrawable *DrawableFactory::GetHexagonOutline(sf::Vector2f &pos, float radius, sf::Color color)
+    {
+        auto outline = new sf::VertexArray(sf::LineStrip, 7);
+        float sqrt3div2 = 0.86602540378f;
+        (*outline)[0].position = sf::Vector2f(0, radius);
+        (*outline)[1].position = sf::Vector2f(radius * sqrt3div2, radius * .5f);
+        (*outline)[2].position = sf::Vector2f(radius * sqrt3div2, radius * -.5f);
+        (*outline)[3].position = sf::Vector2f(0, radius * -1);
+        (*outline)[4].position = sf::Vector2f(radius * sqrt3div2 * -1, radius * -.5f);
+        (*outline)[5].position = sf::Vector2f(radius * sqrt3div2 * -1, radius * .5f);
+        (*outline)[6].position = sf::Vector2f(0, radius);
+
+        (*outline)[0].color = color;
+        (*outline)[1].color = color;
+        (*outline)[2].color = color;
+        (*outline)[3].color = color;
+        (*outline)[4].color = color;
+        (*outline)[5].color = color;
+        (*outline)[6].color = color;
+
+        auto res = new EgDrawable(outline);
+        res->setPosition(pos);
+        return res;
+    }
+
     EgDrawable *DrawableFactory::GetCircle(sf::Vector2f &pos, float radius)
     {
         int resolution = 30;

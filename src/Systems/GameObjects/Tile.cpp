@@ -54,6 +54,8 @@ namespace egl
         auto c = sf::Color::White; //::Color(84 + (rand() % variance), 201 + (rand() % variance), 60 + (rand() % variance));
         drawable->SetColor(c);
         baseColor = c;
+
+        outline = DrawableFactory::GetHexagonOutline(pos, Tile::radius, outlineBaseColor);
     }
 
     void Tile::AddBattalion(Battalion *bat)
@@ -86,8 +88,13 @@ namespace egl
     {
         if (IsDrawable())
         {
-            drawable->setPosition(getPosition());
+            UpdateTransforms();
             res->push_back(drawable);
+            if (displayOutline)
+            {
+                outline->setPosition(getPosition());
+                res->push_back(outline);
+            }
         }
     }
 
@@ -173,17 +180,17 @@ namespace egl
 
     void Tile::Highlight()
     {
-        drawable->SetColor(baseColor + sf::Color(40.f, 40.f, 40.f));
+        outline->SetColor(sf::Color::White);
     };
 
     void Tile::AlternateHighlight()
     {
-        drawable->SetColor(baseColor - sf::Color(0.f, 40.f, 40.f) + sf::Color(100.f, 0.f, 0.f));
+        outline->SetColor(sf::Color::Red);
     }
 
     void Tile::ResetHighlight()
     {
-        drawable->SetColor(baseColor);
+        outline->SetColor(outlineBaseColor);
     };
 
     bool Tile::InteractWithEntity(Entity *selected)
