@@ -45,7 +45,7 @@ namespace egl
     void Battalion::AddDrawable()
     {
         auto pos = this->getPosition();
-        drawable = DrawableFactory::GetRectangle(sf::Vector2f(30, 30));
+        drawable = DrawableFactory::GetRectangle(sf::Vector2f(30, 30), sf::Vector2f(16, 16));
         drawable->SetTexture(TeamToTexture(team));
         drawable->SetColor(TeamToColor(team));
         healthBar = new HealthBar(initialHp, DrawableFactory::GetHealthBar(60.f, 20.f));

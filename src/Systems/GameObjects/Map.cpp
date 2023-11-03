@@ -137,13 +137,13 @@ namespace egl
     {
         out_vec->clear();
         auto pos = target->GetDiscretePos();
-        auto y_offset = pos.x % 2;
-        sf::Vector2i delta[6] = {sf::Vector2i(-1, -1 + y_offset),
-                                 sf::Vector2i(0, -1),
-                                 sf::Vector2i(1, -1 + y_offset),
-                                 sf::Vector2i(-1, 0 + y_offset),
-                                 sf::Vector2i(0, 1),
-                                 sf::Vector2i(1, 0 + y_offset)};
+        auto x_offset = pos.y % 2;
+        sf::Vector2i delta[6] = {sf::Vector2i(-1 + x_offset, -1),
+                                 sf::Vector2i(0 + x_offset, -1),
+                                 sf::Vector2i(1, 0),
+                                 sf::Vector2i(-1, 0),
+                                 sf::Vector2i(-1 + x_offset, 1),
+                                 sf::Vector2i(0 + x_offset, 1)};
         for (int i = 0; i < 6; i++)
         {
             auto n_pos = delta[i] + pos;

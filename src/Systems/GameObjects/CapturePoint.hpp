@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../../Engine/Entity/entity.hpp"
+#include "../../Engine/TextureManager/texturemanager.hpp"
 
 #include "EntityType.hpp"
 

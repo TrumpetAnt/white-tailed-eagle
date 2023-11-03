@@ -8,9 +8,15 @@ namespace egl
     void CapturePoint::AddDrawable()
     {
         auto pos = this->getPosition();
-        drawable = DrawableFactory::GetTriangle(sf::Vector2f(CapturePoint::radius * 2, CapturePoint::radius * 2));
+        auto scale = 1.5f;
+        auto texSize = sf::Vector2f(18, 38);
+        drawable = DrawableFactory::GetRectangle(texSize * scale, texSize);
+
+        auto tm = TextureManager::GetInstance();
+        auto texture = tm->LoadTexture("assets/img/TinyBattleAssetPack/banner.png");
+        drawable->SetTexture(texture);
         drawable->setPosition(pos);
-        drawable->setRotation(180);
-        drawable->SetColor(TeamToColor(team));
+        auto color = team == 0 ? sf::Color(255, 128, 128) : sf::Color(70, 120, 255);
+        drawable->SetColor(sf::Color::White);
     }
 }

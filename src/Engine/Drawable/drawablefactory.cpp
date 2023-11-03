@@ -70,7 +70,7 @@ namespace egl
         return res;
     }
 
-    EgDrawable *DrawableFactory::GetRectangle(sf::Vector2f size)
+    sf::VertexArray *DrawableFactory::RectangeVertexArray(sf::Vector2f size)
     {
         auto boxes = new sf::VertexArray(sf::Triangles, 6);
         auto width = size.x;
@@ -81,16 +81,31 @@ namespace egl
         (*boxes)[3].position = sf::Vector2f(width / 2, height / -2);
         (*boxes)[4].position = sf::Vector2f(width / -2, height / 2);
         (*boxes)[5].position = sf::Vector2f(width / 2, height / 2);
+        return boxes;
+    }
 
-        auto texSize = 16.f;
-        (*boxes)[0].texCoords = sf::Vector2f(0, 0);
-        (*boxes)[1].texCoords = sf::Vector2f(texSize, 0);
-        (*boxes)[2].texCoords = sf::Vector2f(0, texSize);
-        (*boxes)[3].texCoords = sf::Vector2f(texSize, 0);
-        (*boxes)[4].texCoords = sf::Vector2f(0, texSize);
-        (*boxes)[5].texCoords = sf::Vector2f(texSize, texSize);
+    void DrawableFactory::RectangeSetTextCoords(sf::VertexArray *vertexArray, sf::Vector2f textureSize)
+    {
+        (*vertexArray)[0].texCoords = sf::Vector2f(0, 0);
+        (*vertexArray)[1].texCoords = sf::Vector2f(textureSize.x, 0);
+        (*vertexArray)[2].texCoords = sf::Vector2f(0, textureSize.y);
+        (*vertexArray)[3].texCoords = sf::Vector2f(textureSize.x, 0);
+        (*vertexArray)[4].texCoords = sf::Vector2f(0, textureSize.y);
+        (*vertexArray)[5].texCoords = sf::Vector2f(textureSize.x, textureSize.y);
+    }
+
+    EgDrawable *DrawableFactory::GetRectangle(sf::Vector2f size)
+    {
+        auto boxes = RectangeVertexArray(size);
         auto res = new EgDrawable(boxes);
+        return res;
+    }
 
+    EgDrawable *DrawableFactory::GetRectangle(sf::Vector2f size, sf::Vector2f texSize)
+    {
+        auto boxes = RectangeVertexArray(size);
+        RectangeSetTextCoords(boxes, texSize);
+        auto res = new EgDrawable(boxes);
         return res;
     }
 
