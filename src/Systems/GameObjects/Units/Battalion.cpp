@@ -59,7 +59,10 @@ namespace egl
 
     void Battalion::StopHover()
     {
-        parent->StopHover();
+        if (parent)
+        {
+            parent->StopHover();
+        }
     };
 
     void Battalion::UpdateTransforms()
@@ -161,6 +164,11 @@ namespace egl
         availablePoints = cost >= availablePoints ? 0 : availablePoints - cost;
     }
 
+    int Battalion::GetZoneOfControlRadius()
+    {
+        return zoneOfControlRadius;
+    }
+
     Tile *Battalion::GetParentTile()
     {
         return static_cast<Tile *>(parent);
@@ -210,7 +218,7 @@ namespace egl
                 {
                     break;
                 }
-                if (map->AttemptMoveBattalionToTile(selected_bat, second_to_last))
+                if (!map->AttemptMoveBattalionToTile(selected_bat, second_to_last))
                 {
                     std::cout << "What the frickin heck??" << std::endl;
                 }
@@ -244,10 +252,9 @@ namespace egl
         }
 
         auto tile = static_cast<Tile *>(parent);
-        if (tile != nullptr)
-        {
-            tile->ClearBattalion();
-        }
+        auto map = static_cast<Map *>(tile->parent);
+        map->RemoveZoneOfControlFromBattalion(this);
+        tile->ClearBattalion();
     }
 
     bool Battalion::IsDead()

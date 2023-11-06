@@ -12,6 +12,7 @@ namespace egl
         float cost;
         float movement_left;
         int prev_i;
+        bool usedZoneOfControlMove;
     };
 
     void swap(ExploreNode *x, ExploreNode *y);

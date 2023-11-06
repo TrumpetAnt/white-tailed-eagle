@@ -79,11 +79,11 @@ namespace egl
         return battalion;
     }
 
-    int Tile::GetMoveCost(int team)
+    float Tile::GetMoveCost(int team)
     {
         if (battalion != nullptr && battalion->GetTeam() != team)
         {
-            return 10000;
+            return 100.f;
         }
         return moveCost;
     }

@@ -13,6 +13,7 @@ namespace egl
     class Battalion : public Entity
     {
     protected:
+        int zoneOfControlRadius = 1;
         uint movementPoints = 3;
         uint availablePoints = movementPoints;
         float initialHp = 100.f;
@@ -48,6 +49,8 @@ namespace egl
         // ~~ Movement ~~
         uint GetMovementPoints();
         void SpendMovementPoints(uint cost);
+        // ~~ Zone of control
+        int GetZoneOfControlRadius();
         // ~~ Interact ~~
         bool InteractWithEntity(Entity *e) override;
         void Damage(float damage);

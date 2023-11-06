@@ -13,6 +13,14 @@ namespace egl
         {
             this->AttachChild(tile);
         }
+        zoneOfControlMap = new std::unordered_map<int, std::unordered_set<Battalion *> *>();
+        for (int i = 0; i < width; i++)
+        {
+            for (int j = 0; j < height; j++)
+            {
+                zoneOfControlMap->insert({i + j * width, new std::unordered_set<Battalion *>()});
+            }
+        }
     };
 
     bool Map::checkBounds(int x, int y)
@@ -43,6 +51,7 @@ namespace egl
         tile->AddBattalion(bat);
         bat->setPosition(tile->getPosition());
         bat->UpdateTransforms();
+        AddZoneOfControlForBattalion(bat);
     }
 
     void Map::AddCapturePointAt(CapturePoint *cp, int x, int y)
@@ -93,6 +102,45 @@ namespace egl
         highlightedTiles->push_back(tile);
     }
 
+    void Map::RemoveZoneOfControlFromBattalion(Battalion *bat)
+    {
+        auto pos = bat->GetParentTile()->GetDiscretePos();
+        sf::Vector2i delta[6];
+        GetTileNeighbourPositions(delta, pos.y);
+        for (int i = 0; i < 6; i++)
+        {
+            auto n_pos = delta[i] + pos;
+            auto battalionAssertingZoneOfControl = zoneOfControlMap->at(n_pos.x + n_pos.y * width);
+            battalionAssertingZoneOfControl->erase(bat);
+        }
+    }
+
+    void Map::AddZoneOfControlForBattalion(Battalion *bat)
+    {
+        auto pos = bat->GetParentTile()->GetDiscretePos();
+        sf::Vector2i delta[6];
+        GetTileNeighbourPositions(delta, pos.y);
+        for (int i = 0; i < 6; i++)
+        {
+            auto n_pos = delta[i] + pos;
+            auto battalionAssertingZoneOfControl = zoneOfControlMap->at(n_pos.x + n_pos.y * width);
+            battalionAssertingZoneOfControl->emplace(bat);
+        }
+    }
+
+    bool Map::InZoneOfControl(int i, int team)
+    {
+        auto set = zoneOfControlMap->at(i);
+        for (auto item : *set)
+        {
+            if (item->GetTeam() != team)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
     void Map::HighlightTilesAround(int x, int y, int r)
     {
         if (!checkBounds(x, y))
@@ -140,23 +188,35 @@ namespace egl
         {
             return false;
         }
+        auto tile_pos = tile->GetDiscretePos();
+        if (InZoneOfControl(tile_pos.x + tile_pos.y * width, bat->GetTeam()))
+        {
+            cost = bat->GetMovementPoints();
+        }
+        RemoveZoneOfControlFromBattalion(bat);
         bat->SpendMovementPoints(cost);
         tile->AddBattalion(bat);
+        AddZoneOfControlForBattalion(bat);
         return true;
-        return false;
+    }
+
+    void Map::GetTileNeighbourPositions(sf::Vector2i *array, int y)
+    {
+        auto x_offset = y % 2;
+        array[0] = sf::Vector2i(-1 + x_offset, -1);
+        array[1] = sf::Vector2i(0 + x_offset, -1);
+        array[2] = sf::Vector2i(1, 0);
+        array[3] = sf::Vector2i(-1, 0);
+        array[4] = sf::Vector2i(-1 + x_offset, 1);
+        array[5] = sf::Vector2i(0 + x_offset, 1);
     }
 
     void Map::GetTileNeighbours(std::vector<Tile *> *out_vec, Tile *target)
     {
         out_vec->clear();
         auto pos = target->GetDiscretePos();
-        auto x_offset = pos.y % 2;
-        sf::Vector2i delta[6] = {sf::Vector2i(-1 + x_offset, -1),
-                                 sf::Vector2i(0 + x_offset, -1),
-                                 sf::Vector2i(1, 0),
-                                 sf::Vector2i(-1, 0),
-                                 sf::Vector2i(-1 + x_offset, 1),
-                                 sf::Vector2i(0 + x_offset, 1)};
+        sf::Vector2i delta[6];
+        GetTileNeighbourPositions(delta, pos.y);
         for (int i = 0; i < 6; i++)
         {
             auto n_pos = delta[i] + pos;
@@ -234,7 +294,8 @@ namespace egl
         auto frontier = MinHeap(tiles->size());
 
         auto source = tiles->at(x + y * width);
-        frontier.insertKey(ExploreNode{source, 0.f, static_cast<float>(movementPoints), PosToIndex(source->GetDiscretePos())});
+        auto f_movementPoints = static_cast<float>(movementPoints);
+        frontier.insertKey(ExploreNode{source, 0.f, f_movementPoints, PosToIndex(source->GetDiscretePos()), false});
 
         while (!frontier.isEmpty())
         {
@@ -253,13 +314,33 @@ namespace egl
             for (auto neighbour : neighbours)
             {
                 auto neighbour_pos = neighbour->GetDiscretePos();
-                if (explored.count(PosToIndex(neighbour_pos)) == 0)
+                auto n_pos_i = PosToIndex(neighbour_pos);
+                if (explored.count(n_pos_i) == 0)
                 {
-                    auto moveCost = neighbour->GetMoveCost(team);
-                    frontier.insertKey(ExploreNode{neighbour,
-                                                   explore_node.cost + moveCost,
-                                                   explore_node.movement_left - moveCost,
-                                                   explore_pos_i});
+                    if (explore_node.usedZoneOfControlMove)
+                    {
+                        auto neighbour_bat = neighbour->GetBattalion();
+                        auto moveCost = 1000.f;
+                        if (neighbour_bat != nullptr)
+                        {
+                            frontier.insertKey(ExploreNode{
+                                neighbour,
+                                explore_node.cost + moveCost,
+                                explore_node.movement_left - moveCost,
+                                explore_pos_i,
+                                true});
+                        }
+                    }
+                    else
+                    {
+                        auto moveCost = neighbour->GetMoveCost(team);
+                        frontier.insertKey(ExploreNode{
+                            neighbour,
+                            explore_node.cost + moveCost,
+                            explore_node.movement_left - moveCost,
+                            explore_pos_i,
+                            InZoneOfControl(n_pos_i, team)});
+                    }
                 }
             }
         }

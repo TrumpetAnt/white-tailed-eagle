@@ -47,6 +47,6 @@ namespace egl
 
         Entity *GetSelected();
 
-        static constexpr int turnLimit = 4;
+        static constexpr int turnLimit = 8;
     };
 }

@@ -28,6 +28,7 @@ namespace egl
                 break;
             }
         }
+        // @todo @bug Sleeping bug, if AI plans multiple moves to interact with same enemy and kills on first move
         return res;
     }
 }

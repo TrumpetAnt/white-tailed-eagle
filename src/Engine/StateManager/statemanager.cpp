@@ -34,7 +34,7 @@ namespace egl
     {
         auto t0 = std::chrono::high_resolution_clock::now();
 
-        if (t0 - lastMovePerformed < std::chrono::milliseconds(1000))
+        if (t0 - lastMovePerformed < std::chrono::milliseconds(100))
         {
             return;
         }
