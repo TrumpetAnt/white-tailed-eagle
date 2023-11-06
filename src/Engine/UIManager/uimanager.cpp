@@ -45,6 +45,7 @@ namespace egl
 
     void UIManager::DrawGui()
     {
+        window->setView(guiView);
         guiManager->RenderGui(*window);
     }
 
