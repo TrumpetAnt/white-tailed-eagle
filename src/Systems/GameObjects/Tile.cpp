@@ -79,8 +79,12 @@ namespace egl
         return battalion;
     }
 
-    int Tile::GetMoveCost()
+    int Tile::GetMoveCost(int team)
     {
+        if (battalion != nullptr && battalion->GetTeam() != team)
+        {
+            return 10000;
+        }
         return moveCost;
     }
 
@@ -204,14 +208,10 @@ namespace egl
             }
             battalion = static_cast<Battalion *>(selected);
             auto map = static_cast<Map *>(parent);
-            auto cost = map->CostToTile(battalion->ActionToTile(this).second);
-            if (cost < 0.f)
+            if (map->AttemptMoveBattalionToTile(battalion, this))
             {
-                break;
+                return true;
             }
-            battalion->SpendMovementPoints(cost);
-            AddBattalion(battalion);
-            return true;
             break;
         }
         return false;

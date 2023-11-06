@@ -210,7 +210,10 @@ namespace egl
                 {
                     break;
                 }
-                second_to_last->AddBattalion(selected_bat);
+                if (map->AttemptMoveBattalionToTile(selected_bat, second_to_last))
+                {
+                    std::cout << "What the frickin heck??" << std::endl;
+                }
             }
 
             float r = static_cast<float>(rand()) / static_cast<float>(RAND_MAX);

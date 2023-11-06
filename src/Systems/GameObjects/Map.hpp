@@ -50,6 +50,8 @@ namespace egl
         void HighlightActions(std::vector<action_t> *actions);
         void ResetAllHighlightedTiles();
 
+        bool AttemptMoveBattalionToTile(Battalion *bat, Tile *tile);
+
         std::vector<action_t> *GetBattalionActions(int x, int y, int movementPoints, int team);
         float CostToTile(std::vector<Tile *> *path);
 

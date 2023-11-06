@@ -31,7 +31,7 @@ namespace egl
         void AddDrawable(TileType type);
         void AddBattalion(Battalion *bat);
         Battalion *GetBattalion();
-        int GetMoveCost();
+        int GetMoveCost(int team);
         void ConcatDrawable(std::vector<EgDrawable *> *res) override;
         bool IsSelectable() override;
         Entity *AttemptSelect(float x, float y) override;

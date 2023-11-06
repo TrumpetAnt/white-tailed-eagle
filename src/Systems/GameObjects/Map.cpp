@@ -133,6 +133,19 @@ namespace egl
         highlightedTiles->clear();
     }
 
+    bool Map::AttemptMoveBattalionToTile(Battalion *bat, Tile *tile)
+    {
+        auto cost = CostToTile(bat->ActionToTile(tile).second);
+        if (cost < 0.f)
+        {
+            return false;
+        }
+        bat->SpendMovementPoints(cost);
+        tile->AddBattalion(bat);
+        return true;
+        return false;
+    }
+
     void Map::GetTileNeighbours(std::vector<Tile *> *out_vec, Tile *target)
     {
         out_vec->clear();
@@ -242,9 +255,10 @@ namespace egl
                 auto neighbour_pos = neighbour->GetDiscretePos();
                 if (explored.count(PosToIndex(neighbour_pos)) == 0)
                 {
+                    auto moveCost = neighbour->GetMoveCost(team);
                     frontier.insertKey(ExploreNode{neighbour,
-                                                   explore_node.cost + neighbour->GetMoveCost(),
-                                                   explore_node.movement_left - neighbour->GetMoveCost(),
+                                                   explore_node.cost + moveCost,
+                                                   explore_node.movement_left - moveCost,
                                                    explore_pos_i});
                 }
             }
