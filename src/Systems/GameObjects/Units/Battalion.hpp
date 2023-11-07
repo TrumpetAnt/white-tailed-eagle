@@ -33,7 +33,7 @@ namespace egl
         bool MarkedForDestruction() override;
         // ~~ Render shit ~~
         void UpdateTransforms() override;
-        void ConcatDrawable(std::vector<EgDrawable *> *res) override;
+        void ConcatDrawable(std::unordered_map<int, std::vector<EgDrawable *> *> *res) override;
         void AddDrawable();
         void Hover() override;
         void StopHover() override;

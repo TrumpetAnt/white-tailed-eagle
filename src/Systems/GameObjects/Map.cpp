@@ -33,7 +33,7 @@ namespace egl
         return true;
     }
 
-    void Map::ConcatDrawable(std::vector<EgDrawable *> *res)
+    void Map::ConcatDrawable(std::unordered_map<int, std::vector<EgDrawable *> *> *res)
     {
         for (auto tile : *tiles)
         {
@@ -90,7 +90,7 @@ namespace egl
     void Map::HighlightTile(Tile *tile)
     {
         auto b = tile->GetBattalion();
-        if (b != nullptr && b->GetTeam() != 0)
+        if (b != nullptr && b->GetTeam() != 0 || InZoneOfControl(tile, 0))
         {
             tile->AlternateHighlight();
         }
@@ -139,6 +139,12 @@ namespace egl
             }
         }
         return false;
+    }
+
+    bool Map::InZoneOfControl(Tile *tile, int team)
+    {
+        auto pos = tile->GetDiscretePos();
+        return InZoneOfControl(pos.x + pos.y * width, team);
     }
 
     void Map::HighlightTilesAround(int x, int y, int r)

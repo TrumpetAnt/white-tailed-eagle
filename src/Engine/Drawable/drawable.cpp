@@ -2,6 +2,17 @@
 
 namespace egl
 {
+
+    int EgDrawable::GetLayer()
+    {
+        return layer;
+    }
+
+    void EgDrawable::SetLayer(int layer)
+    {
+        this->layer = layer;
+    }
+
     void EgDrawable::SetTexture(sf::Texture *t)
     {
         texture = t;

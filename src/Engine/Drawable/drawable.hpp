@@ -12,10 +12,13 @@ namespace egl
     protected:
         sf::VertexArray *vertexArray;
         sf::Color color = sf::Color::Magenta;
+        int layer = 0;
 
     public:
         EgDrawable(sf::VertexArray *vertexArray) : vertexArray(vertexArray){};
 
+        int GetLayer();
+        void SetLayer(int layer);
         void SetTexture(sf::Texture *t);
         void SetColor(sf::Color c);
         void UpdatePosition();

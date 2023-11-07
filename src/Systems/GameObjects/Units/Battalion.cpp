@@ -71,16 +71,16 @@ namespace egl
         healthBar->setPosition(getPosition() + sf::Vector2f(0.f, 30.f));
     }
 
-    void Battalion::ConcatDrawable(std::vector<EgDrawable *> *res)
+    void Battalion::ConcatDrawable(std::unordered_map<int, std::vector<EgDrawable *> *> *res)
     {
         if (MarkedForDestruction())
         {
             return;
         }
-        res->push_back(drawable);
+        PushDrawableToRes(res, drawable);
         if (hitPoints < initialHp)
         {
-            res->push_back(healthBar);
+            PushDrawableToRes(res, healthBar);
         }
     }
 
@@ -103,6 +103,7 @@ namespace egl
         auto pos = tile->GetDiscretePos();
         actions = m->GetBattalionActions(pos.x, pos.y, GetMovementPoints(), team);
         m->HighlightActions(actions);
+        tile->Highlight(sf::Color::Black, 3);
     }
 
     void Battalion::MarkAsSpent()

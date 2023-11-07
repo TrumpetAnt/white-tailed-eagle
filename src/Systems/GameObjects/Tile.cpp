@@ -88,16 +88,18 @@ namespace egl
         return moveCost;
     }
 
-    void Tile::ConcatDrawable(std::vector<EgDrawable *> *res)
+    void Tile::ConcatDrawable(std::unordered_map<int, std::vector<EgDrawable *> *> *res)
     {
         if (IsDrawable())
         {
             UpdateTransforms();
-            res->push_back(drawable);
+            PushDrawableToRes(res, drawable);
             if (displayOutline)
             {
                 outline->setPosition(getPosition());
-                res->push_back(outline);
+                auto map = static_cast<Map *>(parent);
+
+                PushDrawableToRes(res, outline, map->InZoneOfControl(this, 0) ? 2 : outline->GetLayer());
             }
         }
     }
@@ -106,6 +108,7 @@ namespace egl
     {
         return true;
     }
+
     float topBound(float y)
     {
         float sqrt3div2 = 0.86602540378f;
@@ -184,17 +187,31 @@ namespace egl
 
     void Tile::Highlight()
     {
-        outline->SetColor(sf::Color::White);
-    };
+        Highlight(sf::Color::White);
+    }
+
+    void Tile::Highlight(sf::Color color)
+    {
+        outline->SetColor(color);
+        outline->SetLayer(1);
+    }
+
+    void Tile::Highlight(sf::Color color, int layer)
+    {
+        Highlight(color);
+        outline->SetLayer(layer);
+    }
 
     void Tile::AlternateHighlight()
     {
         outline->SetColor(sf::Color::Red);
+        outline->SetLayer(2);
     }
 
     void Tile::ResetHighlight()
     {
         outline->SetColor(outlineBaseColor);
+        outline->SetLayer(0);
     };
 
     bool Tile::InteractWithEntity(Entity *selected)

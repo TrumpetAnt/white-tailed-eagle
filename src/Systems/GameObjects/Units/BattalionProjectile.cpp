@@ -15,10 +15,10 @@ namespace egl
         return !MarkedForDestruction();
     }
 
-    void BattalionProjectile::ConcatDrawable(std::vector<EgDrawable *> *res)
+    void BattalionProjectile::ConcatDrawable(std::unordered_map<int, std::vector<EgDrawable *> *> *res)
     {
         Step();
-        res->push_back(drawable);
+        PushDrawableToRes(res, drawable);
     }
 
     bool BattalionProjectile::MarkedForDestruction()

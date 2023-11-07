@@ -20,7 +20,7 @@ namespace egl
 
         bool MarkedForDestruction() override;
         bool IsDrawable() override;
-        void ConcatDrawable(std::vector<EgDrawable *> *res) override;
+        void ConcatDrawable(std::unordered_map<int, std::vector<EgDrawable *> *> *res) override;
 
         void Shoot(sf::Vector2f from, sf::Vector2f dest, int steps);
     };

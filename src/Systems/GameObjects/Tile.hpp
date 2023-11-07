@@ -32,10 +32,12 @@ namespace egl
         void AddBattalion(Battalion *bat);
         Battalion *GetBattalion();
         float GetMoveCost(int team);
-        void ConcatDrawable(std::vector<EgDrawable *> *res) override;
+        void ConcatDrawable(std::unordered_map<int, std::vector<EgDrawable *> *> *res) override;
         bool IsSelectable() override;
         Entity *AttemptSelect(float x, float y) override;
         void Highlight() override;
+        void Highlight(sf::Color color);
+        void Highlight(sf::Color color, int layer);
         void ResetHighlight() override;
         void AlternateHighlight();
 

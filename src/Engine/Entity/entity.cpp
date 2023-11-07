@@ -79,4 +79,20 @@ namespace egl
         }
         parent->DetachChild(this);
     }
+
+    void Entity::PushDrawableToRes(std::unordered_map<int, std::vector<EgDrawable *> *> *res, EgDrawable *drawable)
+    {
+        auto layer = drawable->GetLayer();
+        PushDrawableToRes(res, drawable, drawable->GetLayer());
+    }
+
+    void Entity::PushDrawableToRes(std::unordered_map<int, std::vector<EgDrawable *> *> *res, EgDrawable *drawable, int layer)
+    {
+        if (res->count(layer) == 0)
+        {
+            res->insert({layer, new std::vector<EgDrawable *>()});
+        }
+        auto vec = res->at(layer);
+        vec->push_back(drawable);
+    }
 }

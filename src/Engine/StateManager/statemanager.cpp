@@ -61,16 +61,36 @@ namespace egl
         {
             HandleNpcMove();
         }
-        auto res = new std::vector<EgDrawable *>();
+
         auto entities = state->GetEntities();
         for (auto entity : *entities)
         {
             if (entity->IsDrawable())
             {
-                entity->ConcatDrawable(res);
+                entity->ConcatDrawable(drawablesMap);
             }
         }
+        auto keys = std::vector<int>();
 
+        for (auto elem : *drawablesMap)
+        {
+            keys.push_back(elem.first);
+        }
+
+        std::sort(keys.begin(), keys.end());
+
+        auto res = new std::vector<EgDrawable *>();
+
+        for (auto key : keys)
+        {
+            for (auto elem : *drawablesMap->at(key))
+            {
+                res->push_back(elem);
+            }
+
+            drawablesMap->at(key)->clear();
+        }
+        drawablesMap->clear();
         return res;
     }
 

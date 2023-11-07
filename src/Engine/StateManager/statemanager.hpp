@@ -1,6 +1,8 @@
 #pragma once
 
 #include <vector>
+#include <unordered_map>
+#include <algorithm>
 
 #include "state.hpp"
 #include "../Drawable/drawable.hpp"
@@ -24,6 +26,8 @@ namespace egl
 
         std::vector<interaction_t> *aiMoves = nullptr;
         std::chrono::_V2::system_clock::time_point lastMovePerformed = std::chrono::high_resolution_clock::now();
+
+        std::unordered_map<int, std::vector<EgDrawable *> *> *drawablesMap = new std::unordered_map<int, std::vector<EgDrawable *> *>();
 
     protected:
         StateManager();

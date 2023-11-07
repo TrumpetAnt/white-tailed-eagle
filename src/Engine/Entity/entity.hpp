@@ -1,5 +1,6 @@
 #pragma once
 
+#include <unordered_map>
 #include "../Drawable/drawable.hpp"
 #include "../Drawable/drawablefactory.hpp"
 
@@ -11,6 +12,9 @@ namespace egl
         EgDrawable *drawable = nullptr;
         uint entityType;
         std::vector<Entity *> *children = new std::vector<Entity *>();
+
+        void PushDrawableToRes(std::unordered_map<int, std::vector<EgDrawable *> *> *res, EgDrawable *drawable);
+        void PushDrawableToRes(std::unordered_map<int, std::vector<EgDrawable *> *> *res, EgDrawable *drawable, int layer);
 
     public:
         Entity *parent = nullptr;
@@ -25,11 +29,11 @@ namespace egl
                 drawable->setPosition(getPosition());
             }
         }
-        virtual void ConcatDrawable(std::vector<EgDrawable *> *res)
+        virtual void ConcatDrawable(std::unordered_map<int, std::vector<EgDrawable *> *> *res)
         {
             if (IsDrawable())
             {
-                res->push_back(drawable);
+                PushDrawableToRes(res, drawable);
             }
         };
 

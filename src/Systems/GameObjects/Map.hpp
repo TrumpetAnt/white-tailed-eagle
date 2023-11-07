@@ -42,7 +42,7 @@ namespace egl
         int getHeight() { return height; }
 
         bool IsDrawable() override;
-        void ConcatDrawable(std::vector<EgDrawable *> *res) override;
+        void ConcatDrawable(std::unordered_map<int, std::vector<EgDrawable *> *> *res) override;
 
         // Setup
         void AddBattalionAt(Battalion *bat, int x, int y);
@@ -57,6 +57,7 @@ namespace egl
         bool AttemptMoveBattalionToTile(Battalion *bat, Tile *tile);
 
         // ~~ Zone of Control
+        bool InZoneOfControl(Tile *tile, int team);
         void RemoveZoneOfControlFromBattalion(Battalion *bat);
 
         std::vector<action_t> *GetBattalionActions(int x, int y, int movementPoints, int team);
