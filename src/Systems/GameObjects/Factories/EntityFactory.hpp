@@ -2,6 +2,7 @@
 
 #include "../Map.hpp"
 #include "../Tile.hpp"
+#include "../NoiseMap/NoiseMap.hpp"
 #include "../../../Engine/Drawable/drawablefactory.hpp"
 #include "../../../Engine/Entity/entity.hpp"
 #include "../TileType.hpp"
@@ -21,5 +22,6 @@ namespace egl
         static BattalionProjectile *GetBattalionProjectile();
         static CapturePoint *GetCapturePoint(int team);
         static PathSegment *GetPathSegment();
+        static NoiseMap *GetNoiseMap();
     };
 }

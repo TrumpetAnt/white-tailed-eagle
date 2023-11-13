@@ -58,4 +58,9 @@ namespace egl
     {
         return new PathSegment();
     }
+
+    NoiseMap *EntityFactory::GetNoiseMap()
+    {
+        return new NoiseMap();
+    }
 }

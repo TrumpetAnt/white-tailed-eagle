@@ -34,6 +34,8 @@ namespace egl
         map->AddCapturePointAt(cp2, 16, 5);
         entities->push_back(cp2);
 
+        entities->push_back(EntityFactory::GetNoiseMap());
+
         ProjectilePool::GetInstance()
             ->TrackEntities(entities);
         PathSegmentPool::GetInstance()

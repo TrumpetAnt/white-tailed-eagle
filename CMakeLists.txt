@@ -38,6 +38,8 @@ add_executable(eagle
     src/Systems/GameObjects/TransformUtils.cpp
     src/Systems/GameObjects/Path/PathSegment.cpp
     src/Systems/GameObjects/Path/PathSegmentPool.cpp
+    src/Systems/GameObjects/NoiseMap/NoiseMap.cpp
+    src/Systems/GameObjects/NoiseMap/SimplexNoise/SimplexNoise.cpp
     src/Systems/Npc/Npc.cpp)
 target_link_libraries(eagle PRIVATE sfml-graphics X11 ${X11_LIBRARIES})
 target_compile_features(eagle PRIVATE cxx_std_17)
