@@ -65,5 +65,7 @@ namespace egl
         float CostToTile(std::vector<Tile *> *path);
 
         std::vector<Tile *> *FindPaths(Tile *source, sf::Vector2i target, int movementPoints = 9999999);
+
+        static constexpr int maxHeight = 4;
     };
 };

@@ -2,9 +2,9 @@
 
 namespace egl
 {
-    Tile *EntityFactory::GetTile(sf::Vector2f pos, sf::Vector2i pos_int)
+    Tile *EntityFactory::GetTile(sf::Vector2f pos, sf::Vector2i pos_int, TileType type, int height)
     {
-        auto res = new Tile(pos_int);
+        auto res = new Tile(pos_int, height);
         res->AddDrawable(TileType::Grass);
         res->setPosition(pos);
         return res;
@@ -12,6 +12,8 @@ namespace egl
 
     Map *EntityFactory::GetMap(int w, int h, std::vector<Tile *> **out_tiles)
     {
+        auto heightMap = new NoiseMap(sf::Vector2i(w, h));
+
         auto tiles = new std::vector<Tile *>();
         float offset = 100.f;
         float spacing = 80.f;
@@ -20,11 +22,12 @@ namespace egl
         {
             for (int col = 0; col < w; col++)
             {
-                // auto x_pos = static_cast<float>(col) * spacing * .75f + offset;
-                // auto y_pos = static_cast<float>(row) * spacing * sqrt3div2 + offset + ((col % 2) * spacing * sqrt3div2 / 2);
                 auto x_pos = static_cast<float>(col) * spacing * sqrt3div2 + offset + ((row % 2) * spacing * sqrt3div2 / 2);
                 auto y_pos = static_cast<float>(row) * spacing * .75f + offset;
-                tiles->push_back(GetTile(sf::Vector2f(x_pos, y_pos), sf::Vector2i(col, row)));
+                auto height = heightMap->ValAt(sf::Vector2i(col, row));
+                auto heightIndex = (int)std::floor(height * Map::maxHeight);
+                std::cout << "height: " << height << " index: " << heightIndex << std::endl;
+                tiles->push_back(GetTile(sf::Vector2f(x_pos, y_pos), sf::Vector2i(col, row), TileType::Grass, heightIndex));
             }
         }
         *out_tiles = tiles;

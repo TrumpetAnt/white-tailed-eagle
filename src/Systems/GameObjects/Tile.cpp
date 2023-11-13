@@ -52,6 +52,12 @@ namespace egl
 
         int variance = 40;
         auto c = sf::Color::White; //::Color(84 + (rand() % variance), 201 + (rand() % variance), 60 + (rand() % variance));
+        auto maxHeight = (float)Map::maxHeight;
+        auto delta = (unsigned int)std::round(1.f / maxHeight * 255.f);
+        auto distToMax = (unsigned int)height;
+
+        c = sf::Color(delta * distToMax, delta * distToMax, delta * distToMax, 255);
+
         drawable->SetColor(c);
         baseColor = c;
 

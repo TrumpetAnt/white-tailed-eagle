@@ -5,7 +5,7 @@ namespace egl
 
     NoiseMap::NoiseMap() : Entity(EntityType::E_NoiseMap)
     {
-        size = sf::Vector2i(500, 500);
+        size = sf::Vector2i(19, 12);
         AddDrawable();
         SetPosition(sf::Vector2f(-200.f, 200.f));
     }
@@ -18,14 +18,12 @@ namespace egl
 
     void NoiseMap::AddDrawable()
     {
-        size = sf::Vector2i(500, 200);
-
         auto noise = GenerateNoiseImage();
         auto tex = new sf::Texture();
         tex->loadFromImage(*noise);
 
-        auto floatSize = sf::Vector2f(size);
-        drawable = DrawableFactory::GetRectangle(floatSize, floatSize);
+        auto scale = sf::Vector2(size.x * 25.f, size.y * 25.f);
+        drawable = DrawableFactory::GetRectangle(scale, sf::Vector2f(size));
         drawable->SetTexture(tex);
         drawable->SetLayer(5);
     }
@@ -33,8 +31,9 @@ namespace egl
     sf::Image *NoiseMap::GenerateNoiseImage()
     {
         auto pixels = new sf::Uint8[size.x * 4 * size.y];
+        calculatedValues = new float[size.x * size.y];
 
-        auto scale = 0.0025f;
+        auto scale = 0.1f;
         auto noiseMachine = SimplexNoise(scale);
 
         for (int j = 0; j < size.y; j++)
@@ -44,9 +43,11 @@ namespace egl
                 auto _i = i * 4 + j * size.x * 4;
                 // auto noise = SimplexNoise::noise(i * scale, j * scale) * 0.5f + 0.5f;
                 auto noise = noiseMachine.fractal(2, i, j) * 0.5f + 0.5f;
-                pixels[_i + 0] = (unsigned int)std::round(noise * 255.f);
-                pixels[_i + 1] = pixels[_i + 0];
-                pixels[_i + 2] = pixels[_i + 0];
+                auto val = (unsigned int)std::round(noise * 255.f);
+                calculatedValues[i + j * size.x] = noise;
+                pixels[_i + 0] = val;
+                pixels[_i + 1] = val;
+                pixels[_i + 2] = val;
                 pixels[_i + 3] = 255;
             }
         }
@@ -56,5 +57,14 @@ namespace egl
         image->create(size.x, size.y, pixels);
 
         return image;
+    }
+
+    float NoiseMap::ValAt(sf::Vector2i pos)
+    {
+        if (pos.x < 0 || pos.y < 0 || size.x < pos.x + 1 || size.y < pos.y + 1)
+        {
+            return -1.f;
+        }
+        return calculatedValues[pos.x + pos.y * size.x];
     }
 }

@@ -24,8 +24,10 @@ namespace egl
         sf::Color outlineBaseColor = sf::Color(0, 0, 0, 25);
         bool displayOutline = true;
 
+        int height;
+
     public:
-        Tile(sf::Vector2i pos) : Entity(EntityType::E_Tile), pos(pos){};
+        Tile(sf::Vector2i pos, int height) : Entity(EntityType::E_Tile), pos(pos), height(height){};
         sf::Vector2i GetDiscretePos();
 
         void AddDrawable(TileType type);

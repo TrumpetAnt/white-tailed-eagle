@@ -10,6 +10,7 @@ namespace egl
     {
     protected:
         sf::Vector2i size;
+        float *calculatedValues;
 
         sf::Image *GenerateNoiseImage();
 
@@ -18,5 +19,7 @@ namespace egl
     public:
         NoiseMap();
         NoiseMap(sf::Vector2i size);
+
+        float ValAt(sf::Vector2i pos);
     };
 }
