@@ -15,7 +15,7 @@ namespace egl
             auto tile = static_cast<Tile *>(bat->parent);
             auto map = static_cast<Map *>(tile->parent);
             auto pos = tile->GetDiscretePos();
-            auto actions = map->GetBattalionActions(pos.x, pos.y, bat->GetMovementPoints(), bat->GetTeam());
+            auto actions = map->GetBattalionActions(bat);
             bat->SetActions(actions);
             for (auto action : *actions)
             {

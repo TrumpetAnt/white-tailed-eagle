@@ -184,6 +184,11 @@ namespace egl
         PlanNpcTurn();
     }
 
+    void StateManager::Mystery()
+    {
+        state->Mystery();
+    }
+
     Entity *StateManager::GetSelected()
     {
         return selected;

@@ -23,6 +23,13 @@ namespace egl
         }
     };
 
+    bool Map::checkBounds(int n)
+    {
+        int x = n % width;
+        int y = n / width;
+        return checkBounds(x, y);
+    }
+
     bool Map::checkBounds(int x, int y)
     {
         return 0 <= x && 0 <= y && x <= width && y <= height;
@@ -110,6 +117,10 @@ namespace egl
         for (int i = 0; i < 6; i++)
         {
             auto n_pos = delta[i] + pos;
+            if (!checkBounds(n_pos.x, n_pos.y))
+            {
+                continue;
+            }
             auto battalionAssertingZoneOfControl = zoneOfControlMap->at(n_pos.x + n_pos.y * width);
             battalionAssertingZoneOfControl->erase(bat);
         }
@@ -123,6 +134,10 @@ namespace egl
         for (int i = 0; i < 6; i++)
         {
             auto n_pos = delta[i] + pos;
+            if (!checkBounds(n_pos.x, n_pos.y))
+            {
+                continue;
+            }
             auto battalionAssertingZoneOfControl = zoneOfControlMap->at(n_pos.x + n_pos.y * width);
             battalionAssertingZoneOfControl->emplace(bat);
         }
@@ -190,17 +205,15 @@ namespace egl
     bool Map::AttemptMoveBattalionToTile(Battalion *bat, Tile *tile)
     {
         auto cost = CostToTile(bat->ActionToTile(tile).second);
+        std::cout << "Movement cost: " << cost << std::endl;
         if (cost < 0.f)
         {
             return false;
         }
         auto tile_pos = tile->GetDiscretePos();
-        if (InZoneOfControl(tile_pos.x + tile_pos.y * width, bat->GetTeam()))
-        {
-            cost = bat->GetMovementPoints();
-        }
+        auto intoZoc = InZoneOfControl(tile_pos.x + tile_pos.y * width, bat->GetTeam());
         RemoveZoneOfControlFromBattalion(bat);
-        bat->SpendMovementPoints(cost);
+        bat->SpendMovementPoints(std::round(cost), intoZoc);
         tile->AddBattalion(bat);
         AddZoneOfControlForBattalion(bat);
         return true;
@@ -292,16 +305,20 @@ namespace egl
         return res;
     }
 
-    std::vector<action_t> *Map::GetBattalionActions(int x, int y, int movementPoints, int team)
+    std::vector<action_t> *Map::GetBattalionActions(Battalion *bat)
     {
+        auto teamPerformingAction = bat->GetTeam();
+        auto discreteStartPosition = static_cast<Tile *>(bat->parent)->GetDiscretePos();
+
         auto res = new std::vector<action_t>();
         auto neighbours = std::vector<Tile *>();
         auto explored = std::unordered_map<int, ExploreNode>();
         auto frontier = MinHeap(tiles->size());
 
-        auto source = tiles->at(x + y * width);
-        auto f_movementPoints = static_cast<float>(movementPoints);
-        frontier.insertKey(ExploreNode{source, 0.f, f_movementPoints, PosToIndex(source->GetDiscretePos()), false});
+        auto source_i = discreteStartPosition.x + discreteStartPosition.y * width;
+        auto source = tiles->at(discreteStartPosition.x + discreteStartPosition.y * width);
+        auto f_movementPoints = static_cast<float>(bat->GetMovementPoints());
+        frontier.insertKey(ExploreNode{source, 0.f, f_movementPoints, source_i, bat->GetMovedIntoZoc()});
 
         while (!frontier.isEmpty())
         {
@@ -311,7 +328,7 @@ namespace egl
 
             auto bat_at_explore = explore_node.tile->GetBattalion();
             if (explore_node.movement_left <= 0 ||
-                (bat_at_explore != nullptr && bat_at_explore->GetTeam() != team))
+                (bat_at_explore != nullptr && bat_at_explore->GetTeam() != teamPerformingAction))
             {
                 continue;
             }
@@ -327,7 +344,7 @@ namespace egl
                     {
                         auto neighbour_bat = neighbour->GetBattalion();
                         auto moveCost = 1000.f;
-                        if (neighbour_bat != nullptr)
+                        if (neighbour_bat != nullptr && neighbour_bat->GetTeam() != teamPerformingAction)
                         {
                             frontier.insertKey(ExploreNode{
                                 neighbour,
@@ -339,19 +356,19 @@ namespace egl
                     }
                     else
                     {
-                        auto moveCost = neighbour->GetMoveCost(team);
+                        auto moveCost = neighbour->GetMoveCost(teamPerformingAction);
                         frontier.insertKey(ExploreNode{
                             neighbour,
                             explore_node.cost + moveCost,
                             explore_node.movement_left - moveCost,
                             explore_pos_i,
-                            InZoneOfControl(n_pos_i, team)});
+                            InZoneOfControl(n_pos_i, teamPerformingAction)});
                     }
                 }
             }
         }
 
-        auto start_i = x + y * width;
+        auto start_i = source_i;
         for (auto v : explored)
         {
             auto action = action_t(v.second.tile, new std::vector<Tile *>());
@@ -371,6 +388,6 @@ namespace egl
 
     float Map::CostToTile(std::vector<Tile *> *path)
     {
-        return path != nullptr ? path->size() : -1.f;
+        return path != nullptr ? ((float)path->size()) - 1.f : -1.f;
     }
 }

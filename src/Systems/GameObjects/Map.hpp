@@ -27,6 +27,7 @@ namespace egl
         std::unordered_map<int, std::unordered_set<Battalion *> *> *zoneOfControlMap;
 
         bool checkBounds(int x, int y);
+        bool checkBounds(int n);
         void GetTileNeighbourPositions(sf::Vector2i *array, int y);
         void GetTileNeighbours(std::vector<Tile *> *out_vec, Tile *target);
         int PosToIndex(sf::Vector2i pos);
@@ -60,7 +61,7 @@ namespace egl
         bool InZoneOfControl(Tile *tile, int team);
         void RemoveZoneOfControlFromBattalion(Battalion *bat);
 
-        std::vector<action_t> *GetBattalionActions(int x, int y, int movementPoints, int team);
+        std::vector<action_t> *GetBattalionActions(Battalion *bat);
         float CostToTile(std::vector<Tile *> *path);
 
         std::vector<Tile *> *FindPaths(Tile *source, sf::Vector2i target, int movementPoints = 9999999);

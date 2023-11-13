@@ -216,6 +216,7 @@ namespace egl
 
     bool Tile::InteractWithEntity(Entity *selected)
     {
+        StateManager::GetInstance()->Mystery();
         switch (selected->GetEntityType())
         {
         case EntityType::E_Battalion:

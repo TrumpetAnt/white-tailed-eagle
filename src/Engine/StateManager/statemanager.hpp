@@ -51,6 +51,8 @@ namespace egl
 
         Entity *GetSelected();
 
+        void Mystery();
+
         static constexpr int turnLimit = 8;
     };
 }

@@ -14,8 +14,12 @@ namespace egl
     {
     protected:
         int zoneOfControlRadius = 1;
+
         uint movementPoints = 3;
         uint availablePoints = movementPoints;
+        bool attacked = false;
+        bool movedIntoZoc = false;
+
         float initialHp = 100.f;
         float hitPoints = initialHp;
         float baseDamage = 20.f;
@@ -47,8 +51,10 @@ namespace egl
         action_t ActionToTile(Tile *tile);
         void SetActions(std::vector<action_t> *a);
         // ~~ Movement ~~
+        bool GetMovedIntoZoc();
         uint GetMovementPoints();
         void SpendMovementPoints(uint cost);
+        void SpendMovementPoints(uint cost, bool intoZoneOfControl);
         // ~~ Zone of control
         int GetZoneOfControlRadius();
         // ~~ Interact ~~

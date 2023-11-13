@@ -101,7 +101,7 @@ namespace egl
         auto tile = static_cast<Tile *>(parent);
         auto m = static_cast<Map *>(tile->parent);
         auto pos = tile->GetDiscretePos();
-        actions = m->GetBattalionActions(pos.x, pos.y, GetMovementPoints(), team);
+        actions = m->GetBattalionActions(this);
         m->HighlightActions(actions);
         tile->Highlight(sf::Color::Black, 3);
     }
@@ -155,6 +155,11 @@ namespace egl
         actions = a;
     }
 
+    bool Battalion::GetMovedIntoZoc()
+    {
+        return movedIntoZoc;
+    }
+
     uint Battalion::GetMovementPoints()
     {
         return availablePoints;
@@ -163,6 +168,12 @@ namespace egl
     void Battalion::SpendMovementPoints(uint cost)
     {
         availablePoints = cost >= availablePoints ? 0 : availablePoints - cost;
+    }
+
+    void Battalion::SpendMovementPoints(uint cost, bool intoZoneOfControl)
+    {
+        movedIntoZoc = intoZoneOfControl;
+        SpendMovementPoints(cost);
     }
 
     int Battalion::GetZoneOfControlRadius()
@@ -178,6 +189,8 @@ namespace egl
     void Battalion::NextTurn()
     {
         availablePoints = movementPoints;
+        movedIntoZoc = false;
+        attacked = false;
         drawable->SetColor(TeamToColor(team));
         CleanUpActions();
     };

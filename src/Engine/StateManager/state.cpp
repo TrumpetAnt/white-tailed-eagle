@@ -78,4 +78,25 @@ namespace egl
             entity->NextTurn();
         }
     }
+
+    void State::Mystery()
+    {
+        for (auto e : *entities)
+        {
+            if (e->GetEntityType() != EntityType::E_Tile)
+            {
+                continue;
+            }
+            auto tile = static_cast<Tile *>(e);
+            if (tile->GetBattalion() != nullptr)
+            {
+                std::cout << "Tile ("
+                          << tile->GetDiscretePos().x
+                          << ","
+                          << tile->GetDiscretePos().y
+                          << ") is occipied"
+                          << std::endl;
+            }
+        }
+    }
 }

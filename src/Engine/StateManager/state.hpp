@@ -25,5 +25,7 @@ namespace egl
         std::vector<Entity *> *GetNpcEntities();
 
         void NextTurn();
+
+        void Mystery();
     };
 }
