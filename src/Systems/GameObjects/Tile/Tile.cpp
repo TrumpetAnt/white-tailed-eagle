@@ -42,6 +42,35 @@ namespace egl
         }
     }
 
+    void Tile::InitTile()
+    {
+        auto map = static_cast<Map *>(parent);
+        auto out = std::vector<Tile *>();
+
+        sf::Vector2i delta[6];
+        map->GetTileNeighbourPositions(delta, pos.y);
+        for (int i = 0; i < 6; i++)
+        {
+            auto n_pos = delta[i] + pos;
+            neighbours[i] = map->GetTileAt(n_pos.x, n_pos.y);
+        }
+        if (neighbours[2] != nullptr && neighbours[2]->GetHeight() < height)
+        {
+            auto d = borders[0].GetDrawable();
+            d->setRotation(d->getRotation() + 180.f);
+        }
+        if (neighbours[5] != nullptr && neighbours[5]->GetHeight() < height)
+        {
+            auto d = borders[1].GetDrawable();
+            d->setRotation(d->getRotation() + 180.f);
+        }
+        if (neighbours[4] != nullptr && neighbours[4]->GetHeight() > height)
+        {
+            auto d = borders[2].GetDrawable();
+            d->setRotation(d->getRotation() + 180.f);
+        }
+    }
+
     void Tile::AddDrawable(TileType type)
     {
         auto pos = getPosition();
@@ -53,15 +82,54 @@ namespace egl
         int variance = 40;
         auto c = sf::Color::White; //::Color(84 + (rand() % variance), 201 + (rand() % variance), 60 + (rand() % variance));
         auto maxHeight = (float)Map::maxHeight;
-        auto delta = (unsigned int)std::round(1.f / (maxHeight + 1) * 255.f);
+        auto floor = 200.f;
+        unsigned int floorI = 200;
+
+        auto delta = (unsigned int)std::round(1.f / maxHeight * (255.f - floor));
         auto distToMax = (unsigned int)height;
 
-        c = sf::Color(delta * distToMax + delta, delta * distToMax + delta, delta * distToMax + delta, 255);
+        c = sf::Color(delta * distToMax + floorI, delta * distToMax + floorI, delta * distToMax + floorI, 255);
 
         drawable->SetColor(c);
         baseColor = c;
 
         outline = DrawableFactory::GetHexagonOutline(pos, Tile::radius, outlineBaseColor);
+
+        borders[0] = TileBorder();
+        borders[1] = TileBorder();
+        borders[2] = TileBorder();
+
+        // (*outline)[0].position = sf::Vector2f(0, Tile::radius);
+        // (*outline)[1].position = sf::Vector2f(Tile::radius * sqrt3div2, Tile::radius * .5f);
+        // (*outline)[2].position = sf::Vector2f(Tile::radius * sqrt3div2, Tile::radius * -.5f);
+        // (*outline)[3].position = sf::Vector2f(0, Tile::radius * -1);
+        // (*outline)[4].position = sf::Vector2f(Tile::radius * sqrt3div2 * -1, Tile::radius * -.5f);
+        // (*outline)[5].position = sf::Vector2f(Tile::radius * sqrt3div2 * -1, Tile::radius * .5f);
+        // (*outline)[6].position = sf::Vector2f(0, Tile::radius);
+    }
+
+    int Tile::GetHeight()
+    {
+        return height;
+    }
+
+    void Tile::UpdateTransforms()
+    {
+        drawable->setPosition(getPosition());
+        float sqrt3div2 = 0.86602540378f;
+        EgDrawable *borderDrawable = nullptr;
+
+        borders[0].SetPosition(getPosition() + sf::Vector2f(Tile::radius * sqrt3div2, 0.f));
+        borderDrawable = borders[0].GetDrawable();
+        borderDrawable->setRotation(borderDrawable->getRotation() + 90.f);
+
+        borders[1].SetPosition(getPosition() + sf::Vector2f((Tile::radius - 5.f) * .5f, (Tile::radius - 5.f) * sqrt3div2));
+        borderDrawable = borders[1].GetDrawable();
+        borderDrawable->setRotation(borderDrawable->getRotation() + 150.f);
+
+        borders[2].SetPosition(getPosition() + sf::Vector2f((Tile::radius - 5.f) * -.5f, (Tile::radius - 5.f) * sqrt3div2));
+        borderDrawable = borders[2].GetDrawable();
+        borderDrawable->setRotation(borderDrawable->getRotation() + 30.f);
     }
 
     void Tile::AddBattalion(Battalion *bat)
@@ -98,9 +166,22 @@ namespace egl
     {
         if (IsDrawable())
         {
-            UpdateTransforms();
             PushDrawableToRes(res, drawable);
-            if (displayOutline)
+            auto borderLayer = drawable->GetLayer() + 1;
+            if (neighbours[2] != nullptr && neighbours[2]->GetHeight() != height)
+            {
+                PushDrawableToRes(res, borders[0].GetDrawable(), borderLayer);
+            }
+            if (neighbours[5] != nullptr && neighbours[5]->GetHeight() != height)
+            {
+                PushDrawableToRes(res, borders[1].GetDrawable(), borderLayer);
+            }
+            if (neighbours[4] != nullptr && neighbours[4]->GetHeight() != height)
+            {
+                PushDrawableToRes(res, borders[2].GetDrawable(), borderLayer);
+            }
+
+            if (displayOutline && outlineModified)
             {
                 outline->setPosition(getPosition());
                 auto map = static_cast<Map *>(parent);
@@ -200,24 +281,28 @@ namespace egl
     {
         outline->SetColor(color);
         outline->SetLayer(1);
+        outlineModified = true;
     }
 
     void Tile::Highlight(sf::Color color, int layer)
     {
         Highlight(color);
         outline->SetLayer(layer);
+        outlineModified = true;
     }
 
     void Tile::AlternateHighlight()
     {
         outline->SetColor(sf::Color::Red);
         outline->SetLayer(2);
+        outlineModified = true;
     }
 
     void Tile::ResetHighlight()
     {
         outline->SetColor(outlineBaseColor);
         outline->SetLayer(0);
+        outlineModified = false;
     };
 
     bool Tile::InteractWithEntity(Entity *selected)

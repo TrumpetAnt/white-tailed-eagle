@@ -29,6 +29,7 @@ add_executable(eagle
     src/Systems/GameObjects/Map.cpp
     src/Systems/GameObjects/MinHeap.cpp
     src/Systems/GameObjects/Tile/Tile.cpp
+    src/Systems/GameObjects/Tile/TileBorder.cpp
     src/Systems/GameObjects/Factories/EntityFactory.cpp
     src/Systems/GameObjects/Units/Battalion.cpp
     src/Systems/GameObjects/Units/BattalionProjectile.cpp

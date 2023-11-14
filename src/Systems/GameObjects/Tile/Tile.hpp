@@ -6,6 +6,7 @@
 #include "TileType.hpp"
 #include "../EntityType.hpp"
 #include "../Units/Battalion.hpp"
+#include "TileBorder.hpp"
 
 namespace egl
 {
@@ -22,19 +23,27 @@ namespace egl
         int moveCost = 1;
         EgDrawable *outline = nullptr;
         sf::Color outlineBaseColor = sf::Color(0, 0, 0, 25);
+        bool outlineModified = false;
         bool displayOutline = true;
+        TileBorder borders[3];
+        Tile *neighbours[6];
 
         int height;
 
     public:
         Tile(sf::Vector2i pos, int height) : Entity(EntityType::E_Tile), pos(pos), height(height){};
+
+        void InitTile();
+
         sf::Vector2i GetDiscretePos();
+        int GetHeight();
 
         void AddDrawable(TileType type);
         void AddBattalion(Battalion *bat);
         Battalion *GetBattalion();
         float GetMoveCost(int team);
         void ConcatDrawable(std::unordered_map<int, std::vector<EgDrawable *> *> *res) override;
+        void UpdateTransforms() override;
         bool IsSelectable() override;
         Entity *AttemptSelect(float x, float y) override;
         void Highlight() override;

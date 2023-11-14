@@ -6,7 +6,7 @@ namespace egl
     {
         auto res = new Tile(pos_int, height);
         res->AddDrawable(TileType::Grass);
-        res->setPosition(pos);
+        res->SetPosition(pos);
         return res;
     }
 
@@ -36,6 +36,10 @@ namespace egl
         *out_tiles = tiles;
         auto res = new Map(w, h, tiles);
         res->AddHeightMap(heightMap);
+        for (auto tile : *tiles)
+        {
+            tile->InitTile();
+        }
         return res;
     }
 

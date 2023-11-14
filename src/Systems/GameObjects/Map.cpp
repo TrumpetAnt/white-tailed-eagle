@@ -23,16 +23,16 @@ namespace egl
         }
     };
 
-    bool Map::checkBounds(int n)
+    bool Map::CheckBounds(int n)
     {
         int x = n % width;
         int y = n / width;
-        return checkBounds(x, y);
+        return CheckBounds(x, y);
     }
 
-    bool Map::checkBounds(int x, int y)
+    bool Map::CheckBounds(int x, int y)
     {
-        return 0 <= x && 0 <= y && x <= width && y <= height;
+        return 0 <= x && 0 <= y && x < width && y < height;
     }
 
     bool Map::IsDrawable()
@@ -52,7 +52,7 @@ namespace egl
 
     void Map::AddBattalionAt(Battalion *bat, int x, int y)
     {
-        if (!checkBounds(x, y))
+        if (!CheckBounds(x, y))
         {
             return;
         }
@@ -65,7 +65,7 @@ namespace egl
 
     void Map::AddCapturePointAt(CapturePoint *cp, int x, int y)
     {
-        if (!checkBounds(x, y))
+        if (!CheckBounds(x, y))
         {
             return;
         }
@@ -124,7 +124,7 @@ namespace egl
         for (int i = 0; i < 6; i++)
         {
             auto n_pos = delta[i] + pos;
-            if (!checkBounds(n_pos.x, n_pos.y))
+            if (!CheckBounds(n_pos.x, n_pos.y))
             {
                 continue;
             }
@@ -141,7 +141,7 @@ namespace egl
         for (int i = 0; i < 6; i++)
         {
             auto n_pos = delta[i] + pos;
-            if (!checkBounds(n_pos.x, n_pos.y))
+            if (!CheckBounds(n_pos.x, n_pos.y))
             {
                 continue;
             }
@@ -171,7 +171,7 @@ namespace egl
 
     void Map::HighlightTilesAround(int x, int y, int r)
     {
-        if (!checkBounds(x, y))
+        if (!CheckBounds(x, y))
         {
             return;
         }
@@ -237,6 +237,15 @@ namespace egl
         array[5] = sf::Vector2i(0 + x_offset, 1);
     }
 
+    Tile *Map::GetTileAt(int x, int y)
+    {
+        if (!CheckBounds(x, y))
+        {
+            return nullptr;
+        }
+        return tiles->at(x + y * width);
+    }
+
     void Map::GetTileNeighbours(std::vector<Tile *> *out_vec, Tile *target)
     {
         out_vec->clear();
@@ -246,7 +255,7 @@ namespace egl
         for (int i = 0; i < 6; i++)
         {
             auto n_pos = delta[i] + pos;
-            if (checkBounds(n_pos.x, n_pos.y))
+            if (CheckBounds(n_pos.x, n_pos.y))
             {
                 out_vec->push_back(tiles->at(PosToIndex(n_pos)));
             }

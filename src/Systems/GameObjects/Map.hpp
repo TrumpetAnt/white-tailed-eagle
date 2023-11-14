@@ -29,9 +29,6 @@ namespace egl
 
         NoiseMap *heightMap;
 
-        bool checkBounds(int x, int y);
-        bool checkBounds(int n);
-        void GetTileNeighbourPositions(sf::Vector2i *array, int y);
         void GetTileNeighbours(std::vector<Tile *> *out_vec, Tile *target);
         int PosToIndex(sf::Vector2i pos);
         std::vector<Tile *> *GetTileSurroundings(Tile *target, int radius);
@@ -44,6 +41,10 @@ namespace egl
         Map(int width, int height, std::vector<Tile *> *tiles);
         int getWidth() { return width; }
         int getHeight() { return height; }
+        bool CheckBounds(int x, int y);
+        bool CheckBounds(int n);
+        void GetTileNeighbourPositions(sf::Vector2i *array, int y);
+        Tile *GetTileAt(int x, int y);
 
         bool IsDrawable() override;
         void ConcatDrawable(std::unordered_map<int, std::vector<EgDrawable *> *> *res) override;
