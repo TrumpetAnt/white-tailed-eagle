@@ -3,7 +3,7 @@
 #include "../../../Engine/Entity/entity.hpp"
 #include "../EntityType.hpp"
 #include "../../../Engine/Drawable/drawablefactory.hpp"
-#include "../Tile.hpp"
+#include "../Tile/Tile.hpp"
 #include "../TransformUtils.hpp"
 
 namespace egl

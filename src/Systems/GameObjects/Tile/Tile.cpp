@@ -1,6 +1,6 @@
 #include "Tile.hpp"
-#include "Map.hpp"
-#include "../../Engine/StateManager/statemanager.hpp"
+#include "../Map.hpp"
+#include "../../../Engine/StateManager/statemanager.hpp"
 
 namespace egl
 {

@@ -11,7 +11,7 @@
 #include "Engine/StateManager/statemanager.hpp"
 #include "Engine/UIManager/uimanager.hpp"
 #include "Engine/UIManager/GuiManager/fontmanager.hpp"
-#include "Systems/GameObjects/Tile.hpp"
+#include "Systems/GameObjects/Tile/Tile.hpp"
 
 int main(int argc, char **argv)
 {

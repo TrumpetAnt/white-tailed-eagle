@@ -4,7 +4,7 @@
 #include <vector>
 #include <stdexcept>
 #include "PathSegment.hpp"
-#include "../Tile.hpp"
+#include "../Tile/Tile.hpp"
 
 namespace egl
 {

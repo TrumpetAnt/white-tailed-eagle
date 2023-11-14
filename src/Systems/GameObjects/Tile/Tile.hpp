@@ -1,11 +1,11 @@
 #pragma once
 
-#include "../../Engine/Entity/entity.hpp"
-#include "../../Engine/Drawable/drawablefactory.hpp"
-#include "../../Engine/TextureManager/texturemanager.hpp"
+#include "../../../Engine/Entity/entity.hpp"
+#include "../../../Engine/Drawable/drawablefactory.hpp"
+#include "../../../Engine/TextureManager/texturemanager.hpp"
 #include "TileType.hpp"
-#include "EntityType.hpp"
-#include "Units/Battalion.hpp"
+#include "../EntityType.hpp"
+#include "../Units/Battalion.hpp"
 
 namespace egl
 {

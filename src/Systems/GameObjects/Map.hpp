@@ -6,7 +6,7 @@
 #include <unordered_set>
 #include <chrono>
 
-#include "Tile.hpp"
+#include "Tile/Tile.hpp"
 #include "EntityType.hpp"
 #include "MinHeap.hpp"
 #include "CapturePoint.hpp"

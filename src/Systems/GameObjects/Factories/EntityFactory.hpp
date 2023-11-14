@@ -1,11 +1,11 @@
 #pragma once
 
 #include "../Map.hpp"
-#include "../Tile.hpp"
+#include "../Tile/Tile.hpp"
+#include "../Tile/TileType.hpp"
 #include "../NoiseMap/NoiseMap.hpp"
 #include "../../../Engine/Drawable/drawablefactory.hpp"
 #include "../../../Engine/Entity/entity.hpp"
-#include "../TileType.hpp"
 #include "../Units/Battalion.hpp"
 #include "../Units/BattalionProjectile.hpp"
 #include "../CapturePoint.hpp"

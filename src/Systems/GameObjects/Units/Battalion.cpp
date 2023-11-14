@@ -1,6 +1,6 @@
 #include "Battalion.hpp"
 #include "../Map.hpp"
-#include "../Tile.hpp"
+#include "../Tile/Tile.hpp"
 
 namespace egl
 {
