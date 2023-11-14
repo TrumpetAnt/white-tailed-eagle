@@ -10,6 +10,7 @@ namespace egl
         E_BattalionProjectile,
         E_CapturePoint,
         E_PathSegment,
-        E_NoiseMap
+        E_NoiseMap,
+        E_Overlay
     };
 }

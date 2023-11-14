@@ -9,7 +9,9 @@ namespace egl
     class NoiseMap : public Entity
     {
     protected:
+        SimplexNoise noiseMachine;
         sf::Vector2i size;
+        float scale;
         float *calculatedValues;
 
         sf::Image *GenerateNoiseImage();
@@ -21,5 +23,6 @@ namespace egl
         NoiseMap(sf::Vector2i size);
 
         float ValAt(sf::Vector2i pos);
+        float CalcAt(sf::Vector2f pos);
     };
 }

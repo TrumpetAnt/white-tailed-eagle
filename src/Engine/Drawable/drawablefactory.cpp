@@ -168,4 +168,18 @@ namespace egl
 
         return boxes;
     }
+
+    EgDrawable *DrawableFactory::GetLine(std::vector<sf::Vector2f> *points)
+    {
+        auto line = new sf::VertexArray(sf::LineStrip, points->size());
+        auto iter = points->begin();
+        for (int i = 0; i < points->size(); i++)
+        {
+            (*line)[i].position = *iter;
+            iter++;
+        }
+
+        return new EgDrawable(line);
+    }
+
 }

@@ -5,7 +5,7 @@ namespace egl
 
     NoiseMap::NoiseMap() : Entity(EntityType::E_NoiseMap)
     {
-        size = sf::Vector2i(19, 12);
+        size = sf::Vector2i(1316, 720);
         AddDrawable();
         SetPosition(sf::Vector2f(-200.f, 200.f));
     }
@@ -22,8 +22,10 @@ namespace egl
         auto tex = new sf::Texture();
         tex->loadFromImage(*noise);
 
-        auto scale = sf::Vector2(size.x * 25.f, size.y * 25.f);
-        drawable = DrawableFactory::GetRectangle(scale, sf::Vector2f(size));
+        auto factor = 500.f / size.x;
+
+        auto worldSize = sf::Vector2(500.f, size.y * factor);
+        drawable = DrawableFactory::GetRectangle(worldSize, sf::Vector2f(size));
         drawable->SetTexture(tex);
         drawable->SetLayer(5);
     }
@@ -33,8 +35,8 @@ namespace egl
         auto pixels = new sf::Uint8[size.x * 4 * size.y];
         calculatedValues = new float[size.x * size.y];
 
-        auto scale = 0.1f;
-        auto noiseMachine = SimplexNoise(scale);
+        scale = 0.0012f;
+        noiseMachine = SimplexNoise(scale);
 
         for (int j = 0; j < size.y; j++)
         {
@@ -66,5 +68,10 @@ namespace egl
             return -1.f;
         }
         return calculatedValues[pos.x + pos.y * size.x];
+    }
+
+    float NoiseMap::CalcAt(sf::Vector2f pos)
+    {
+        return noiseMachine.noise(pos.x * scale, pos.y * scale) * 0.5f + 0.5f;
     }
 }

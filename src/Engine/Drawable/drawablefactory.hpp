@@ -21,5 +21,6 @@ namespace egl
         static EgDrawable *GetRectangle(sf::Vector2f size);
         static EgDrawable *GetRectangle(sf::Vector2f size, sf::Vector2f textureSize);
         static sf::VertexArray *GetHealthBar(float width, float height);
+        static EgDrawable *GetLine(std::vector<sf::Vector2f> *points);
     };
 }

@@ -17,6 +17,7 @@ namespace egl
     typedef std::pair<Tile *, std::vector<Tile *> *> action_t;
 
     class StateManager;
+    class NoiseMap;
     class Map : public Entity
     {
     private:
@@ -25,6 +26,8 @@ namespace egl
         int width;
         int height;
         std::unordered_map<int, std::unordered_set<Battalion *> *> *zoneOfControlMap;
+
+        NoiseMap *heightMap;
 
         bool checkBounds(int x, int y);
         bool checkBounds(int n);
@@ -48,6 +51,7 @@ namespace egl
         // Setup
         void AddBattalionAt(Battalion *bat, int x, int y);
         void AddCapturePointAt(CapturePoint *cp, int x, int y);
+        void AddHeightMap(NoiseMap *map);
 
         // ~~ UX Highlights ~~
         void HighlightTilesAround(int x, int y, int r);

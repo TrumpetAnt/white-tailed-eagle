@@ -46,6 +46,8 @@ namespace egl
         {
             tile->ConcatDrawable(res);
         }
+
+        heightMap->ConcatDrawable(res);
     }
 
     void Map::AddBattalionAt(Battalion *bat, int x, int y)
@@ -71,6 +73,11 @@ namespace egl
         tile->AttachChild(cp);
         cp->setPosition(tile->getPosition());
         cp->UpdateTransforms();
+    }
+
+    void Map::AddHeightMap(NoiseMap *map)
+    {
+        heightMap = map;
     }
 
     std::vector<Tile *> *Map::GetTileSurroundings(Tile *target, int radius)

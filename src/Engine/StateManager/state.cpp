@@ -6,7 +6,7 @@ namespace egl
     {
         // entities->push_back(EntityFactory::GetMap(1, 1));
         std::vector<Tile *> *out_tiles;
-        auto map = EntityFactory::GetMap(19, 12, &out_tiles);
+        auto map = EntityFactory::GetMap(30, 20, &out_tiles);
         auto bat = EntityFactory::GetBattalion(0);
         auto bat2 = EntityFactory::GetBattalion(0);
         auto bat3 = EntityFactory::GetBattalion(1);
@@ -33,8 +33,6 @@ namespace egl
 
         map->AddCapturePointAt(cp2, 16, 5);
         entities->push_back(cp2);
-
-        entities->push_back(EntityFactory::GetNoiseMap());
 
         ProjectilePool::GetInstance()
             ->TrackEntities(entities);

@@ -12,26 +12,33 @@ namespace egl
 
     Map *EntityFactory::GetMap(int w, int h, std::vector<Tile *> **out_tiles)
     {
-        auto heightMap = new NoiseMap(sf::Vector2i(w, h));
 
         auto tiles = new std::vector<Tile *>();
         float offset = 100.f;
         float spacing = 80.f;
         float sqrt3div2 = 0.86602540378f;
+
+        auto worldSize = sf::Vector2f(spacing * sqrt3div2 * w, h * .75f * spacing);
+        std::cout << "World size: " << worldSize.x << "x" << worldSize.y << std::endl;
+
+        auto heightMap = new NoiseMap(sf::Vector2i(worldSize));
         for (int row = 0; row < h; row++)
         {
             for (int col = 0; col < w; col++)
             {
                 auto x_pos = static_cast<float>(col) * spacing * sqrt3div2 + offset + ((row % 2) * spacing * sqrt3div2 / 2);
                 auto y_pos = static_cast<float>(row) * spacing * .75f + offset;
-                auto height = heightMap->ValAt(sf::Vector2i(col, row));
+                auto worldPos = sf::Vector2f(x_pos, y_pos);
+                auto height = heightMap->CalcAt(worldPos - sf::Vector2f(offset, offset));
+                std::cout << "Height " << height << " at world pos " << worldPos.x - offset << ", " << worldPos.y - offset << std::endl;
                 auto heightIndex = (int)std::floor(height * Map::maxHeight);
-                std::cout << "height: " << height << " index: " << heightIndex << std::endl;
-                tiles->push_back(GetTile(sf::Vector2f(x_pos, y_pos), sf::Vector2i(col, row), TileType::Grass, heightIndex));
+                tiles->push_back(GetTile(worldPos, sf::Vector2i(col, row), TileType::Grass, heightIndex));
             }
         }
         *out_tiles = tiles;
-        return new Map(w, h, tiles);
+        auto res = new Map(w, h, tiles);
+        res->AddHeightMap(heightMap);
+        return res;
     }
 
     Battalion *EntityFactory::GetBattalion(int team)
