@@ -14,19 +14,19 @@ namespace egl
         switch (i)
         {
         case 2:
-            return "assets/img/PNG/Tiles/Terrain/Grass/grass_16.png";
+            return "assets/img/kenney_hexagon-pack/PNG/Tiles/Terrain/Grass/grass_16.png";
         case 3:
-            return "assets/img/PNG/Tiles/Terrain/Grass/grass_11.png";
+            return "assets/img/kenney_hexagon-pack/PNG/Tiles/Terrain/Grass/grass_11.png";
         case 4:
-            return "assets/img/PNG/Tiles/Terrain/Grass/grass_05.png";
+            return "assets/img/kenney_hexagon-pack/PNG/Tiles/Terrain/Grass/grass_05.png";
         case 5:
-            return "assets/img/PNG/Tiles/Terrain/Grass/grass_10.png";
+            return "assets/img/kenney_hexagon-pack/PNG/Tiles/Terrain/Grass/grass_10.png";
         case 6:
-            return "assets/img/PNG/Tiles/Terrain/Grass/grass_15.png";
+            return "assets/img/kenney_hexagon-pack/PNG/Tiles/Terrain/Grass/grass_15.png";
         default:
             break;
         }
-        return "assets/img/PNG/Tiles/Terrain/Grass/grass_05.png";
+        return "assets/img/kenney_hexagon-pack/PNG/Tiles/Terrain/Grass/grass_05.png";
     }
 
     sf::Texture *TileTypeToTexture(TileType type)

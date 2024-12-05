@@ -13,7 +13,7 @@ namespace egl
         drawable = DrawableFactory::GetRectangle(texSize * scale, texSize);
 
         auto tm = TextureManager::GetInstance();
-        auto texture = tm->LoadTexture("assets/img/TinyBattleAssetPack/banner.png");
+        auto texture = tm->LoadTexture("assets/img/kenney_tiny-battle/Tiles/tile_0071.png");
         drawable->SetTexture(texture);
         drawable->setPosition(pos);
         auto color = team == 0 ? sf::Color(255, 128, 128) : sf::Color(70, 120, 255);

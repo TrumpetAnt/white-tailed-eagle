@@ -85,7 +85,7 @@ int main(int argc, char **argv)
         }
         else
         {
-            std::cout << ". Duration " << fs.count() << " exceeded expected duration " << durationPerFrame.count() << std::endl;
+            // std::cout << ". Duration " << fs.count() << " exceeded expected duration " << durationPerFrame.count() << std::endl;
         }
         frameCount += 1;
 

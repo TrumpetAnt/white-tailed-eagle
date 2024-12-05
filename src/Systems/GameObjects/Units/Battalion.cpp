@@ -34,9 +34,9 @@ namespace egl
         switch (team)
         {
         case 0:
-            return tm->LoadTexture("assets/img/TinyBattleAssetPack/tile_0160.png");
+            return tm->LoadTexture("assets/img/kenney_tiny-battle/Tiles/tile_0160.png");
         case 1:
-            return tm->LoadTexture("assets/img/TinyBattleAssetPack/tile_0142.png");
+            return tm->LoadTexture("assets/img/kenney_tiny-battle/Tiles/tile_0142.png");
         default:
             throw std::invalid_argument("Unhandled switch case");
         }
