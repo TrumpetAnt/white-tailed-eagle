@@ -10,10 +10,11 @@ This project is meant to be a learning exercise and demostrate games programming
 Here is some of what you can find in the project:
 
 - OOP patterns such as singleton and factories ([StateManager.cpp](/src/Engine/StateManager/statemanager.hpp), [DrawableFactory.cpp](/src/Engine/Drawable/drawablefactory.cpp))
-- Simple AI-programming and pathfinding with A\* ([Map.cpp](https://github.com/TrumpetAnt/white-tailed-eagle/blob/fc4349c6602327c8f6e53b84142efbfa42f70b17/src/Systems/GameObjects/Map.cpp#L276))
+- Simple AI-programming and pathfinding with A\* ([Map.cpp#L276](https://github.com/TrumpetAnt/white-tailed-eagle/blob/fc4349c6602327c8f6e53b84142efbfa42f70b17/src/Systems/GameObjects/Map.cpp#L276))
 - Seperation of logic into game engine such as drawable objects, game entities, input handling, UI framework, texture loading ([Engine](/src/Engine/))
 - Object pooling ([PathSegmentPool.hpp](/src/Systems/GameObjects/Path/PathSegmentPool.hpp))
-- Map generation with simplex noise ([EntityFactory.cpp](https://github.com/TrumpetAnt/white-tailed-eagle/blob/fc4349c6602327c8f6e53b84142efbfa42f70b17/src/Systems/GameObjects/Factories/EntityFactory.cpp#L23))
+- Map generation with simplex noise ([EntityFactory.cpp#L23](https://github.com/TrumpetAnt/white-tailed-eagle/blob/fc4349c6602327c8f6e53b84142efbfa42f70b17/src/Systems/GameObjects/Factories/EntityFactory.cpp#L23))
+- Zone of control for units ([Map.cpp#L136](https://github.com/TrumpetAnt/white-tailed-eagle/blob/15781e371b50c9a64acaed84bf3277f33b9a03eb/src/Systems/GameObjects/Map.cpp#L136))
 
 ## How to build and run
 
