@@ -3,6 +3,8 @@
 Hi there,
 I've built a simple game in C++ using the SFML-library.
 
+![alt text](Gameplay.gif)
+
 This project is meant to be a learning exercise and demostrate games programming fundamentals.
 
 Here is some of what you can find in the project:
